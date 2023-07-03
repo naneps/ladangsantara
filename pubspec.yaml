@@ -1,4 +1,4 @@
-name: getx_pattern_starter
+name: ladangsantara
 version: 1.0.0+1
 publish_to: none
 description: A new Flutter project.
@@ -10,7 +10,6 @@ dependencies:
   get: 4.6.4
   image_picker: 0.8.6
   sp_util: 2.0.3
-  google_fonts: 3.0.1
   material_design_icons_flutter: 6.0.7096
   location: 4.4.0
   geolocator: 9.0.2
@@ -22,6 +21,11 @@ dependencies:
   flutter_slidable: ^3.0.0
   dotted_border: ^2.0.0+3
   cached_network_image: ^3.2.3
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.1
+  google_fonts: ^4.0.4
+  curved_navigation_bar: ^1.0.3
+  geocoding: ^2.1.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -31,4 +35,23 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/icon/
   uses-material-design: true
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "path/to/image.png"
+    # background_color: "#hexcode"
+    # theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "path/to/image.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "path/to/image.png"

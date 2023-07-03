@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_pattern_starter/app/common/buttons/x_button.dart';
-import 'package:getx_pattern_starter/app/common/input/x_field.dart';
-import 'package:getx_pattern_starter/app/routes/app_pages.dart';
-import 'package:getx_pattern_starter/app/themes/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ladangsantara/app/common/buttons/x_button.dart';
+import 'package:ladangsantara/app/common/buttons/x_outline_button.dart';
+import 'package:ladangsantara/app/common/input/x_field.dart';
+import 'package:ladangsantara/app/routes/app_pages.dart';
+import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../controllers/auth_controller.dart';
@@ -31,16 +32,20 @@ class AuthView extends GetView<AuthController> {
                     ),
                     width: Get.width,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(
-                          "assets/images/analytic.png",
-                          fit: BoxFit.contain,
+                        SizedBox(
+                          height: 200,
+                          width: 200,
+                          child: Image.asset(
+                            "assets/icon/icon.png",
+                            fit: BoxFit.contain,
+                          ),
                         ),
                         Text.rich(
                           TextSpan(
-                            text: "Welcome to ",
+                            text: "Selamat Datang Warga ",
                             style: TextStyle(
                               color: ThemeApp.darkColor,
                               fontSize: 22,
@@ -48,7 +53,7 @@ class AuthView extends GetView<AuthController> {
                             ),
                             children: [
                               TextSpan(
-                                text: "GetX",
+                                text: "Ladang",
                                 style: GoogleFonts.poppins(
                                   color: ThemeApp.primaryColor,
                                   fontSize: 22,
@@ -56,9 +61,9 @@ class AuthView extends GetView<AuthController> {
                                 ),
                               ),
                               TextSpan(
-                                text: " Starter",
+                                text: " Santara",
                                 style: GoogleFonts.poppins(
-                                  color: ThemeApp.darkColor,
+                                  color: ThemeApp.secondaryColor,
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -70,7 +75,7 @@ class AuthView extends GetView<AuthController> {
                     ),
                   ),
                   Text(
-                    "Login to your account",
+                    "Masuk ke akun anda",
                     style: TextStyle(
                       color: ThemeApp.darkColor,
                       fontSize: 16,
@@ -81,7 +86,7 @@ class AuthView extends GetView<AuthController> {
                     height: 10,
                   ),
                   XTextField(
-                    labelText: "Phone",
+                    labelText: "Nomor Telepon",
                     hintText: "+6281xxxx",
                     prefixIcon: MdiIcons.phoneOutline,
                     onSave: (val) {
@@ -100,7 +105,7 @@ class AuthView extends GetView<AuthController> {
                   Obx(
                     () {
                       return XTextField(
-                        labelText: "password",
+                        labelText: "Kata sandi",
                         hintText: "pass****123",
                         prefixIcon: MdiIcons.lockOutline,
                         onSave: (val) {
@@ -112,10 +117,10 @@ class AuthView extends GetView<AuthController> {
                         obscureText: !controller.isShowPass.value,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "password can't be empty";
+                            return "sandi harus di isi";
                           }
                           if (value.length < 8) {
-                            return "Minimum 8 character";
+                            return "minimal 8 karakter";
                           }
                           return null;
                         },
@@ -141,7 +146,7 @@ class AuthView extends GetView<AuthController> {
                     ),
                   ),
                   XButton(
-                    text: "Login",
+                    text: "Masuk",
                     hasIcon: true,
                     icon: MdiIcons.login,
                     onPressed: () {
@@ -188,8 +193,8 @@ class AuthView extends GetView<AuthController> {
                     height: 10,
                   ),
                   // register
-                  XButton(
-                    text: "Register",
+                  XOutlineButton(
+                    text: "Mendaftar",
                     hasIcon: true,
                     icon: MdiIcons.accountPlusOutline,
                     onPressed: () {

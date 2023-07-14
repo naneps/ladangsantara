@@ -86,15 +86,17 @@ class AuthView extends GetView<AuthController> {
                     height: 10,
                   ),
                   XTextField(
-                    labelText: "Nomor Telepon",
-                    hintText: "+6281xxxx",
-                    prefixIcon: MdiIcons.phoneOutline,
+                    labelText: "Email",
+                    hintText: "ahmad@xample.com",
+                    prefixIcon: MdiIcons.emailOutline,
+                    initialValue: controller.user.value.email,
                     onSave: (val) {
                       // controller.phone.value = val!;
+                      controller.user.value.email = val!;
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Phone can't be empty";
+                        return "Email harus di isi";
                       }
                       return null;
                     },
@@ -108,8 +110,10 @@ class AuthView extends GetView<AuthController> {
                         labelText: "Kata sandi",
                         hintText: "pass****123",
                         prefixIcon: MdiIcons.lockOutline,
+                        initialValue: controller.user.value.password,
                         onSave: (val) {
-                          controller.password.value = val!;
+                          // controller.password.value = val!;
+                          controller.user.value.password = val!;
                         },
                         suffixIcon: controller.isShowPass.value
                             ? MdiIcons.eyeOutline
@@ -152,7 +156,7 @@ class AuthView extends GetView<AuthController> {
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         formKey.currentState!.save();
-                        // controller.login();
+                        controller.login();
                       }
                     },
                   ),

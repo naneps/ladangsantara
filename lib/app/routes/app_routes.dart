@@ -10,6 +10,8 @@ abstract class Routes {
   static const CART = _Paths.CART;
   static const NOTIFICATION = _Paths.NOTIFICATION;
   static const PROFILE = _Paths.PROFILE;
+  static const STORE = _Paths.STORE;
+  static const STRORE_CREATE = _Paths.STRORE_CREATE;
 }
 
 abstract class _Paths {
@@ -21,4 +23,6 @@ abstract class _Paths {
   static const CART = '/cart';
   static const NOTIFICATION = '/notification';
   static const PROFILE = '/profile';
+  static const STORE = '/store';
+  static const STRORE_CREATE = '/store/create';
 }

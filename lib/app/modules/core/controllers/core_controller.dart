@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:ladangsantara/app/modules/cart/views/cart_view.dart';
 import 'package:ladangsantara/app/modules/home/views/home_view.dart';
+import 'package:ladangsantara/app/modules/profile/views/profile_view.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CoreController extends GetxController {
   final RxInt _currentIndex = 0.obs;
-  final count = 0.obs;
   final ScrollController scrollController = ScrollController();
   bool isVisible = true;
 
@@ -39,23 +40,16 @@ class CoreController extends GetxController {
       isActive: true.obs, // Make isActive an RxBool
     ),
     BottomNavItem(
-      title: "Search",
-      icon: MdiIcons.magnify,
-      widget: Container(),
-      activeIcon: MdiIcons.magnifyExpand,
-      isActive: false.obs, // Make isActive an RxBool
-    ),
-    BottomNavItem(
       title: "Cart",
       icon: MdiIcons.cart,
-      widget: Container(),
+      widget: const CartView(),
       activeIcon: MdiIcons.cartOutline,
       isActive: false.obs, // Make isActive an RxBool
     ),
     BottomNavItem(
       title: "Profile",
       icon: MdiIcons.account,
-      widget: Container(),
+      widget: const ProfileView(),
       activeIcon: MdiIcons.accountOutline,
       isActive: false.obs, // Make isActive an RxBool
     ),

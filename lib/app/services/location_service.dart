@@ -7,7 +7,7 @@ class LocationService extends GetxService {
   LocationData? locationData;
   String? completeAddress;
 
-  Future<void> getLocation() async {
+  Future<LocationData> getLocation() async {
     Location location = Location();
     bool serviceEnabled;
     PermissionStatus permissionGranted;
@@ -16,7 +16,7 @@ class LocationService extends GetxService {
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
       if (!serviceEnabled) {
-        return;
+        return locationData!;
       }
     }
 
@@ -24,11 +24,13 @@ class LocationService extends GetxService {
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
       if (permissionGranted != PermissionStatus.granted) {
-        return;
+        return locationData!;
       }
     }
 
     locationData = await location.getLocation();
+    // await getCompleteAddress();
+    return locationData!;
   }
 
   Future<void> getCompleteAddress() async {
@@ -61,4 +63,6 @@ class LocationService extends GetxService {
 
     return '$street, $subLocality, $locality, $postalCode, $country';
   }
+
+  String get latitude => locationData?.latitude.toString() ?? '';
 }

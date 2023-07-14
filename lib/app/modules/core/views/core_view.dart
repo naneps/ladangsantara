@@ -18,6 +18,7 @@ class CoreView extends GetView<CoreController> {
           key: const ValueKey("bottom_navigation_bar"),
           items: controller.bottomNavItems.map((item) {
             return AnimatedSwitcher(
+              reverseDuration: const Duration(milliseconds: 400),
               duration: const Duration(milliseconds: 400),
               transitionBuilder: (Widget child, Animation<double> animation) {
                 return ScaleTransition(
@@ -35,8 +36,9 @@ class CoreView extends GetView<CoreController> {
               ),
             );
           }).toList(),
-          backgroundColor: ThemeApp.primaryColor.withOpacity(0.5),
-          color: ThemeApp.lightColor,
+          backgroundColor: ThemeApp.primaryColor.withOpacity(0.2),
+
+          color: Colors.white,
           buttonBackgroundColor: ThemeApp.primaryColor,
           height: 50,
           animationCurve: Curves.easeInOutBack,

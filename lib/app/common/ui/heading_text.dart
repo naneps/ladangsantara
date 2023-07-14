@@ -21,7 +21,7 @@ class HeadingText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          leftText!,
+          leftText ?? "Left Text",
           style: TextStyle(
             fontSize: fontSize ?? 16,
             fontWeight: FontWeight.w600,
@@ -31,7 +31,7 @@ class HeadingText extends StatelessWidget {
         InkWell(
           onTap: onPressRightText,
           child: Text(
-            rightText!,
+            rightText ?? "Right Text",
             style: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: fontSize ?? 14,

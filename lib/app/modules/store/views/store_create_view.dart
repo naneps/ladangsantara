@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ladangsantara/app/common/buttons/x_Icon_button.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
+import 'package:ladangsantara/app/common/buttons/x_outline_button.dart';
 import 'package:ladangsantara/app/common/input/x_field.dart';
 import 'package:ladangsantara/app/common/input/xpicker_image.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/x_appbar.dart';
 import 'package:ladangsantara/app/modules/store/controllers/store_create_controller.dart';
+import 'package:ladangsantara/app/themes/theme.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class StoreCreateView extends GetView<StoreCreateController> {
   const StoreCreateView({super.key});
@@ -36,7 +40,9 @@ class StoreCreateView extends GetView<StoreCreateController> {
                       RoundedContainer(
                         hasBorder: true,
                         child: XPickerImage(
-                          onImagePicked: (p0) {},
+                          onImagePicked: (image) {
+                            controller.image.value = image;
+                          },
                           size: 100,
                         ),
                       ),
@@ -61,6 +67,8 @@ class StoreCreateView extends GetView<StoreCreateController> {
                       XTextField(
                         labelText: "Deskripsi Toko",
                         hintText: "Masukkan deskripsi toko",
+                        minLines: 1,
+                        maxLines: 3,
                         onSave: (val) {
                           controller.store.value.description = val;
                         },
@@ -72,31 +80,84 @@ class StoreCreateView extends GetView<StoreCreateController> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 10),
-                      XTextField(
-                        labelText: "Alamat Toko",
-                        hintText: "Masukkan alamat toko",
-                        onSave: (val) {
-                          controller.store.value.address = val;
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Alamat toko tidak boleh kosong";
-                          }
+                      const SizedBox(height: 15),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: XTextField(
+                              labelText: "Alamat Toko",
+                              hintText: "Masukkan alamat toko",
+                              minLines: 1,
+                              maxLines: 3,
+                              controller: controller.addressController,
+                              onSave: (val) {
+                                controller.store.value.address = val;
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Alamat toko tidak boleh kosong";
+                                }
 
-                          return null;
-                        },
+                                return null;
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          XIconButton(
+                            icon: MdiIcons.mapMarker,
+                            onTap: () async {
+                              await controller.getLocation();
+                            },
+                            color: Theme.of(context).primaryColor,
+                            size: 30,
+                            supportColor: ThemeApp.darkColor,
+                          )
+                        ],
                       ),
                       const SizedBox(height: 10),
+                      Obx(() {
+                        return Row(
+                          children: [
+                            Expanded(
+                              child: RoundedContainer(
+                                hasBorder: true,
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Latitude"),
+                                    Text(controller.store.value.lat.toString()),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: RoundedContainer(
+                                hasBorder: true,
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Longitude"),
+                                    Text(
+                                        controller.store.value.long.toString()),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
                       const SizedBox(height: 10),
-                      // XButton(
-                      //   text: "Pilih Lokasi",
-                      //   hasIcon: true,
-                      //   icon: Icons.location_on,
-                      //   onPressed: () async {
-                      //     await controller.getLocation();
-                      //   },
-                      // ),
+                      XOutlineButton(
+                        text: "Cocokan lokasi saat ini",
+                        hasIcon: true,
+                        icon: Icons.location_on,
+                        onPressed: () async {
+                          await controller.getLocation();
+                        },
+                      ),
                     ],
                   ),
                 ),

@@ -1,14 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ladangsantara/app/common/buttons/x_Icon_button.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/xpicture.dart';
 import 'package:ladangsantara/app/common/utils.dart';
+import 'package:ladangsantara/app/services/location_service.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class AppbarHome extends StatelessWidget {
+class AppbarHome extends StatefulWidget {
   const AppbarHome({
     super.key,
   });
+
+  @override
+  State<AppbarHome> createState() => _AppbarHomeState();
+}
+
+class _AppbarHomeState extends State<AppbarHome> {
+  String address = "Lokasi Anda";
+  final LocationService locationService = Get.find<LocationService>();
+
+  @override
+  void initState() {
+    super.initState();
+    locationService.getCurrentPosition();
+    locationService
+        .getAddressFromCoordinates(
+      latitude: locationService.latitude.value,
+      longitude: locationService.longitude.value,
+    )
+        .then((value) {
+      setState(() {
+        address = value!;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,19 +47,37 @@ class AppbarHome extends StatelessWidget {
         children: [
           SizedBox(
             width: Get.width * 0.6,
-            child: const Row(
+            child: Row(
               children: [
-                Icon(
-                  MdiIcons.mapMarkerOutline,
+                XIconButton(
+                  icon: MdiIcons.mapMarker,
+                  size: 30,
+                  color: Theme.of(context).primaryColor,
+                  supportColor: Theme.of(context).primaryColor.withOpacity(0.5),
+                  onTap: () async {
+                    await locationService.getCurrentPosition();
+                    locationService
+                        .getAddressFromCoordinates(
+                      latitude: locationService.latitude.value,
+                      longitude: locationService.longitude.value,
+                    )
+                        .then((value) {
+                      setState(() {
+                        address = value!;
+                      });
+                    });
+                  },
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
-                Text(
-                  "Lokasi Anda",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    address,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                 ),
               ],

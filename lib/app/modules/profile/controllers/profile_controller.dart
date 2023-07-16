@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/models/menu_model.dart';
+import 'package:ladangsantara/app/modules/store/bindings/store_binding.dart';
+import 'package:ladangsantara/app/modules/store/views/manage_store_view.dart';
+import 'package:ladangsantara/app/providers/store_provider.dart';
 import 'package:ladangsantara/app/routes/app_pages.dart';
 import 'package:ladangsantara/app/services/local_storage_service.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class ProfileController extends GetxController {
+class ProfileController extends GetxController with StateMixin {
   //TODO: Implement ProfileController
   RxList<MenuModel> menus = <MenuModel>[].obs;
+  final storeService = Get.find<StoreProvider>();
   @override
-  void onInit() {
+  void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    await _isRegisterStore();
     menus.addAll([
       MenuModel(
         title: "Pengaturan Akun",
@@ -20,9 +25,21 @@ class ProfileController extends GetxController {
         isActive: true,
       ),
       MenuModel(
-        title: "Buka Toko",
-        icon: MdiIcons.store,
-        route: Routes.STRORE_CREATE,
+        title: "Pengaturan Notifikasi",
+        icon: Icons.notifications,
+        route: "/profile",
+        isActive: true,
+      ),
+      MenuModel(
+        title: "Pengaturan Privasi",
+        icon: Icons.lock,
+        route: "/profile",
+        isActive: true,
+      ),
+      MenuModel(
+        title: "Pengaturan Aplikasi",
+        icon: Icons.settings,
+        route: "/profile",
         isActive: true,
       ),
       MenuModel(
@@ -35,6 +52,32 @@ class ProfileController extends GetxController {
         isActive: true,
       ),
     ]);
+  }
+
+  Future<void> _isRegisterStore() async {
+    await storeService.isRegisStore().then((res) {
+      print("isRegistedStore: $res");
+      if (res) {
+        menus.add(MenuModel(
+          title: "Kelola Toko",
+          icon: MdiIcons.storeCogOutline,
+          // route: Routes.STRORE_CREATE,
+          onTap: () {
+            Get.to(() => const ManageStoreView(), binding: StoreBinding());
+          },
+          isActive: true,
+        ));
+        change(menus, status: RxStatus.success());
+      } else {
+        menus.add(MenuModel(
+          title: "Buka Toko",
+          icon: MdiIcons.storePlusOutline,
+          route: Routes.STRORE_CREATE,
+          isActive: true,
+        ));
+        change(menus, status: RxStatus.success());
+      }
+    });
   }
 
   void logout() {

@@ -4,6 +4,7 @@ import 'package:ladangsantara/app/models/role_model.dart';
 @JsonSerializable()
 class UserModel {
   int? uid;
+  int? roleId;
   String? email;
   String? name;
   String? avatar;
@@ -19,6 +20,7 @@ class UserModel {
     this.name,
     this.avatar,
     this.phone,
+    this.roleId,
     this.password,
     this.role,
     this.token,
@@ -33,6 +35,8 @@ class UserModel {
         "avatar": avatar,
         "phone": phone,
         "password": password,
+        "role": role,
+        'role_id': roleId,
         "token": token,
         "retype_Password": retypedPassword,
       };
@@ -49,7 +53,8 @@ class UserModel {
       avatar: json['avatar'],
       phone: json['phone'],
       token: json['token'],
-      role: RoleModel.fromJson(json['role']),
+      role: json['role'] != null ? RoleModel.fromJson(json['role']) : null,
+      roleId: json['role_id'],
       password: json['password'],
       retypedPassword: json['retypedPassword'],
     );
@@ -62,6 +67,7 @@ class UserModel {
     String? avatar,
     RoleModel? role,
     String? token,
+    int? roleId,
     String? phone,
     String? password,
     String? retypedPassword,
@@ -72,6 +78,7 @@ class UserModel {
       name: name ?? this.name,
       avatar: avatar ?? this.avatar,
       phone: phone ?? this.phone,
+      roleId: roleId ?? this.roleId,
       password: password ?? this.password,
       retypedPassword: retypedPassword ?? this.retypedPassword,
       role: role ?? this.role,

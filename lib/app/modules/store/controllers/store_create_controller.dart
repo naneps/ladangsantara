@@ -1,38 +1,64 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/store_model.dart';
 import 'package:ladangsantara/app/providers/store_provider.dart';
+import 'package:ladangsantara/app/providers/success_create_store.dart';
 import 'package:ladangsantara/app/services/location_service.dart';
-import 'package:location/location.dart';
 
 class StoreCreateController extends GetxController {
   //TODO: Implement StoreCreateController
   final formKey = GlobalKey<FormState>();
   final Rx<StoreModel> store = StoreModel().obs;
+  final Rx<XFile> image = XFile("").obs;
+  final addressController = TextEditingController();
+  @override
+  void onInit() {
+    super.onInit();
+    getLocation();
+  }
 
-  late LocationData location;
   Future<void> createStore() async {
-    await Get.find<StoreProvider>().createStore(store: store.value).then((res) {
-      print(res.body);
-      if (res.status.hasError) {
-        Get.snackbar(
-          'Error',
-          res.statusText.toString(),
-          snackPosition: SnackPosition.BOTTOM,
-        );
-      } else {
-        Get.snackbar(
-          'Success',
-          res.body['message'],
-          snackPosition: SnackPosition.BOTTOM,
+    await Get.find<StoreProvider>()
+        .createStore(
+      store: store.value,
+      image: image.value.path != "" ? File(image.value.path) : null,
+    )
+        .then((res) {
+      if (res.body['status'] == "SUCCESS") {
+        Get.offAll(() => const StoreCreationSuccessPage());
+        Utils.snackMessage(
+          title: "Berhasil",
+          messages: "Berhasil Membuat Toko",
+          type: "success",
         );
       }
     });
   }
 
   Future<void> getLocation() async {
-    Get.find<LocationService>().getLocation().then((value) {
-      print(value);
+    Get.find<LocationService>().getCurrentPosition();
+    //update store location
+    store.update((val) {
+      val!.lat = Get.find<LocationService>().latitude.value;
+      val.long = Get.find<LocationService>().longitude.value;
     });
+    Get.find<LocationService>()
+        .getAddressFromCoordinates(
+          latitude: store.value.lat,
+          longitude: store.value.long,
+        )
+        .then((value) => {
+              addressController.text = value!,
+              store.update((val) {
+                val!.address = value;
+              })
+            });
+    print("address: ${store.value.address}");
+    print("lat: ${store.value.lat}");
+    print("long: ${store.value.long}");
   }
 }

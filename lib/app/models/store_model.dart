@@ -1,15 +1,20 @@
+import 'package:image_picker/image_picker.dart';
+import 'package:ladangsantara/app/models/user.dart';
+
 class StoreModel {
   int? id;
   int? userId;
   String? name;
   String? description;
   String? address;
-  String? lat;
-  String? long;
+  dynamic lat;
+  dynamic long;
   String? logo;
   int? status;
+  XFile? logoFile;
   String? createdAt;
   String? updatedAt;
+  UserModel? user;
 
   StoreModel(
       {this.id,
@@ -19,9 +24,11 @@ class StoreModel {
       this.address,
       this.lat,
       this.long,
+      this.logoFile,
       this.logo,
       this.status,
       this.createdAt,
+      this.user,
       this.updatedAt});
 
   StoreModel.fromJson(Map<String, dynamic> json) {
@@ -34,6 +41,8 @@ class StoreModel {
     long = json['long'];
     logo = json['logo'];
     status = json['status'];
+    user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
+
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -60,9 +69,8 @@ class StoreModel {
     data['name'] = name;
     data['description'] = description;
     data['address'] = address;
-    data['lat'] = lat;
-    data['long'] = long;
-    data['logo'] = logo;
+    data['lat'] = lat ?? '-';
+    data['long'] = long ?? '-';
     return data;
   }
 }

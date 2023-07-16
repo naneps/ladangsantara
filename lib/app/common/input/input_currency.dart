@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ladangsantara/app/common/input/x_field.dart';
 import 'package:intl/intl.dart';
+import 'package:ladangsantara/app/common/input/x_field.dart';
 
 // ignore: must_be_immutable
 class CurrencyInput extends StatefulWidget {
   String? label;
   String? initialValue;
+  IconData? prefixIcon;
   Function(String)? onChanged;
   Function(dynamic)? validator;
   Function(String)? onSaved;
@@ -16,6 +17,7 @@ class CurrencyInput extends StatefulWidget {
     this.initialValue,
     this.validator,
     this.onSaved,
+    this.prefixIcon,
   });
 
   @override
@@ -55,6 +57,7 @@ class _CurrencyInputState extends State<CurrencyInput> {
         widget.onSaved!(value!.replaceAll(RegExp(r'[^\d]'), ''));
       },
       // prefixIcon: MdiIcons.cash,
+      prefixIcon: widget.prefixIcon,
       keyboardType: TextInputType.number,
       labelText: widget.label ?? 'Amount',
       onChanged: (value) {

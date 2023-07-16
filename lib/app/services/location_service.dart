@@ -1,68 +1,113 @@
-import 'package:geocoding/geocoding.dart'
-    as geocoding; // Import the geocoding package with a prefix.
+import 'dart:async';
+
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:location/location.dart';
 
 class LocationService extends GetxService {
-  LocationData? locationData;
-  String? completeAddress;
+  static const String _kLocationServicesDisabledMessage =
+      'Location services are disabled.';
+  static const String _kPermissionDeniedMessage = 'Permission denied.';
+  static const String _kPermissionDeniedForeverMessage =
+      'Permission denied forever.';
+  static const String _kPermissionGrantedMessage = 'Permission granted.';
 
-  Future<LocationData> getLocation() async {
-    Location location = Location();
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
+  final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
+  RxDouble latitude = 0.0.obs;
+  RxDouble longitude = 0.0.obs;
+  Future<void> getCurrentPosition() async {
+    final hasPermission = await _handlePermission();
 
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return locationData!;
-      }
-    }
-
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        return locationData!;
-      }
-    }
-
-    locationData = await location.getLocation();
-    // await getCompleteAddress();
-    return locationData!;
-  }
-
-  Future<void> getCompleteAddress() async {
-    if (locationData == null) {
+    if (!hasPermission) {
       return;
     }
 
-    try {
-      List<geocoding.Placemark> placemarks =
-          await geocoding.placemarkFromCoordinates(
-        locationData!.latitude!,
-        locationData!.longitude!,
+    final position = await _geolocatorPlatform.getCurrentPosition();
+    latitude.value = position.latitude;
+    longitude.value = position.longitude;
+
+    _updatePositionList(
+      _PositionItemType.position,
+      position.toString(),
+    );
+  }
+
+  Future<bool> _handlePermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await _geolocatorPlatform.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      _updatePositionList(
+        _PositionItemType.log,
+        _kLocationServicesDisabledMessage,
       );
 
+      return false;
+    }
+
+    permission = await _geolocatorPlatform.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await _geolocatorPlatform.requestPermission();
+      if (permission == LocationPermission.denied) {
+        _updatePositionList(
+          _PositionItemType.log,
+          _kPermissionDeniedMessage,
+        );
+
+        return false;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      _updatePositionList(
+        _PositionItemType.log,
+        _kPermissionDeniedForeverMessage,
+      );
+
+      return false;
+    }
+
+    _updatePositionList(
+      _PositionItemType.log,
+      _kPermissionGrantedMessage,
+    );
+    return true;
+  }
+
+  void _updatePositionList(_PositionItemType type, String displayValue) {
+    final positionItem = _PositionItem(type, displayValue);
+    // Handle the positionItem as needed (e.g., store in a list, update UI, etc.)
+  }
+
+  Future<String?> getAddressFromCoordinates(
+      {required double latitude, required double longitude}) async {
+    try {
+      final List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
       if (placemarks.isNotEmpty) {
-        geocoding.Placemark placemark = placemarks.first;
-        completeAddress = _buildCompleteAddress(placemark);
+        final Placemark placemark = placemarks.first;
+        print(placemark.toJson());
+        final String address =
+            "${placemark.thoroughfare}, ${placemark.locality}, ${placemark.administrativeArea}";
+        return address;
       }
     } catch (e) {
-      print('Error getting complete address: $e');
+      print('Error getting address: $e');
     }
+    return null;
   }
+}
 
-  String _buildCompleteAddress(geocoding.Placemark placemark) {
-    String street = placemark.street ?? '';
-    String subLocality = placemark.subLocality ?? '';
-    String locality = placemark.locality ?? '';
-    String postalCode = placemark.postalCode ?? '';
-    String country = placemark.country ?? '';
+enum _PositionItemType {
+  log,
+  position,
+}
 
-    return '$street, $subLocality, $locality, $postalCode, $country';
-  }
+class _PositionItem {
+  _PositionItem(this.type, this.displayValue);
 
-  String get latitude => locationData?.latitude.toString() ?? '';
+  final _PositionItemType type;
+  final String displayValue;
 }

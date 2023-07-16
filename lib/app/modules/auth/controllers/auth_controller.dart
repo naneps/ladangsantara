@@ -41,7 +41,7 @@ class AuthController extends GetxController {
   Future<void> register() async {
     isLoading.value = true;
     await authProvide.register(user: user.value).then((value) {
-      print("value" + value.body);
+      // print("value" + value.body);
       if (value.body['status'] == "SUCCESS") {
         Utils.snackMessage(
             title: "Berhasil", messages: "Berhasil Register", type: "success");

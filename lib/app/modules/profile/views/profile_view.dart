@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/xpicture.dart';
 import 'package:ladangsantara/app/common/utils.dart';
+import 'package:ladangsantara/app/modules/profile/widgets/menu_widget.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 
 import '../controllers/profile_controller.dart';
@@ -43,45 +45,44 @@ class ProfileView extends GetView<ProfileController> {
               ),
               const SizedBox(height: 10),
               Expanded(
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 10,
-                  ),
-                  itemBuilder: (context, index) {
-                    return RoundedContainer(
-                      hasBorder: true,
-                      child: ListTile(
-                        tileColor: Colors.white,
-                        onTap: () {
-                          if (controller.menus[index].route != null) {
-                            Get.toNamed(controller.menus[index].route!);
-                          } else {
-                            controller.menus[index].onTap!();
-                          }
-                          // Utils.toNamed(controller.menus[index].route);
-                        },
-                        leading: Icon(
-                          controller.menus[index].icon,
-                          color: ThemeApp.darkColor.withOpacity(0.5),
-                        ),
-                        title: Text(
-                          controller.menus[index].title,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: ThemeApp.darkColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          color: ThemeApp.darkColor.withOpacity(0.5),
-                        ),
+                child: controller.obx(
+                  (state) {
+                    return ListView.separated(
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 10,
                       ),
+                      itemBuilder: (context, index) {
+                        return FeatureWidget(
+                          menu: controller.menus[index],
+                        )
+                            .animate()
+                            .slideX(
+                              duration: const Duration(milliseconds: 300),
+                              begin: -1.0,
+                              end: 0.0,
+                              curve: Curves.easeInOutBack,
+                              delay: Duration(milliseconds: 100 * index),
+                            )
+                            .effect(
+                              duration: const Duration(milliseconds: 300),
+                              delay: Duration(milliseconds: 100 * index),
+                            )
+                            .animate();
+                      },
+                      itemCount: controller.menus.length,
                     );
                   },
-                  itemCount: controller.menus.length,
+                  onLoading: ListView.separated(
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 10,
+                    ),
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return const FeatureShimmerWidget();
+                    },
+                  ),
                 ),
-              ),
+              )
             ],
           ),
         ),

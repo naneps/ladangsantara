@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
+// import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:intl/intl.dart';
+import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -249,12 +251,12 @@ class Utils {
 
   static void snackMessage({
     required String title,
-    required String? messages,
+    required String messages,
     String? type = "default",
   }) {
     Get.snackbar(
       title,
-      messages!,
+      messages,
       snackPosition: SnackPosition.TOP,
       titleText: Text(
         title,
@@ -325,9 +327,12 @@ class Utils {
       case "warning":
         icon = MdiIcons.alertCircle;
         break;
+      default:
+        icon = MdiIcons.checkCircle;
+        break;
     }
 
-    return icon!;
+    return icon;
   }
 
   static void errorMessage(String message) {
@@ -512,11 +517,14 @@ class Utils {
     Get.back();
   }
 
-  static Widget loadingWidget() {
+  static Widget loadingWidget({
+    double? size,
+  }) {
     return Center(
-      child: LoadingAnimationWidget.staggeredDotsWave(
-        color: ThemeApp.neutralColor.withOpacity(0.8),
-        size: 100,
+      child: LoadingAnimationWidget.flickr(
+        leftDotColor: ThemeApp.primaryColor,
+        rightDotColor: ThemeApp.secondaryColor,
+        size: size ?? 100,
       ),
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ThemeApp {
-  static Color primaryColor = const Color.fromARGB(255, 24, 220, 132);
+  static Color primaryColor = const Color.fromARGB(255, 5, 171, 96);
   static Color secondaryColor = const Color(0xffffbf3c);
   static Color accentColor = const Color(0xFF7dd3fc);
   static Color neutralColor = const Color(0xFF362037);
@@ -178,6 +178,10 @@ class ThemeApp {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: secondaryColor,
+      foregroundColor: lightTextColor,
     ),
     appBarTheme: AppBarTheme(
       color: primaryColor,

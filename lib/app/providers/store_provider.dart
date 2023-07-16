@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/models/store_model.dart';
 import 'package:ladangsantara/app/services/api_service.dart';
@@ -19,7 +21,7 @@ class StoreProvider extends GetConnect {
       // Handle authorization errors or other common response modifications if needed
       return response;
     });
-    defaultDecoder = (responseBody) {
+    httpClient.defaultDecoder = (responseBody) {
       final map = responseBody as Map<String, dynamic>;
       if (map['status'] == 'ERROR') {
         throw map['message'];
@@ -31,28 +33,53 @@ class StoreProvider extends GetConnect {
           'data': StoreModel.fromJson(map['data']),
         };
       } else if (map['data'] is List) {
-        return map['data']
-            .map<StoreModel>((body) => StoreModel.fromJson(body))
-            .toList();
+        return {
+          'status': 'SUCCESS',
+          'message': map['message'],
+          'data': map['data']
+              .map<StoreModel>((item) => StoreModel.fromJson(item))
+              .toList(),
+        };
       }
       throw 'Invalid response format';
     };
   }
 
   Future<Response> getStores() async {
-    return await get('store');
+    return await get('store', query: {});
   }
 
-  Future<Response> createStore({required StoreModel store}) async {
+  Future<Response> createStore({
+    required StoreModel store,
+    File? image,
+  }) async {
+    if (image != null) {
+      //form data
+      final formData = FormData({
+        'name': store.name,
+        'description': store.description,
+        'address': store.address,
+        'lat': store.lat ?? '-',
+        'long': store.long ?? '-',
+        'image': MultipartFile(image, filename: image.path.split('/').last),
+      });
+      return await post(
+        'store',
+        formData,
+      );
+    }
     return await post(
       'store',
       store.toSaveJson(),
     );
   }
 
-  Future<Response> getStore(String? storeId) async {
+  Future<Response> getStore({int? storeId, bool? userStore}) async {
     return await get(
-      'store/$storeId',
+      'store/',
+      query: {
+        'user': userStore.toString(),
+      },
     );
   }
 
@@ -71,5 +98,22 @@ class StoreProvider extends GetConnect {
     return await delete(
       'store/$storeId',
     );
+  }
+
+  Future<Response> getUserStore() async {
+    return await post('user/check/store', {});
+  }
+
+  Future<bool> isRegisStore() async {
+    final response = await post('user/check/store', {});
+    // final body = json.decode(response.body);
+
+    // print("isRegisStore: $body");
+
+    if (response.body['status'] == 'SUCCESS') {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

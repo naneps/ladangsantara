@@ -42,7 +42,7 @@ class AuthProvider extends GetConnect {
         'retype_password': user.retypedPassword,
       },
       decoder: (body) {
-        // print(body);
+        print(body);
         if (body['status'] == "SUCCESS") {
           return {
             'status': 'SUCCESS',

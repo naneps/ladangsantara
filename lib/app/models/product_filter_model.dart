@@ -6,7 +6,7 @@ class ProductFilter {
   bool? user;
   List<int>? prices;
   String? category;
-  int? storeId;
+  String? storeId;
 
   ProductFilter({
     this.page,
@@ -41,7 +41,7 @@ class ProductFilter {
     bool? user,
     List<int>? prices,
     String? category,
-    int? storeId,
+    String? storeId,
   }) {
     return ProductFilter(
       page: page ?? this.page,

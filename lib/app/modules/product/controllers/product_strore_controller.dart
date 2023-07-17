@@ -10,7 +10,7 @@ class ProductStoreController extends GetxController
   final productProvider = Get.find<ProductProvider>();
   Rx<ProductFilter> filter = ProductFilter(
     perPage: "1000",
-    storeId: Get.arguments,
+    storeId: Get.arguments.toString(),
   ).obs;
 
   RxList<ProductModel> products = <ProductModel>[].obs;

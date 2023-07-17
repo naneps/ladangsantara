@@ -59,8 +59,8 @@ class ProductProvider extends GetConnect {
     print("filter products: ${filter!.toJson()}");
     return await get('product', query: {
       'per_page': filter.perPage,
-      'category': filter.category.toString(),
-      // 'store_id': filter.storeId != null ? null : filter.storeId.toString(),
+      'category': filter.category,
+      'store_id': filter.storeId,
       // 'search': filter.search,
       // 'store'
     });

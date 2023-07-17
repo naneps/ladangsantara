@@ -37,7 +37,9 @@ class CartProvider extends GetConnect {
           'status': 'SUCCESS',
           'message': map['message'],
           'data': map['data']
-              .map<CartItemModel>((e) => CartItemModel.fromJson(e))
+              .map<CartItemModel>((e) => CartItemModel.fromJson(e).copyWith(
+                    selected: false.obs,
+                  ))
               .toList(),
         };
       }

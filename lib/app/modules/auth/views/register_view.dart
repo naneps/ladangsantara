@@ -67,43 +67,64 @@ class RegisterView extends GetView<AuthController> {
                 const SizedBox(
                   height: 15,
                 ),
-                XTextField(
-                  labelText: "Password",
-                  hintText: "Masukkan Password",
-                  prefixIcon: MdiIcons.lockOutline,
-                  keyboardType: TextInputType.visiblePassword,
-                  onSave: (value) {
-                    // print(value);
-                    controller.user.value.password = value;
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Password is required";
-                    }
-                    return null;
-                  },
-                ),
+                Obx(() {
+                  return XTextField(
+                    labelText: "Password",
+                    hintText: "Masukkan Password",
+                    prefixIcon: MdiIcons.lockOutline,
+                    obscureText: !controller.isShowPass.value,
+                    keyboardType: TextInputType.visiblePassword,
+                    suffixIcon: controller.isShowPass.value
+                        ? MdiIcons.eyeOutline
+                        : MdiIcons.eyeOffOutline,
+                    onSave: (value) {
+                      // print(value);
+                      controller.user.value.password = value;
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Password is required";
+                      }
+                      return null;
+                    },
+                    onPressSuffix: () {
+                      controller.isShowPass.value =
+                          !controller.isShowPass.value;
+                    },
+                  );
+                }),
                 const SizedBox(
                   height: 15,
                 ),
-                XTextField(
-                  labelText: "Konfirmasi Password",
-                  prefixIcon: MdiIcons.lockOutline,
-                  keyboardType: TextInputType.visiblePassword,
-                  onSave: (value) {
-                    controller.user.value.retypedPassword = value;
-                  },
-                  validator: (value) {
-                    // print(value);
-                    print(controller.user.value.password);
-                    if (value!.isEmpty) {
-                      return "Confirm Password is required";
-                    } else if (value != controller.user.value.password) {
-                      return "Confirm Password is not match";
-                    }
-                    return null;
-                  },
-                ),
+                Obx(() {
+                  return XTextField(
+                    labelText: "Konfirmasi Password",
+                    prefixIcon: MdiIcons.lockOutline,
+                    hintText: "Masukkan Konfirmasi Password",
+                    obscureText: !controller.isShowPassConfirm.value,
+                    keyboardType: TextInputType.visiblePassword,
+                    suffixIcon: controller.isShowPassConfirm.value
+                        ? MdiIcons.eyeOutline
+                        : MdiIcons.eyeOffOutline,
+                    onSave: (value) {
+                      controller.user.value.retypedPassword = value;
+                    },
+                    validator: (value) {
+                      // print(value);
+                      print(controller.user.value.password);
+                      if (value!.isEmpty) {
+                        return "Confirm Password is required";
+                      } else if (value != controller.user.value.password) {
+                        return "Confirm Password is not match";
+                      }
+                      return null;
+                    },
+                    onPressSuffix: () {
+                      controller.isShowPassConfirm.value =
+                          !controller.isShowPassConfirm.value;
+                    },
+                  );
+                }),
                 const SizedBox(
                   height: 20,
                 ),

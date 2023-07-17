@@ -56,17 +56,20 @@ class ProductProvider extends GetConnect {
   }
 
   Future<Response> getProducts({ProductFilter? filter}) async {
+    print("filter products: ${filter!.toJson()}");
     return await get('product', query: {
-      'per_page': filter?.perPage,
-      'category': filter?.category,
-      'store_id': filter?.storeId,
-      'search': filter?.search,
+      'per_page': filter.perPage,
+      'category': filter.category,
+      'store_id': filter.storeId,
+      // 'search': filter.search,
       // 'store'
     });
   }
 
   Future<Response> getProduct(String id) async {
-    return await get('product/$id', query: {});
+    return await get('product/$id', query: {
+      'store': 'true',
+    });
   }
 
   Future<Response> createProduct(

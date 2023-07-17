@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/input/xpicker_image.dart';
 import 'package:ladangsantara/app/modules/product/controllers/product_create_controller.dart';
+import 'package:ladangsantara/app/modules/product/controllers/product_detail_controller.dart';
 import 'package:ladangsantara/app/modules/product/controllers/product_strore_controller.dart';
 import 'package:ladangsantara/app/modules/product/controllers/product_update_controller.dart';
 import 'package:ladangsantara/app/providers/product_provider.dart';
@@ -12,6 +13,9 @@ import '../controllers/product_controller.dart';
 class ProductBinding extends Bindings {
   @override
   void dependencies() {
+    Get.lazyPut<ProductDetailController>(
+      () => ProductDetailController(),
+    );
     Get.lazyPut<ProductUpdateController>(
       () => ProductUpdateController(),
     );
@@ -28,7 +32,8 @@ class ProductBinding extends Bindings {
     Get.lazyPut<ProductProvider>(() => ProductProvider());
     Get.lazyPut<ImagePickerService>(() => ImagePickerService());
     Get.lazyPut<PickerController>(() => PickerController());
-    Get.lazyPut<ProductBinding>(() => ProductBinding());
+    Get.lazyPut<ProductDetailController>(() => ProductDetailController());
+    Get.lazyPut<ProductProvider>(() => ProductProvider());
     // Get.lazyPut<LocalStorage>(() => LocalStorage());
   }
 }

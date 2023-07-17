@@ -14,13 +14,13 @@ class CarouselContent extends StatelessWidget {
       width: Get.width,
       height: 150,
       hasBorder: true,
-      padding: const EdgeInsets.all(10.0),
+      // padding: const EdgeInsets.all(10.0),
       child: CarouselSlider.builder(
         itemCount: 2,
         itemBuilder: (context, index, realIndex) {
           return Container(
             width: Get.width,
-            height: 150,
+            height: 200,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               image: const DecorationImage(
@@ -39,7 +39,8 @@ class CarouselContent extends StatelessWidget {
           autoPlayAnimationDuration: const Duration(milliseconds: 2000),
           autoPlayCurve: Curves.fastOutSlowIn,
           enlargeCenterPage: true,
-          aspectRatio: 2.0,
+          // viewportFraction: 1.0,
+          aspectRatio: 1.0,
           onPageChanged: (index, reason) {
             // controller.current = index;
           },

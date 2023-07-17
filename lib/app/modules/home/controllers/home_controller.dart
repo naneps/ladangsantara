@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
+import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/product_filter_model.dart';
 import 'package:ladangsantara/app/models/product_model.dart';
+import 'package:ladangsantara/app/providers/cart_provider.dart';
 import 'package:ladangsantara/app/providers/product_provider.dart';
 
 class HomeController extends GetxController with StateMixin {
@@ -8,6 +10,7 @@ class HomeController extends GetxController with StateMixin {
   RxList<ProductModel> vegetables = <ProductModel>[].obs;
   RxList<ProductModel> fruits = <ProductModel>[].obs;
   final productProvider = Get.find<ProductProvider>();
+  final cartProvider = Get.find<CartProvider>();
   // Rx<ProductFilter> filter = ProductFilter(
   //   perPage: "5",
   //   category: "Sayur",
@@ -16,7 +19,6 @@ class HomeController extends GetxController with StateMixin {
   Future<void> getVegetables() async {
     try {
       final response = await productProvider.getProducts(
-        // filter: filter.value,
         filter: ProductFilter(
           perPage: "5",
           category: "Sayur",
@@ -59,6 +61,33 @@ class HomeController extends GetxController with StateMixin {
         change(fruits, status: RxStatus.success());
       } else {
         change(fruits, status: RxStatus.error(response.body['message']));
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> addToCart({required ProductModel product}) async {
+    try {
+      print("product id: ${product.id}");
+      final response = await cartProvider.addToCart(
+        productId: product.id.toString(),
+        qty: "1",
+      );
+      print("response add to cart: ${response.body}");
+      if (response.body['status'] == 'SUCCESS') {
+        Utils.snackMessage(
+          title: "berhasil",
+          messages: "${product.name} berhasil ditambahkan ke keranjang",
+          type: "success",
+        );
+        Get.find<CartProvider>().getCart();
+      } else {
+        Utils.snackMessage(
+          title: "gagal",
+          messages: "${product.name} gagal ditambahkan ke keranjang",
+          type: "error",
+        );
       }
     } catch (e) {
       print(e);

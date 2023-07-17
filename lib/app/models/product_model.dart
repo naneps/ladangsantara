@@ -55,6 +55,8 @@ class ProductModel {
     data['image'] = image;
     data['category'] = category;
     data['description'] = description;
+    data['store'] = store?.toJson();
+
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     return data;

@@ -22,15 +22,23 @@ class StoreProvider extends GetConnect {
       return response;
     });
     httpClient.defaultDecoder = (responseBody) {
+      print("responseBody store provider: $responseBody");
       final map = responseBody as Map<String, dynamic>;
       if (map['status'] == 'ERROR') {
         throw map['message'];
+      }
+      if (map['data'] == null) {
+        return {
+          'status': map['status'],
+          'message': map['message'],
+          'data': null,
+        };
       }
       if (map['data'] is Map<String, dynamic>) {
         return {
           'status': 'SUCCESS',
           'message': map['message'],
-          'data': StoreModel.fromJson(map['data']),
+          'data': map['data'] != null ? StoreModel.fromJson(map['data']) : null,
         };
       } else if (map['data'] is List) {
         return {
@@ -75,22 +83,31 @@ class StoreProvider extends GetConnect {
   }
 
   Future<Response> getStore({int? storeId, bool? userStore}) async {
-    return await get(
-      'store/',
-      query: {
-        'user': userStore.toString(),
-      },
-    );
+    final uri = Uri.parse('store/').replace(queryParameters: {
+      'user': userStore.toString(),
+    });
+    return await get(uri.toString());
   }
 
-  Future<Response> updateStore({required StoreModel store}) async {
+  Future<Response> updateStore({required StoreModel store, File? image}) async {
+    if (image != null) {
+      //form data
+      final formData = FormData({
+        'name': store.name,
+        'description': store.description,
+        'address': store.address,
+        'lat': store.lat ?? '-',
+        'long': store.long ?? '-',
+        'image': MultipartFile(image, filename: image.path.split('/').last),
+      });
+      return await put(
+        'store/${store.id}',
+        formData,
+      );
+    }
     return await put(
       'store/${store.id}',
       store.toSaveJson(),
-      // headers: {
-      //   'Content-Type': 'application/json',
-      //   'Authorization': 'Bearer ${LocalStorage.getUser()!['token']}'
-      // },
     );
   }
 
@@ -106,10 +123,6 @@ class StoreProvider extends GetConnect {
 
   Future<bool> isRegisStore() async {
     final response = await post('user/check/store', {});
-    // final body = json.decode(response.body);
-
-    // print("isRegisStore: $body");
-
     if (response.body['status'] == 'SUCCESS') {
       return true;
     } else {

@@ -13,6 +13,7 @@ abstract class Routes {
   static const STORE = _Paths.STORE;
   static const STRORE_CREATE = _Paths.STRORE_CREATE;
   static const PRODUCT = _Paths.PRODUCT;
+  static const CHECKOUT = _Paths.CHECKOUT;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const STORE = '/store';
   static const STRORE_CREATE = '/store/create';
   static const PRODUCT = '/product';
+  static const CHECKOUT = '/checkout';
 }

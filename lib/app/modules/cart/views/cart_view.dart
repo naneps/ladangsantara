@@ -55,33 +55,35 @@ class CartView extends GetView<CartController> {
                       child: ListTile(
                         dense: true,
                         // isThreeLine: true,
-                        leading: RoundedContainer(
-                          width: 100,
-                          child: Row(
-                            children: [
-                              Checkbox.adaptive(
-                                activeColor: ThemeApp.primaryColor,
-                                fillColor: MaterialStateProperty.all(
-                                    ThemeApp.primaryColor),
-                                value: false,
-                                onChanged: (value) {
-                                  // item.selected.value = value!;
-                                },
-                                tristate: false,
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                      // color: ThemeApp.primaryColor,
-                                      ),
-                                  borderRadius: BorderRadius.circular(100),
+                        leading: Obx(() {
+                          return RoundedContainer(
+                            width: 100,
+                            child: Row(
+                              children: [
+                                Checkbox.adaptive(
+                                  activeColor: ThemeApp.primaryColor,
+                                  fillColor: MaterialStateProperty.all(
+                                      ThemeApp.primaryColor),
+                                  value: item.selected!.value,
+                                  onChanged: (value) {
+                                    item.selected!.value = value!;
+                                  },
+                                  tristate: false,
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                        // color: ThemeApp.primaryColor,
+                                        ),
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
                                 ),
-                              ),
-                              XPicture(
-                                imageUrl: item.product!.image!,
-                                size: 50,
-                              )
-                            ],
-                          ),
-                        ),
+                                XPicture(
+                                  imageUrl: item.product!.image!,
+                                  size: 50,
+                                )
+                              ],
+                            ),
+                          );
+                        }),
                         title: Text(item.product!.name!),
                         subtitle: Text(item.product!.priceFormatted),
                       ),
@@ -118,7 +120,8 @@ class CartView extends GetView<CartController> {
                     fillColor: MaterialStateProperty.all(ThemeApp.primaryColor),
                     value: controller.selectAll.value,
                     onChanged: (value) {
-                      controller.selectAll.value = value!;
+                      // controller.selectAll.value = value!;
+                      controller.selectAllCarts();
                     },
                     tristate: false,
                     shape: RoundedRectangleBorder(
@@ -136,9 +139,10 @@ class CartView extends GetView<CartController> {
                     ),
                   ),
                   const Spacer(),
-                  const Text(
-                    "Rp 1.000.000",
-                    style: TextStyle(
+                  Text(
+                    Utils.formatCurrency(controller.total.value.toDouble(),
+                        locale: "id"),
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),

@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:ladangsantara/app/models/product_model.dart';
 
 class CartItemModel {
@@ -7,6 +8,7 @@ class CartItemModel {
   int? qty;
   ProductModel? product;
   String? createdAt;
+  RxBool? selected;
   String? updatedAt;
 
   CartItemModel(
@@ -16,6 +18,7 @@ class CartItemModel {
       this.qty,
       this.product,
       this.createdAt,
+      this.selected,
       this.updatedAt});
 
   CartItemModel.fromJson(Map<String, dynamic> json) {
@@ -39,5 +42,28 @@ class CartItemModel {
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     return data;
+  }
+
+  //make copy of this object
+  CartItemModel copyWith({
+    int? id,
+    int? userId,
+    int? productId,
+    int? qty,
+    ProductModel? product,
+    RxBool? selected,
+    String? createdAt,
+    String? updatedAt,
+  }) {
+    return CartItemModel(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      productId: productId ?? this.productId,
+      qty: qty ?? this.qty,
+      product: product ?? this.product,
+      selected: selected ?? this.selected,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
   }
 }

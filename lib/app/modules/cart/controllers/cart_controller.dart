@@ -9,6 +9,8 @@ class CartController extends GetxController
   RxBool selectAll = false.obs;
   RxList<CartItemModel> carts = <CartItemModel>[].obs;
   RxList<CartItemModel> selectedCarts = <CartItemModel>[].obs;
+  RxInt total = 0.obs;
+  RxInt totalSelected = 0.obs;
 
   Future<void> getCarts() async {
     try {
@@ -32,5 +34,30 @@ class CartController extends GetxController
     // TODO: implement onInit
     super.onInit();
     getCarts();
+
+    ever(carts, (callback) {
+      total.value = 0;
+      for (var item in carts) {
+        ever(item.selected!, (callback) {
+          if (item.selected!.value) {
+            total.value += int.parse(item.product!.price!) * item.qty!;
+          } else {
+            total.value -= int.parse(item.product!.price!) * item.qty!;
+          }
+        });
+      }
+    });
   }
+
+  void selectAllCarts() {
+    selectAll.value = !selectAll.value;
+    if (selectAll.value) {
+      selectedCarts.assignAll(carts);
+      totalSelected.value = total.value;
+    } else {
+      selectedCarts.clear();
+      totalSelected.value = 0;
+    }
+  }
+  //
 }

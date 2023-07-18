@@ -40,13 +40,54 @@ class CartController extends GetxController
       for (var item in carts) {
         ever(item.selected!, (callback) {
           if (item.selected!.value) {
-            total.value += int.parse(item.product!.price!) * item.qty!;
+            total.value += (int.tryParse(item.product!.price!)! *
+                int.tryParse(item.qty!.toString())!);
           } else {
-            total.value -= int.parse(item.product!.price!) * item.qty!;
+            total.value -= (int.tryParse(item.product!.price!)! *
+                int.tryParse(item.qty!.toString())!);
           }
         });
       }
     });
+  }
+
+  void incrementQty(String id) async {
+    await cartProvider.addQty(id: id).then((value) => {
+          if (value.body['status'] == 'SUCCESS')
+            {
+              // carts.firstWhere((element) => element.id == id).qty =
+              //     value.body['data']['qty'],
+              // carts.refresh(),
+            }
+        });
+  }
+
+  void decrementQty(String id) async {
+    await cartProvider.reduceQty(id: id).then((value) {
+      if (value.body['status'] == 'SUCCESS') {
+        // carts.firstWhere((element) => element.id == id).qty =
+        //     value.body['data']['qty'];
+        // carts.refresh();
+      }
+    });
+  }
+
+  void selectItem(CartItemModel item) {
+    item.selected!.value = !item.selected!.value;
+    if (item.selected!.value) {
+      selectedCarts.add(item);
+      totalSelected.value += (int.tryParse(item.product!.price!)! *
+          int.tryParse(item.qty!.toString())!);
+    } else {
+      selectedCarts.remove(item);
+      totalSelected.value -= (int.tryParse(item.product!.price!)! *
+          int.tryParse(item.qty!.toString())!);
+    }
+    if (selectedCarts.length == carts.length) {
+      selectAll.value = true;
+    } else {
+      selectAll.value = false;
+    }
   }
 
   void selectAllCarts() {
@@ -54,9 +95,15 @@ class CartController extends GetxController
     if (selectAll.value) {
       selectedCarts.assignAll(carts);
       totalSelected.value = total.value;
+      for (var item in carts) {
+        item.selected!.value = true;
+      }
     } else {
       selectedCarts.clear();
       totalSelected.value = 0;
+      for (var item in carts) {
+        item.selected!.value = false;
+      }
     }
   }
   //

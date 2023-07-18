@@ -5,7 +5,7 @@ class CartItemModel {
   int? id;
   int? userId;
   int? productId;
-  int? qty;
+  dynamic qty;
   ProductModel? product;
   String? createdAt;
   RxBool? selected;
@@ -25,7 +25,7 @@ class CartItemModel {
     id = json['id'];
     // userId = json['user_id'];
     productId = json['product_id'];
-    qty = int.parse(json['qty']);
+    qty = json['qty'];
     product =
         json['product'] != null ? ProductModel.fromJson(json['product']) : null;
     createdAt = json['created_at'];

@@ -20,8 +20,9 @@ class CartProvider extends GetConnect {
       return response;
     });
     httpClient.defaultDecoder = (responseBody) {
+      print("default decoder cart: $responseBody");
       final map = responseBody as Map<String, dynamic>;
-      print("default decoder cart: $map");
+      // print("default decoder cart: $map");
       if (map['status'] == 'ERROR') {
         throw map['message'];
       }
@@ -77,22 +78,14 @@ class CartProvider extends GetConnect {
   }
 
   //addqty
-  Future<Response> addQty({
-    required String cartId,
-    required String qty,
-  }) async {
-    return await put('cart/$cartId', {
-      "qty": qty,
-    });
+  Future<Response> addQty({required String id}) async {
+    return await put('cart/add-qty/$id', {});
   }
 
   //reduceqty
   Future<Response> reduceQty({
-    required String cartId,
-    required String qty,
+    required String id,
   }) async {
-    return await put('cart/$cartId', {
-      "qty": qty,
-    });
+    return await put('cart/reduce-qty$id', {});
   }
 }

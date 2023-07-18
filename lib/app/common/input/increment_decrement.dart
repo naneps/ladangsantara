@@ -11,11 +11,14 @@ class IncDecWidget extends StatefulWidget {
   double? sizeField;
   double? iconSize;
   double? fontSize;
+  VoidCallback? onIncrement;
+  VoidCallback? onDecrement;
   int? minValue;
   Color? backgroundColor;
   int? initialValue;
   bool? isDisabled;
   double? width;
+  bool? disabledInput;
 
   IncDecWidget({
     Key? key,
@@ -24,8 +27,11 @@ class IncDecWidget extends StatefulWidget {
     this.iconSize = 15,
     this.sizeField = 30,
     this.fontSize = 12,
+    this.disabledInput = false,
     this.minValue,
     this.initialValue,
+    this.onIncrement,
+    this.onDecrement,
     this.backgroundColor = Colors.transparent,
     this.width = 120,
     this.isDisabled = false,
@@ -123,6 +129,7 @@ class _IncDecWidgetState extends State<IncDecWidget> {
             color: ThemeApp.dangerColor,
             supportColor: ThemeApp.dangerColor,
             onTap: () {
+              widget.onDecrement!();
               setState(() {
                 _counter--;
                 _controller.text = _counter.toString();
@@ -136,7 +143,7 @@ class _IncDecWidgetState extends State<IncDecWidget> {
             height: widget.sizeField,
             child: Center(
               child: TextField(
-                enabled: !widget.isDisabled!,
+                enabled: !widget.isDisabled! || !widget.disabledInput!,
                 controller: _controller,
                 onChanged: (value) {
                   setState(() {
@@ -174,6 +181,7 @@ class _IncDecWidgetState extends State<IncDecWidget> {
               if (widget.isDisabled!) {
                 return;
               }
+              widget.onIncrement!();
               setState(
                 () {
                   _counter++;

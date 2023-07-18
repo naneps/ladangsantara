@@ -5,6 +5,7 @@ import 'package:ladangsantara/app/modules/home/controllers/home_controller.dart'
 import 'package:ladangsantara/app/modules/profile/controllers/profile_controller.dart';
 import 'package:ladangsantara/app/providers/cart_provider.dart';
 import 'package:ladangsantara/app/providers/product_provider.dart';
+import 'package:ladangsantara/app/providers/region_provider.dart';
 import 'package:ladangsantara/app/providers/store_provider.dart';
 import 'package:ladangsantara/app/services/api_service.dart';
 import 'package:ladangsantara/app/services/location_service.dart';
@@ -27,5 +28,6 @@ class CoreBinding extends Bindings {
     Get.lazyPut<ProductProvider>(() => ProductProvider());
     Get.lazyPut<CartProvider>(() => CartProvider());
     Get.lazyPut<CartController>(() => CartController());
+    Get.lazyPut<RegionProvider>(() => RegionProvider());
   }
 }

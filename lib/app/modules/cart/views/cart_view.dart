@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
+import 'package:ladangsantara/app/common/input/increment_decrement.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/empty_state_view.dart';
 import 'package:ladangsantara/app/common/ui/xpicture.dart';
 import 'package:ladangsantara/app/common/utils.dart';
+import 'package:ladangsantara/app/routes/app_pages.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 
 import '../controllers/cart_controller.dart';
@@ -66,7 +68,7 @@ class CartView extends GetView<CartController> {
                                       ThemeApp.primaryColor),
                                   value: item.selected!.value,
                                   onChanged: (value) {
-                                    item.selected!.value = value!;
+                                    controller.selectItem(item);
                                   },
                                   tristate: false,
                                   shape: RoundedRectangleBorder(
@@ -84,8 +86,35 @@ class CartView extends GetView<CartController> {
                             ),
                           );
                         }),
-                        title: Text(item.product!.name!),
-                        subtitle: Text(item.product!.priceFormatted),
+                        title: Text(
+                          item.product!.name!,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        subtitle: Text(
+                          item.product!.priceFormatted,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        trailing: IncDecWidget(
+                          disabledInput: true,
+                          onIncrement: () {
+                            // item.qty = item.qty! + 1;
+                            controller.incrementQty(item.id!.toString());
+                          },
+                          onDecrement: () {
+                            // item.qty = item.qty! - 1;
+                            controller.decrementQty(item.id!.toString());
+                          },
+                          initialValue: int.tryParse(item.qty!),
+                          onChange: (value) {
+                            item.qty = value;
+                          },
+                        ),
                       ),
                     );
                   },
@@ -155,7 +184,12 @@ class CartView extends GetView<CartController> {
                     hasBorder: true,
                     sizeText: 14,
                     text: "Checkout",
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(
+                        Routes.CHECKOUT,
+                        arguments: controller.selectedCarts,
+                      );
+                    },
                   ),
                 ],
               );

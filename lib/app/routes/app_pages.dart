@@ -6,6 +6,8 @@ import '../modules/auth/views/register_view.dart';
 import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
+import '../modules/checkout/order_address/bindings/order_address_binding.dart';
+import '../modules/checkout/order_address/views/order_address_view.dart';
 import '../modules/checkout/views/checkout_view.dart';
 import '../modules/core/bindings/core_binding.dart';
 import '../modules/core/views/core_view.dart';
@@ -92,6 +94,13 @@ class AppPages {
       name: _Paths.CHECKOUT,
       page: () => const CheckoutView(),
       binding: CheckoutBinding(),
+      children: [
+        GetPage(
+          name: _Paths.ORDER_ADDRESS,
+          page: () => const OrderAddressView(),
+          binding: OrderAddressBinding(),
+        ),
+      ],
     ),
   ];
 }

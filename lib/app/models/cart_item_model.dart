@@ -1,25 +1,26 @@
-import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:ladangsantara/app/models/product_model.dart';
 
 class CartItemModel {
   int? id;
   int? userId;
-  int? productId;
+  dynamic productId;
   dynamic qty;
   ProductModel? product;
   String? createdAt;
   RxBool? selected;
   String? updatedAt;
 
-  CartItemModel(
-      {this.id,
-      this.userId,
-      this.productId,
-      this.qty,
-      this.product,
-      this.createdAt,
-      this.selected,
-      this.updatedAt});
+  CartItemModel({
+    this.id,
+    this.userId,
+    this.productId,
+    this.qty,
+    this.product,
+    this.createdAt,
+    this.selected,
+    this.updatedAt,
+  });
 
   CartItemModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -49,7 +50,7 @@ class CartItemModel {
     int? id,
     int? userId,
     int? productId,
-    int? qty,
+    dynamic qty,
     ProductModel? product,
     RxBool? selected,
     String? createdAt,

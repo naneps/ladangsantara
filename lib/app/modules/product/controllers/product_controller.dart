@@ -1,23 +1,72 @@
 import 'package:get/get.dart';
+import 'package:ladangsantara/app/common/utils.dart';
+import 'package:ladangsantara/app/models/product_filter_model.dart';
+import 'package:ladangsantara/app/models/product_model.dart';
+import 'package:ladangsantara/app/providers/cart_provider.dart';
+import 'package:ladangsantara/app/providers/product_provider.dart';
 
-class ProductController extends GetxController {
+class ProductController extends GetxController
+    with StateMixin<List<ProductModel>> {
   //TODO: Implement ProductController
+  final productProvider = Get.find<ProductProvider>();
+  final cartProvider = Get.find<CartProvider>();
+  final RxList<ProductModel> products = <ProductModel>[].obs;
+  Rx<ProductFilter> filter = ProductFilter(
+          perPage: "1000",
+          // category: "Sayur",
+          search: "".obs
+          // storeId: null,
+          )
+      .obs;
+  void getProducts() async {
+    try {
+      final response = await productProvider.getProducts(
+        filter: filter.value,
+      );
+      print("response products: ${response.body}");
+      if (response.body['status'] == 'SUCCESS') {
+        if (response.body['data'].isEmpty) {
+          change(products, status: RxStatus.empty());
+          return;
+        }
+        products.assignAll(response.body['data']);
+        change(products, status: RxStatus.success());
+      }
+    } catch (e) {
+      change(products, status: RxStatus.error(e.toString()));
+      print(e);
+    }
+  }
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    getProducts();
+
+    debounce(filter.value.search!, (callback) {
+      getProducts();
+    }, time: const Duration(milliseconds: 500));
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void addToCart(ProductModel product) async {
+    await cartProvider
+        .addToCart(
+      productId: product.id.toString(),
+      qty: "1",
+    )
+        .then((res) {
+      if (res.body['status'] == 'SUCCESS') {
+        Utils.snackMessage(
+            title: "Berhsail",
+            messages: "${product.name} berhasil ditambahkan ke keranjang}",
+            type: "success");
+      } else {
+        Get.snackbar(
+          'Error',
+          res.body['message'],
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    });
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

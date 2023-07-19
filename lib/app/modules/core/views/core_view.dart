@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../controllers/core_controller.dart';
 
@@ -12,7 +13,14 @@ class CoreView extends GetView<CoreController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold (
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        
+      },
+      child: Icon(MdiIcons.scanner),
+      
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Obx(() {
         return CurvedNavigationBar(
           key: const ValueKey("bottom_navigation_bar"),

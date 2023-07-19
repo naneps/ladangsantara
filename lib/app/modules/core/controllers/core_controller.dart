@@ -40,6 +40,13 @@ class CoreController extends GetxController {
       isActive: true.obs, // Make isActive an RxBool
     ),
     BottomNavItem(
+      title: "Toko",
+      icon: MdiIcons.store,
+      widget: const ProfileView(),
+      activeIcon: MdiIcons.storeOutline,
+      isActive: false.obs, // Make isActive an RxBool
+    ),
+    BottomNavItem(
       title: "Cart",
       icon: MdiIcons.cart,
       widget: const CartView(),

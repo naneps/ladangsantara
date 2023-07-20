@@ -17,7 +17,8 @@ class CoreView extends GetView<CoreController> {
       floatingActionButton: FloatingActionButton(onPressed: () {
         
       },
-      child: Icon(MdiIcons.scanner),
+      backgroundColor: Colors.white,
+      child: Icon(MdiIcons.camera, color: Colors.black,),
       
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

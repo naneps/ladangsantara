@@ -32,29 +32,33 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
     super.onInit();
     getCarts();
 
-    // Calculate total when selected items change
     everAll([carts, selectedCarts], (_) {
-      print("everAll carts: $selectedCarts");
-      for (var cart in selectedCarts) {
-        for (var item in cart.cartItems) {
-          ever(item.selected!, (callback) {
-            if (item.selected!.value) {
-              calculateTotal();
-              print("ever item.selected: ${item.selected!.value}");
-            } else {}
-          });
-        }
+      // for (var cart in selectedCarts) {
+      //   for (var item in cart.cartItems) {
+      //     ever(item.selected!, (callback) {
+      //       calculateTotal();
+      //     });
+      //   }
+      // }
+      // Update selectAll whenever selectedCarts changes
+      if (selectedCarts.length == carts.length) {
+        selectAll.value = true;
+      } else {
+        selectAll.value = false;
       }
-      calculateTotal();
     });
   }
 
   void calculateTotal() {
-    total.value = selectedCarts.fold<int>(0, (sum, cart) {
+    total.value = carts.fold<int>(0, (sum, cart) {
       return sum +
           cart.cartItems.fold<int>(0, (sum, item) {
-            return sum +
-                (int.parse(item.qty) * int.parse(item.product!.price!));
+            if (item.selected!.value) {
+              return sum +
+                  (int.parse(item.qty) * int.parse(item.product!.price!));
+            } else {
+              return sum;
+            }
           });
     });
   }
@@ -62,6 +66,7 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
   void toggleStoreSelection(CartModel store) {
     store.selected!.value = !store.selected!.value;
     updateSelectedCarts(store);
+    calculateTotal();
   }
 
   void toggleItemSelection(CartItemModel item, CartModel cart) {
@@ -118,13 +123,23 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
       }
     }
     // After updating all selected values, refresh the selectedCarts list
-    selectedCarts.assignAll(carts.where((cart) => cart.selected!.value));
+    if (selectAll.value) {
+      // If selectAll is true, assign all carts to selectedCarts
+      selectedCarts.assignAll(carts);
+    } else {
+      // If selectAll is false, clear selectedCarts
+      selectedCarts.clear();
+    }
+    calculateTotal();
   }
 
   void increaseQty(CartItemModel item) async {
     await cartProvider.addQty(id: item.id.toString()).then((res) {
       if (res.body['status'] == 'SUCCESS') {
-        // getCarts();
+        // Update the quantity locally after successful API call
+        final updatedQty = int.parse(item.qty) + 1;
+        item.qty = updatedQty.toString();
+        calculateTotal();
       }
     });
   }
@@ -132,7 +147,10 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
   void decreaseQty(CartItemModel item) async {
     await cartProvider.reduceQty(id: item.id.toString()).then((res) {
       if (res.body['status'] == 'SUCCESS') {
-        // getCarts();
+        // Update the quantity locally after successful API call
+        final updatedQty = int.parse(item.qty) - 1;
+        item.qty = updatedQty.toString();
+        calculateTotal();
       }
     });
   }

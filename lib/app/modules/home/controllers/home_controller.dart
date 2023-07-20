@@ -21,9 +21,7 @@ class HomeController extends GetxController with StateMixin {
     try {
       final response = await productProvider.getProducts(
         filter: ProductFilter(
-          perPage: "5",
-          category: "Sayur",
-          // storeId: null,
+          perPage: "5", category: "Sayur", search: "".obs, // storeId: null,
         ),
       );
 
@@ -49,6 +47,8 @@ class HomeController extends GetxController with StateMixin {
         filter: ProductFilter(
           perPage: "5",
           category: "Buah",
+          search: "".obs,
+
           // storeId: null,
         ),
       );

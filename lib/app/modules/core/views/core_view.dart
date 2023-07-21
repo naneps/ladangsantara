@@ -13,11 +13,15 @@ class CoreView extends GetView<CoreController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(MdiIcons.scanner),
-      ),
+    return Scaffold (
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        
+      },
+      backgroundColor: Colors.white,
+      child: Icon(MdiIcons.camera, color: Colors.black,),
+     ), 
+
+   
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Obx(() {
         return CurvedNavigationBar(

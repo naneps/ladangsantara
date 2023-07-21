@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ladangsantara/app/common/buttons/x_Icon_button.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -67,21 +68,13 @@ class _SearchFieldState extends State<SearchField> {
             ),
           ),
         ),
-        const SizedBox(
-          width: 10,
-        ),
-        Container(
-          height: 45,
-          width: 45,
-          decoration: BoxDecoration(
-            color: ThemeApp.neutralColor,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: const Icon(
-            Icons.search,
-            color: Colors.white,
-          ),
-        ),
+        XIconButton(
+          icon: MdiIcons.filterVariant,
+          onTap: () {},
+          supportColor: ThemeApp.darkColor.withOpacity(0.5),
+          color: ThemeApp.primaryColor,
+          size: 35,
+        )
       ],
     );
   }

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/models/cart_item_model.dart';
+import 'package:ladangsantara/app/models/cart_model.dart';
 import 'package:ladangsantara/app/services/api_service.dart';
 import 'package:ladangsantara/app/services/local_storage_service.dart';
 
@@ -30,18 +31,20 @@ class CartProvider extends GetConnect {
         return {
           'status': 'SUCCESS',
           'message': map['message'],
-          'data': CartItemModel.fromJson(map['data']),
+          'data': CartModel.fromJson(map['data']),
         };
       } else if (map['data'] is List) {
         print("map['data'] carts is List");
         return {
           'status': 'SUCCESS',
           'message': map['message'],
-          'data': map['data']
-              .map<CartItemModel>((e) => CartItemModel.fromJson(e).copyWith(
-                    selected: false.obs,
-                  ))
-              .toList(),
+          'data': map['data'] != null
+              ? map['data']
+                  .map<CartModel>((e) => CartModel.fromJson(e).copyWith(
+                        selected: false.obs,
+                      ))
+                  .toList()
+              : [],
         };
       }
       throw 'Invalid response format';
@@ -58,14 +61,49 @@ class CartProvider extends GetConnect {
     return await get('cart', query: {"product": "true"});
   }
 
+  Future<Response> deleteCart({required String id}) async {
+    return await delete(
+      'cart/$id',
+      decoder: (data) {
+        if (data['status'] == 'SUCCESS') {
+          return {
+            'status': 'SUCCESS',
+            'message': data['message'],
+            'data': CartItemModel.fromJson(data['data']),
+          };
+        } else if (data['status'] == 'ERROR') {
+          throw data['message'];
+        } else {
+          throw 'Invalid response format';
+        }
+      },
+    );
+  }
+
   Future<Response> addToCart({
     required String productId,
     qty,
   }) async {
-    return await post('cart', {
-      "product_id": productId,
-      "qty": qty,
-    });
+    return await post(
+      'cart',
+      {
+        "product_id": productId,
+        "qty": qty,
+      },
+      decoder: (body) {
+        if (body['status'] == 'SUCCESS') {
+          return {
+            'status': 'SUCCESS',
+            'message': body['message'],
+            'data': CartItemModel.fromJson(body['data']),
+          };
+        } else if (body['status'] == 'ERROR') {
+          throw body['message'];
+        } else {
+          throw 'Invalid response format';
+        }
+      },
+    );
   }
 
   Future<Response> updateCart({
@@ -79,13 +117,44 @@ class CartProvider extends GetConnect {
 
   //addqty
   Future<Response> addQty({required String id}) async {
-    return await put('cart/add-qty/$id', {});
+    return await put(
+      'cart/add-qty/$id',
+      {},
+      decoder: (data) {
+        print("addQty: $data");
+        if (data['status'] == 'SUCCESS') {
+          return {
+            'status': 'SUCCESS',
+            'message': data['message'],
+            'data': CartItemModel.fromJson(data['data']),
+          };
+        } else if (data['status'] == 'WARNING') {
+          return {
+            'status': 'WARNING',
+            'message': data['messages'],
+          };
+        }
+      },
+    );
   }
 
-  //reduceqty
-  Future<Response> reduceQty({
-    required String id,
-  }) async {
-    return await put('cart/reduce-qty$id', {});
+  Future<Response> reduceQty({required String id}) async {
+    return await put(
+      'cart/reduce-qty/$id',
+      {},
+      decoder: (data) {
+        if (data['status'] == 'SUCCESS') {
+          return {
+            'status': 'SUCCESS',
+            'message': data['message'],
+            'data': CartItemModel.fromJson(data['data']),
+          };
+        } else if (data['status'] == 'ERROR') {
+          throw data['message'];
+        } else {
+          throw 'Invalid response format';
+        }
+      },
+    );
   }
 }

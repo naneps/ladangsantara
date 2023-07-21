@@ -13,12 +13,10 @@ class CoreView extends GetView<CoreController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold (
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        
-      },
-      child: Icon(MdiIcons.scanner),
-      
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(MdiIcons.scanner),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Obx(() {
@@ -49,6 +47,7 @@ class CoreView extends GetView<CoreController> {
           color: Colors.white,
           buttonBackgroundColor: ThemeApp.primaryColor,
           height: 50,
+
           animationCurve: Curves.easeInOutBack,
           onTap: (value) {
             controller.currentIndex = value;

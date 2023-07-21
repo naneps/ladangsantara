@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/product_filter_model.dart';
 import 'package:ladangsantara/app/models/product_model.dart';
+import 'package:ladangsantara/app/modules/cart/controllers/cart_controller.dart';
 import 'package:ladangsantara/app/providers/cart_provider.dart';
 import 'package:ladangsantara/app/providers/product_provider.dart';
 
@@ -20,9 +21,7 @@ class HomeController extends GetxController with StateMixin {
     try {
       final response = await productProvider.getProducts(
         filter: ProductFilter(
-          perPage: "5",
-          category: "Sayur",
-          // storeId: null,
+          perPage: "5", category: "Sayur", search: "".obs, // storeId: null,
         ),
       );
 
@@ -48,6 +47,8 @@ class HomeController extends GetxController with StateMixin {
         filter: ProductFilter(
           perPage: "5",
           category: "Buah",
+          search: "".obs,
+
           // storeId: null,
         ),
       );
@@ -81,7 +82,7 @@ class HomeController extends GetxController with StateMixin {
           messages: "${product.name} berhasil ditambahkan ke keranjang",
           type: "success",
         );
-        Get.find<CartProvider>().getCart();
+        Get.find<CartController>().getCarts();
       } else {
         Utils.snackMessage(
           title: "gagal",

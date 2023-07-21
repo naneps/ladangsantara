@@ -38,7 +38,7 @@ class XIconButton extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(10),
       splashColor: supportColor!.withOpacity(0.9),
-      // highlightColor: supportColor!.withOpacity(0.1),
+      highlightColor: supportColor!.withOpacity(0.8),
       onHover: (value) {},
       // excludeFromSemantics: true,
       onTap: onTap,
@@ -53,7 +53,7 @@ class XIconButton extends StatelessWidget {
         ),
         child: Container(
           margin: margin ?? const EdgeInsets.all(5),
-          // padding: padding ?? const EdgeInsets.all(5),
+          padding: padding ?? const EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: backgroundColor ?? Colors.white,
             border: Border.all(

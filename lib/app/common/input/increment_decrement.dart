@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:ladangsantara/app/common/buttons/x_Icon_button.dart';
+import 'package:ladangsantara/app/common/buttons/x_icon_button.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -11,14 +11,14 @@ class IncDecWidget extends StatefulWidget {
   double? sizeField;
   double? iconSize;
   double? fontSize;
-  VoidCallback? onIncrement;
-  VoidCallback? onDecrement;
   int? minValue;
   Color? backgroundColor;
   int? initialValue;
   bool? isDisabled;
+  bool? disableDec;
+  VoidCallback? onDecTap;
+  VoidCallback? onIncTap;
   double? width;
-  bool? disabledInput;
 
   IncDecWidget({
     Key? key,
@@ -27,14 +27,14 @@ class IncDecWidget extends StatefulWidget {
     this.iconSize = 15,
     this.sizeField = 30,
     this.fontSize = 12,
-    this.disabledInput = false,
     this.minValue,
     this.initialValue,
-    this.onIncrement,
-    this.onDecrement,
+    this.disableDec = false,
     this.backgroundColor = Colors.transparent,
     this.width = 120,
     this.isDisabled = false,
+    this.onDecTap,
+    this.onIncTap,
   }) : super(key: key);
 
   @override
@@ -44,50 +44,62 @@ class IncDecWidget extends StatefulWidget {
 class _IncDecWidgetState extends State<IncDecWidget> {
   int _counter = 0;
   final TextEditingController _controller = TextEditingController();
-
   @override
   void initState() {
     if (widget.initialValue != null) {
       _counter = widget.initialValue!;
     }
+    if (widget.initialValue == 1) {
+      setState(() {
+        widget.disableDec = true;
+      });
+    }
     _controller.text = _counter.toString();
     _controller.addListener(() {
       widget.onChange!(int.parse(_controller.text));
-      final minValue = widget.minValue;
-      final maxValue = widget.maxValue;
-      if (_controller.text.isEmpty) {
-        setState(() {
-          _counter = 0;
-          _controller.text = _counter.toString();
-        });
-      } else if (minValue != null && int.parse(_controller.text) < minValue) {
-        setState(() {
-          _counter = minValue;
-          _controller.text = _counter.toString();
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Minimal $minValue'),
-          ),
-        );
-      } else if (int.parse(_controller.text) > maxValue!) {
-        setState(() {
-          _counter = maxValue;
-          _controller.text = _counter.toString();
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Maksimal $maxValue'),
-          ),
-        );
-      } else if (_counter < 0) {
+      if (_controller.text.characters.isEmpty) {
         setState(() {
           _counter = 0;
           _controller.text = _counter.toString();
         });
       }
+      if (_counter == 1) {
+        setState(() {
+          widget.disableDec = true;
+        });
+      }
+      if (int.parse(_controller.text) > widget.maxValue!) {
+        setState(() {
+          _counter = widget.maxValue!;
+          _controller.text = _counter.toString();
+        });
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text('Maksimal ${widget.maxValue}'),
+        //   ),
+        // );
+      }
+      if (int.parse(_controller.text) < widget.minValue! &&
+          widget.minValue != null) {
+        setState(() {
+          _counter = widget.minValue!;
+          _controller.text = _counter.toString();
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Minimal ${widget.minValue}'),
+          ),
+        );
+      }
+      if (_controller.text.isEmpty) {
+        setState(() {
+          _counter = int.parse(_controller.text);
+          _counter = 0;
+          widget.onChange!(_counter);
+        });
+      }
       _watchCounter();
-      // _handleIsNotNumber();
+      _handleIsNotNumber();
     });
     super.initState();
   }
@@ -98,15 +110,37 @@ class _IncDecWidgetState extends State<IncDecWidget> {
     super.dispose();
   }
 
+  // watch counter cannot be negative value
   void _watchCounter() {
-    final maxValue = widget.maxValue;
-    if (_counter > maxValue!) {
+    if (_counter < 0) {
       setState(() {
-        widget.isDisabled = true;
-        _counter = maxValue;
+        _counter = 0;
         _controller.text = _counter.toString();
       });
     }
+    if (_counter == 1) {
+      setState(() {
+        widget.disableDec = true;
+      });
+    } else {
+      setState(() {
+        widget.disableDec = false;
+      });
+    }
+    //
+    if (_counter > widget.maxValue!) {
+      // show toast
+
+      setState(() {
+        _counter = widget.maxValue!;
+        _controller.text = _counter.toString();
+      });
+    }
+  }
+
+  void _handleIsNotNumber() {
+    // Invalid radix-10 number (at character 1) handle is not number
+    //  try catch numberformat exception
   }
 
   @override
@@ -126,10 +160,15 @@ class _IncDecWidgetState extends State<IncDecWidget> {
             padding: const EdgeInsets.all(5),
             icon: MdiIcons.minus,
             size: widget.iconSize,
-            color: ThemeApp.dangerColor,
-            supportColor: ThemeApp.dangerColor,
+            color: widget.disableDec! ? Colors.grey : ThemeApp.dangerColor,
+            supportColor: widget.disableDec!
+                ? Colors.grey.withOpacity(0.5)
+                : ThemeApp.dangerColor.withOpacity(0.5),
             onTap: () {
-              widget.onDecrement!();
+              if (widget.disableDec!) {
+                return;
+              }
+              widget.onDecTap!();
               setState(() {
                 _counter--;
                 _controller.text = _counter.toString();
@@ -143,7 +182,7 @@ class _IncDecWidgetState extends State<IncDecWidget> {
             height: widget.sizeField,
             child: Center(
               child: TextField(
-                enabled: !widget.isDisabled! || !widget.disabledInput!,
+                enabled: !widget.isDisabled!,
                 controller: _controller,
                 onChanged: (value) {
                   setState(() {
@@ -181,7 +220,7 @@ class _IncDecWidgetState extends State<IncDecWidget> {
               if (widget.isDisabled!) {
                 return;
               }
-              widget.onIncrement!();
+              widget.onIncTap!();
               setState(
                 () {
                   _counter++;

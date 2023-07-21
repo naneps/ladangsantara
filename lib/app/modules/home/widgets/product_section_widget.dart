@@ -7,6 +7,8 @@ import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/product_model.dart';
 import 'package:ladangsantara/app/modules/home/controllers/home_controller.dart';
 import 'package:ladangsantara/app/modules/home/widgets/card_product.dart';
+import 'package:ladangsantara/app/modules/product/bindings/product_binding.dart';
+import 'package:ladangsantara/app/modules/product/views/product_view.dart';
 
 class ProductSectionWidget extends GetView<HomeController> {
   final String title;
@@ -28,7 +30,15 @@ class ProductSectionWidget extends GetView<HomeController> {
           HeadingText(
             leftText: title,
             rightText: "Lihat Semua",
-            onPressRightText: () {},
+            onPressRightText: () {
+              Get.to(
+                () => const ProductView(),
+                binding: ProductBinding(),
+                fullscreenDialog: true,
+                curve: Curves.easeIn,
+                duration: const Duration(milliseconds: 500),
+              );
+            },
           ),
           const SizedBox(height: 10),
           Expanded(

@@ -92,7 +92,7 @@ class LocationService extends GetxService {
         final Placemark placemark = placemarks.first;
         print(placemark.toJson());
         final String address =
-            "${placemark.thoroughfare}, ${placemark.locality}, ${placemark.administrativeArea}";
+            "${placemark.thoroughfare}, ${placemark.locality}, ${placemark.administrativeArea} ${placemark.postalCode}";
         return address;
       }
     } catch (e) {

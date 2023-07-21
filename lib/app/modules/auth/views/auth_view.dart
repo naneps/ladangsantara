@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/buttons/x_outline_button.dart';
 import 'package:ladangsantara/app/common/input/x_field.dart';
+import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/routes/app_pages.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -149,17 +150,23 @@ class AuthView extends GetView<AuthController> {
                       ),
                     ),
                   ),
-                  XButton(
-                    text: "Masuk",
-                    hasIcon: true,
-                    icon: MdiIcons.login,
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        formKey.currentState!.save();
-                        controller.login();
-                      }
-                    },
-                  ),
+                  Obx(() {
+                    return controller.isLoading.value
+                        ? Center(
+                            child: Utils.loadingWidget(size: 30),
+                          )
+                        : XButton(
+                            text: "Masuk",
+                            hasIcon: true,
+                            icon: MdiIcons.login,
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                formKey.currentState!.save();
+                                controller.login();
+                              }
+                            },
+                          );
+                  }),
                   const SizedBox(
                     height: 10,
                   ),
@@ -203,7 +210,10 @@ class AuthView extends GetView<AuthController> {
                     icon: MdiIcons.accountPlusOutline,
                     onPressed: () {
                       // controller.register();
-                      Get.toNamed(Routes.REGISTER);
+                      Get.toNamed(
+                        Routes.REGISTER,
+                        preventDuplicates: false,
+                      );
                     },
                   ),
                 ],

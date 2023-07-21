@@ -16,9 +16,7 @@ import '../controllers/core_controller.dart';
 class CoreBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<CoreController>(
-      () => CoreController(),
-    );
+    Get.lazyPut<CoreController>(() => CoreController());
     Get.lazyPut<HomeController>(() => HomeController());
     // Get.lazyPut<ProfileBinding>(() => ProfileBinding());
     Get.lazyPut<ProfileController>(() => ProfileController());

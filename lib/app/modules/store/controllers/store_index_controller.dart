@@ -8,15 +8,21 @@ class StoreIndexController extends GetxController with StateMixin {
   final storeProvider = Get.find<StoreProvider>();
   RxList<StoreModel> stores = <StoreModel>[].obs;
   final locationService = Get.find<LocationService>();
+  RxString search = "".obs;
   @override
   void onInit() {
     super.onInit();
     getStores();
+    ever(search, (callback) {
+      getStores();
+    });
   }
 
   Future<void> getStores() async {
     try {
-      final response = await storeProvider.getStores();
+      final response = await storeProvider.getStores(
+        search: search.value,
+      );
       if (response.body['status'] == "SUCCESS") {
         if (response.body['data'].isEmpty) {
           change(stores, status: RxStatus.empty());

@@ -1,0 +1,87 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ladangsantara/app/common/shape/rounded_container.dart';
+import 'package:ladangsantara/app/common/ui/xpicture.dart';
+import 'package:ladangsantara/app/models/store_model.dart';
+import 'package:ladangsantara/app/themes/theme.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+class StoreHeader extends StatelessWidget {
+  final StoreModel store;
+
+  const StoreHeader({super.key, required this.store});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        XPicture(
+          imageUrl: store.logo!,
+          sizeWidth: Get.width,
+          sizeHeight: 150,
+        ),
+        RoundedContainer(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.all(10),
+          hasBorder: true,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: Get.width,
+                child: Row(
+                  children: [
+                    Text(
+                      store.name!,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const Spacer(),
+                    Icon(
+                      MdiIcons.star,
+                      color: ThemeApp.warningColor,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 5),
+                    const Text(
+                      "4.5",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 5),
+              SizedBox(
+                width: Get.width,
+                child: Row(
+                  children: [
+                    Icon(
+                      MdiIcons.mapMarker,
+                      color: ThemeApp.dangerColor,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 5),
+                    Expanded(
+                      child: Text(
+                        store.address!,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class StoreDetailController extends GetxController {
-  //TODO: Implement StoreDetailController
+class OrderController extends GetxController {
+  //TODO: Implement OrderController
 
   final count = 0.obs;
   @override

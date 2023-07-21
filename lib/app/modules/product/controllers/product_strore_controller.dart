@@ -11,6 +11,7 @@ class ProductStoreController extends GetxController
   Rx<ProductFilter> filter = ProductFilter(
     perPage: "1000",
     storeId: Get.arguments.toString(),
+    search: "".obs,
   ).obs;
 
   RxList<ProductModel> products = <ProductModel>[].obs;

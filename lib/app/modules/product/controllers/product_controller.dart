@@ -14,12 +14,12 @@ class ProductController extends GetxController
   final cartController = Get.find<CartController>();
   final RxList<ProductModel> products = <ProductModel>[].obs;
   Rx<ProductFilter> filter = ProductFilter(
-          perPage: "1000",
-          // category: "Sayur",
-          search: "".obs
-          // storeId: null,
-          )
-      .obs;
+    perPage: "1000",
+    // category: "Sayur",
+    search: "".obs,
+    // storeId: null,
+    store: true,
+  ).obs;
   void getProducts() async {
     try {
       final response = await productProvider.getProducts(

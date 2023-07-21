@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/input/x_field.dart';
+import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/modules/auth/controllers/auth_controller.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -11,6 +12,10 @@ class RegisterView extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Register"),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -128,16 +133,23 @@ class RegisterView extends GetView<AuthController> {
                 const SizedBox(
                   height: 20,
                 ),
-                XButton(
-                  onPressed: () async {
-                    print(controller.user.value.toJson());
-                    controller.formKey.currentState!.save();
-                    if (controller.formKey.currentState!.validate()) {
-                      await controller.register();
-                    }
-                  },
-                  text: "Register Sekarang",
-                )
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return Center(
+                      child: Utils.loadingWidget(size: 30),
+                    );
+                  }
+                  return XButton(
+                    onPressed: () async {
+                      print(controller.user.value.toJson());
+                      controller.formKey.currentState!.save();
+                      if (controller.formKey.currentState!.validate()) {
+                        await controller.register();
+                      }
+                    },
+                    text: "Register Sekarang",
+                  );
+                })
               ],
             ),
           ),

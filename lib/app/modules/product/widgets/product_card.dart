@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/buttons/x_icon_button.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
+import 'package:ladangsantara/app/common/ui/xpicture.dart';
+import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/product_model.dart';
 import 'package:ladangsantara/app/modules/product/bindings/product_binding.dart';
 import 'package:ladangsantara/app/modules/product/views/product_detail_view.dart';
@@ -36,20 +38,16 @@ class ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  image: const DecorationImage(
-                    image: NetworkImage(
-                      'https://picsum.photos/200/300',
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
+                child: XPicture(
+              sizeWidth: Get.width,
+              imageUrl: product.image!,
+              radiusType: RadiusType.none,
+            )),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 5,
+                vertical: 5,
+              ),
               child: Row(
                 children: [
                   Column(
@@ -63,20 +61,41 @@ class ProductCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 5),
-                      RoundedContainer(
-                        hasBorder: true,
-                        color: ThemeApp.lightColor,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 5,
-                          vertical: 2,
-                        ),
-                        child: const Text(
-                          'Rp 10.000',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                      Row(
+                        children: [
+                          RoundedContainer(
+                            hasBorder: true,
+                            color: ThemeApp.lightColor,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 5,
+                              vertical: 2,
+                            ),
+                            child: Text(
+                              product.priceFormatted,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
-                        ),
+                          //RATING
+                          Row(
+                            children: [
+                              Icon(
+                                MdiIcons.star,
+                                size: 15,
+                                color: ThemeApp.warningColor,
+                              ),
+                              const Text(
+                                "4.5",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -85,7 +104,7 @@ class ProductCard extends StatelessWidget {
                     supportColor: ThemeApp.primaryColor.withOpacity(0.5),
                     icon: MdiIcons.cartPlus,
                     padding: const EdgeInsets.all(5),
-                    size: 25,
+                    size: 20,
                     onTap: () {
                       onAddToCart?.call();
                       // controller.addToCart(product: product);
@@ -95,6 +114,48 @@ class ProductCard extends StatelessWidget {
                 ],
               ),
             ),
+            RoundedContainer(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 5,
+                vertical: 5,
+              ),
+              child: Row(
+                children: [
+                  XPicture(
+                    imageUrl: product.store!.logo!,
+                    size: 20,
+                    radius: 5,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    product.store!.name!,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const Spacer(),
+                  //DISTANCE
+                  Row(
+                    children: [
+                      Icon(
+                        MdiIcons.mapMarker,
+                        size: 15,
+                        color: ThemeApp.dangerColor,
+                      ),
+                      const SizedBox(width: 5),
+                      const Text(
+                        "1.2 km",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),

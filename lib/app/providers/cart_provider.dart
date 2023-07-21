@@ -61,6 +61,25 @@ class CartProvider extends GetConnect {
     return await get('cart', query: {"product": "true"});
   }
 
+  Future<Response> deleteCart({required String id}) async {
+    return await delete(
+      'cart/$id',
+      decoder: (data) {
+        if (data['status'] == 'SUCCESS') {
+          return {
+            'status': 'SUCCESS',
+            'message': data['message'],
+            'data': CartItemModel.fromJson(data['data']),
+          };
+        } else if (data['status'] == 'ERROR') {
+          throw data['message'];
+        } else {
+          throw 'Invalid response format';
+        }
+      },
+    );
+  }
+
   Future<Response> addToCart({
     required String productId,
     qty,

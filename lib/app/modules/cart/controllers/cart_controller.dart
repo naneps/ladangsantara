@@ -154,4 +154,15 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
       }
     });
   }
+
+  void removeItem(CartItemModel item, CartModel cart) async {
+    await cartProvider.deleteCart(id: item.id!.toString()).then((res) {
+      if (res.body['status'] == 'SUCCESS') {
+        // Update the quantity locally after successful API call
+        cart.cartItems.remove(item);
+        getCarts();
+        calculateTotal();
+      }
+    });
+  }
 }

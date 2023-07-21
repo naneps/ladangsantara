@@ -44,10 +44,31 @@ class CartItemListWidget extends StatelessWidget {
               dragStartBehavior: DragStartBehavior.start,
               groupTag: cartItem.id,
               closeOnScroll: true,
-              endActionPane: const ActionPane(
-                motion: ScrollMotion(),
+              endActionPane: ActionPane(
+                motion: const ScrollMotion(),
                 dragDismissible: true,
-                children: [],
+                dismissible: RoundedContainer(
+                  color: Colors.red,
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: Text(
+                          'Hapus ${cartItem.product!.name!}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      DismissiblePane(
+                        onDismissed: () {
+                          controller.removeItem(cartItem, cart);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                children: const [],
               ),
               child: RoundedContainer(
                 hasBorder: true,

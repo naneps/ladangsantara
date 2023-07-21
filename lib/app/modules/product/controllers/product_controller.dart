@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/product_filter_model.dart';
 import 'package:ladangsantara/app/models/product_model.dart';
+import 'package:ladangsantara/app/modules/cart/controllers/cart_controller.dart';
 import 'package:ladangsantara/app/providers/cart_provider.dart';
 import 'package:ladangsantara/app/providers/product_provider.dart';
 
@@ -10,6 +11,7 @@ class ProductController extends GetxController
   //TODO: Implement ProductController
   final productProvider = Get.find<ProductProvider>();
   final cartProvider = Get.find<CartProvider>();
+  final cartController = Get.find<CartController>();
   final RxList<ProductModel> products = <ProductModel>[].obs;
   Rx<ProductFilter> filter = ProductFilter(
           perPage: "1000",
@@ -60,6 +62,7 @@ class ProductController extends GetxController
             title: "Berhsail",
             messages: "${product.name} berhasil ditambahkan ke keranjang}",
             type: "success");
+        cartController.getCarts();
       } else {
         Get.snackbar(
           'Error',

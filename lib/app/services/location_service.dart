@@ -124,6 +124,18 @@ class LocationService extends GetxService {
     return distance;
   }
 
+//distanceFormatted "km or m;"
+  String formatDistance(double distance) {
+    String distanceFormatted = '';
+    if (distance < 1000) {
+      distanceFormatted = '${distance.toStringAsFixed(0)} m';
+    } else {
+      final double distanceInKm = distance / 1000;
+      distanceFormatted = '${distanceInKm.toStringAsFixed(1)} km';
+    }
+    return distanceFormatted;
+  }
+
   Future<double> calculateDistanceWithGoogleMapsAPI(
       {required double startLatitude,
       required double startLongitude,
@@ -139,11 +151,11 @@ class LocationService extends GetxService {
         origin: origin, destination: destination);
     print("response google maps: ${response.body}");
     if (response.statusCode == 200) {
-      final data = response.body['data'];
-      print("data google maps: $data");
-      final distance = data['rows'][0]['elements'][0]['distance']['value'];
-      print("distance google maps: $distance");
-      return distance.toDouble();
+      // final data = response.body['data'];
+      // print("data google maps: $data");
+      // final distance = data['rows'][0]['elements'][0]['distance']['value'];
+      // print("distance google maps: $distance");
+      // return distance.toDouble();
     }
 
     throw Exception('Error calculating distance using Google Maps API.');

@@ -47,9 +47,11 @@ class StoreView extends GetView<StoreIndexController> {
           Expanded(
             child: RoundedContainer(
               hasBorder: true,
+              // borderColor: ThemeApp.primaryColor,\
+
               margin: const EdgeInsets.all(10),
               child: controller.obx(
-                (context) {
+                (stores) {
                   return GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -110,7 +112,7 @@ class StoreView extends GetView<StoreIndexController> {
                                         children: [
                                           Icon(
                                             MdiIcons.mapMarker,
-                                            size: 20,
+                                            size: 15,
                                             color: ThemeApp.dangerColor,
                                           ),
                                           const SizedBox(width: 5),
@@ -137,7 +139,6 @@ class StoreView extends GetView<StoreIndexController> {
                                           endLongitude:
                                               double.parse(store.long!)),
                                       builder: (context, snapshot) {
-                                        print("snapshot: $snapshot");
                                         if (snapshot.hasData) {
                                           return Row(
                                             mainAxisAlignment:
@@ -152,7 +153,9 @@ class StoreView extends GetView<StoreIndexController> {
                                               ),
                                               const SizedBox(width: 5),
                                               Text(
-                                                '${snapshot.data} km',
+                                                controller.locationService
+                                                    .formatDistance(snapshot
+                                                        .data as double),
                                                 style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w500,

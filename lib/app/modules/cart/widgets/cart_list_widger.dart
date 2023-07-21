@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/empty_state_view.dart';
@@ -87,7 +88,11 @@ class CartListWidget extends StatelessWidget {
                     ],
                   );
                 }),
-              );
+              ).animate().fadeIn(
+                    duration: const Duration(milliseconds: 500),
+                    delay:
+                        Duration(milliseconds: (100 * index).clamp(100, 500)),
+                  );
             },
           );
         },

@@ -36,11 +36,11 @@ class StoreIndexController extends GetxController with StateMixin {
     required double endLongitude,
   }) async {
     await locationService.getCurrentPosition();
-    return locationService.calculateDistanceWithGoogleMapsAPI(
-      startLatitude: 37.4219983,
-      startLongitude: 102.084,
-      endLatitude: endLatitude,
-      endLongitude: endLongitude,
+    return locationService.calculateDistance(
+      locationService.latitude.value,
+      locationService.longitude.value,
+      endLatitude,
+      endLongitude,
     );
   }
 }

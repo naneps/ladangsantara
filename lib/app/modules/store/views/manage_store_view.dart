@@ -14,7 +14,7 @@ class ManageStoreView extends GetView<StoreController> {
   const ManageStoreView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    controller.getStores();
+    // controller.getStores();
     return Scaffold(
         appBar: AppBar(
           title: const Text(

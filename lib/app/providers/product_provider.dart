@@ -61,8 +61,8 @@ class ProductProvider extends GetConnect {
       'per_page': filter.perPage,
       'category': filter.category,
       'store_id': filter.storeId,
-      // 'search': filter.search,
-      // 'store'
+      'search': filter.search!.value,
+      'store': filter.store.toString() == 'true' ? 'true' : 'false',
     });
   }
 

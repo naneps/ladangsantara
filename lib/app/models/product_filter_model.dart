@@ -1,7 +1,9 @@
+import 'package:get/get.dart';
+
 class ProductFilter {
   String? page;
   String? perPage;
-  String? search;
+  RxString? search;
   bool? store;
   bool? user;
   List<int>? prices;
@@ -36,7 +38,7 @@ class ProductFilter {
   ProductFilter copyWith({
     String? page,
     String? perPage,
-    String? search,
+    RxString? search,
     bool? store,
     bool? user,
     List<int>? prices,

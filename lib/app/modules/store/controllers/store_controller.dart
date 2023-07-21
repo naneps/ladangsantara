@@ -15,11 +15,11 @@ class StoreController extends GetxController with StateMixin {
   @override
   void onInit() {
     super.onInit();
-    getStores();
+    getStore();
     assignFeatures();
   }
 
-  Future<void> getStores() async {
+  Future<void> getStore() async {
     try {
       final response = await storeService.getUserStore();
       if (response.body['status'] == "SUCCESS") {

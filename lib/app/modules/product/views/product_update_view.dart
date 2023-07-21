@@ -45,7 +45,7 @@ class ProductUpdateView extends GetView<ProductUpdateController> {
                 ),
                 const SizedBox(height: 10),
                 XTextField(
-                  hintText: "masukkan nama produk",
+                  hintText: "Masukkan nama produk",
                   labelText: "Nama Produk",
                   prefixIcon: MdiIcons.labelOutline,
                   initialValue: controller.product.value.name,

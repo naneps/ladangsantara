@@ -25,6 +25,12 @@ class ProfileController extends GetxController with StateMixin {
         isActive: true,
       ),
       MenuModel(
+        title: "Pesanan Saya",
+        icon: MdiIcons.cart,
+        route: Routes.ORDER,
+        isActive: true,
+      ),
+      MenuModel(
         title: "Pengaturan Notifikasi",
         icon: Icons.notifications,
         route: "/profile",

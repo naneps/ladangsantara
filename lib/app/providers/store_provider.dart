@@ -53,8 +53,10 @@ class StoreProvider extends GetConnect {
     };
   }
 
-  Future<Response> getStores() async {
-    return await get('store', query: {});
+  Future<Response> getStores({String? search}) async {
+    return await get('store', query: {
+      'search': search,
+    });
   }
 
   Future<Response> createStore({
@@ -83,7 +85,7 @@ class StoreProvider extends GetConnect {
   }
 
   Future<Response> getStore({int? storeId, bool? userStore}) async {
-    final uri = Uri.parse('store/').replace(queryParameters: {
+    final uri = Uri.parse('store/$storeId').replace(queryParameters: {
       'user': userStore.toString(),
     });
     return await get(uri.toString());

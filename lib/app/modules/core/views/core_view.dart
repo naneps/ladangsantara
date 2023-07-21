@@ -19,8 +19,9 @@ class CoreView extends GetView<CoreController> {
       },
       backgroundColor: Colors.white,
       child: Icon(MdiIcons.camera, color: Colors.black,),
-      
-      ),
+     ), 
+
+   
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Obx(() {
         return CurvedNavigationBar(
@@ -50,6 +51,7 @@ class CoreView extends GetView<CoreController> {
           color: Colors.white,
           buttonBackgroundColor: ThemeApp.primaryColor,
           height: 50,
+
           animationCurve: Curves.easeInOutBack,
           onTap: (value) {
             controller.currentIndex = value;

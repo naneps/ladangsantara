@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
-import 'package:ladangsantara/app/common/input/increment_decrement.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
-import 'package:ladangsantara/app/common/ui/empty_state_view.dart';
-import 'package:ladangsantara/app/common/ui/xpicture.dart';
 import 'package:ladangsantara/app/common/utils.dart';
+// ... (other imports)
+
+// Import the newly created widgets
+import 'package:ladangsantara/app/modules/cart/widgets/cart_list_widger.dart';
 import 'package:ladangsantara/app/routes/app_pages.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 
@@ -44,93 +45,10 @@ class CartView extends GetView<CartController> {
       ),
       body: Column(
         children: [
-          Expanded(
-            child: controller.obx(
-              (items) {
-                return ListView.separated(
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemCount: items!.length,
-                  itemBuilder: (context, index) {
-                    final item = items[index];
-                    return RoundedContainer(
-                      hasBorder: true,
-                      child: ListTile(
-                        dense: true,
-                        // isThreeLine: true,
-                        leading: Obx(() {
-                          return RoundedContainer(
-                            width: 100,
-                            child: Row(
-                              children: [
-                                Checkbox.adaptive(
-                                  activeColor: ThemeApp.primaryColor,
-                                  fillColor: MaterialStateProperty.all(
-                                      ThemeApp.primaryColor),
-                                  value: item.selected!.value,
-                                  onChanged: (value) {
-                                    controller.selectItem(item);
-                                  },
-                                  tristate: false,
-                                  shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                        // color: ThemeApp.primaryColor,
-                                        ),
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                ),
-                                XPicture(
-                                  imageUrl: item.product!.image!,
-                                  size: 50,
-                                )
-                              ],
-                            ),
-                          );
-                        }),
-                        title: Text(
-                          item.product!.name!,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        subtitle: Text(
-                          item.product!.priceFormatted,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        trailing: IncDecWidget(
-                          disabledInput: true,
-                          onIncrement: () {
-                            // item.qty = item.qty! + 1;
-                            controller.incrementQty(item.id!.toString());
-                          },
-                          onDecrement: () {
-                            // item.qty = item.qty! - 1;
-                            controller.decrementQty(item.id!.toString());
-                          },
-                          initialValue: int.tryParse(item.qty!),
-                          onChange: (value) {
-                            item.qty = value;
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-              onEmpty: EmptyStateView(
-                label: "Keranjang Kosong",
-                icon: Icons.shopping_cart_outlined,
-              ),
-              onLoading: Center(
-                child: Utils.loadingWidget(
-                  size: 30,
-                ),
-              ),
-            ),
-          ),
+          // Use the CartListWidget here
+          CartListWidget(items: controller.carts),
+
+          // ... (bottom bar with total and checkout button)
           RoundedContainer(
             margin: const EdgeInsets.symmetric(
               horizontal: 10,

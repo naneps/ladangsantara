@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ladangsantara/app/modules/cart/views/cart_view.dart';
 import 'package:ladangsantara/app/modules/home/views/home_view.dart';
 import 'package:ladangsantara/app/modules/profile/views/profile_view.dart';
+import 'package:ladangsantara/app/modules/store/views/store_view.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CoreController extends GetxController {
@@ -42,7 +43,7 @@ class CoreController extends GetxController {
     BottomNavItem(
       title: "Toko",
       icon: MdiIcons.store,
-      widget: const ProfileView(),
+      widget: const StoreView(),
       activeIcon: MdiIcons.storeOutline,
       isActive: false.obs, // Make isActive an RxBool
     ),

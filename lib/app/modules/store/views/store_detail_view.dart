@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/utils.dart';
-import 'package:ladangsantara/app/modules/store/controllers/store_detailr_controlle.dart';
+import 'package:ladangsantara/app/modules/store/controllers/store_detail_controlle.dart';
 import 'package:ladangsantara/app/modules/store/widgets/product_grid.dart';
 import 'package:ladangsantara/app/modules/store/widgets/store_description.dart';
 import 'package:ladangsantara/app/modules/store/widgets/store_header.dart';

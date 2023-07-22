@@ -8,6 +8,7 @@ import 'package:ladangsantara/app/services/location_service.dart';
 
 class StoreDetailController extends GetxController with StateMixin<StoreModel> {
   //TODO: Implement StoreDetailrController
+  
   final storeProvider = Get.find<StoreProvider>();
   final productProvider = Get.find<ProductProvider>();
   final locationService = Get.find<LocationService>();

@@ -4,7 +4,7 @@ import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/xpicture.dart';
 import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/product_model.dart';
-import 'package:ladangsantara/app/modules/store/controllers/store_detailr_controlle.dart';
+import 'package:ladangsantara/app/modules/store/controllers/store_detail_controlle.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 
 class ProductGrid extends StatelessWidget {

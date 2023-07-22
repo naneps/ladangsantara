@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/input/xpicker_image.dart';
+import 'package:ladangsantara/app/controllers/store_detail_controller.dart';
 import 'package:ladangsantara/app/modules/store/controllers/store_create_controller.dart';
 import 'package:ladangsantara/app/modules/store/controllers/store_detailr_controlle.dart';
 import 'package:ladangsantara/app/modules/store/controllers/store_index_controller.dart';
@@ -29,5 +30,6 @@ class StoreBinding extends Bindings {
     Get.lazyPut<ImagePickerService>(() => ImagePickerService());
     Get.lazyPut<LocationService>(() => LocationService());
     Get.lazyPut<ApiService>(() => ApiService());
+    Get.lazyPut<StoreDetailController>(() => StoreDetailController());
   }
 }

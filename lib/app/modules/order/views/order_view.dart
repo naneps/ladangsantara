@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 import '../controllers/order_controller.dart';
@@ -10,7 +9,9 @@ class OrderView extends GetView<OrderController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('OrderView'),
+        title: const Text(
+          'Pesanasn',
+        ),
         centerTitle: true,
       ),
       body: const Center(

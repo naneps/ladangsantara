@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/modules/cart/controllers/cart_controller.dart';
+import 'package:ladangsantara/app/modules/checkout/controllers/order_address_controller.dart';
 import 'package:ladangsantara/app/modules/home/controllers/home_controller.dart';
 import 'package:ladangsantara/app/modules/profile/controllers/profile_controller.dart';
 import 'package:ladangsantara/app/modules/store/controllers/store_index_controller.dart';
@@ -10,6 +11,7 @@ import 'package:ladangsantara/app/providers/region_provider.dart';
 import 'package:ladangsantara/app/providers/store_provider.dart';
 import 'package:ladangsantara/app/services/api_service.dart';
 import 'package:ladangsantara/app/services/location_service.dart';
+import 'package:ladangsantara/app/services/sql_lite_service.dart';
 
 import '../controllers/core_controller.dart';
 
@@ -29,5 +31,7 @@ class CoreBinding extends Bindings {
     Get.lazyPut<RegionProvider>(() => RegionProvider());
     Get.lazyPut<GoogleMapsProvider>(() => GoogleMapsProvider());
     Get.lazyPut<StoreIndexController>(() => StoreIndexController());
+    Get.lazyPut<OrderAddressController>(() => OrderAddressController());
+    Get.lazyPut<SqlLiteService>(() => SqlLiteService());
   }
 }

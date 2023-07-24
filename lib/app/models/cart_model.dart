@@ -1,15 +1,18 @@
 import 'package:get/get.dart';
+import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/cart_item_model.dart';
 import 'package:ladangsantara/app/models/store_model.dart';
 
 class CartModel {
   StoreModel? store;
   RxBool? selected;
+  int? totalPrice;
   List<CartItemModel> cartItems = <CartItemModel>[];
   CartModel({
     this.store,
     this.cartItems = const <CartItemModel>[],
     this.selected,
+    this.totalPrice,
   });
 
   CartModel.fromJson(Map<String, dynamic> json) {
@@ -41,5 +44,12 @@ class CartModel {
       selected: selected ?? this.selected,
       cartItems: cartItems ?? this.cartItems,
     );
+  }
+
+  String get total {
+    return Utils.formatCurrency(
+        double.parse(cartItems.fold<int>(0, (sum, item) {
+      return sum + (int.parse(item.product!.price!) * int.parse(item.qty!));
+    }).toString()));
   }
 }

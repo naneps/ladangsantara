@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
-import 'package:ladangsantara/app/models/region_model.dart';
+import 'package:ladangsantara/app/models/address_model.dart';
 import 'package:ladangsantara/app/modules/checkout/views/order_address_view.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TileAddress extends StatelessWidget {
-  OrderAddressModel address;
+  AddressModel address;
   TileAddress({
     super.key,
     required this.address,
@@ -33,7 +33,7 @@ class TileAddress extends StatelessWidget {
             ),
             children: [
               TextSpan(
-                text: ' ${address.phone}',
+                text: ' (${address.contactPhone})',
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.normal,

@@ -28,6 +28,7 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
         carts.assignAll(response.body['data']);
       }
     } catch (e) {
+      change(carts, status: RxStatus.error(e.toString()));
       print(e);
     }
   }
@@ -52,6 +53,7 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
         selectAll.value = false;
       }
     });
+    orderAddressController.getAddress();
   }
 
   void calculateTotal() {

@@ -11,7 +11,6 @@ class ProductProvider extends GetConnect {
   @override
   void onInit() {
     // TODO: implement onInit
-    httpClient.baseUrl = apiService.baseUrl!;
     httpClient.baseUrl = apiService.baseUrl;
     httpClient.addRequestModifier<dynamic>((request) {
       request.headers['Authorization'] =

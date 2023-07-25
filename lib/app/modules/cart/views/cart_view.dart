@@ -51,9 +51,12 @@ class CartView extends GetView<CartController> {
                   Flexible(
                     child: Obx(() {
                       return Text(
-                        controller.orderAddressController.selectedAddress.value!
-                                .region ??
-                            "",
+                        controller.orderAddressController.selectedAddress
+                                    .value !=
+                                null
+                            ? controller.orderAddressController.selectedAddress
+                                .value!.region
+                            : "Pilih Alamat Pengiriman",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

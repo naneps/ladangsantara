@@ -4,6 +4,7 @@ import 'package:ladangsantara/app/modules/checkout/controllers/order_address_con
 import 'package:ladangsantara/app/modules/home/controllers/home_controller.dart';
 import 'package:ladangsantara/app/modules/profile/controllers/profile_controller.dart';
 import 'package:ladangsantara/app/modules/store/controllers/store_index_controller.dart';
+import 'package:ladangsantara/app/providers/address_provider.dart';
 import 'package:ladangsantara/app/providers/cart_provider.dart';
 import 'package:ladangsantara/app/providers/google_maps_provider.dart';
 import 'package:ladangsantara/app/providers/product_provider.dart';
@@ -33,5 +34,6 @@ class CoreBinding extends Bindings {
     Get.lazyPut<StoreIndexController>(() => StoreIndexController());
     Get.lazyPut<OrderAddressController>(() => OrderAddressController());
     Get.lazyPut<SqlLiteService>(() => SqlLiteService());
+    Get.lazyPut<AddressProvider>(() => AddressProvider());
   }
 }

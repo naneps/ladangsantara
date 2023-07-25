@@ -1,55 +1,47 @@
 import 'package:get/get.dart';
-import 'package:ladangsantara/app/models/region_model.dart';
+import 'package:ladangsantara/app/models/address_model.dart';
+import 'package:ladangsantara/app/providers/address_provider.dart';
 import 'package:ladangsantara/app/services/sql_lite_service.dart';
 
 class OrderAddressController extends GetxController
-    with StateMixin<List<OrderAddressModel>> {
+    with StateMixin<List<AddressModel>> {
   final sqfliteService = Get.find<SqlLiteService>();
-  Rx<OrderAddressModel?> selectedAddress = Rx<OrderAddressModel?>(null);
-  RxList<OrderAddressModel> listAddress = <OrderAddressModel>[].obs;
+  Rx<AddressModel?> selectedAddress = Rx<AddressModel?>(null);
+  final addressProvider = Get.find<AddressProvider>();
+
+  RxList<AddressModel> addresses = <AddressModel>[].obs;
 
 // Fetch all addresses from SQLite
-  void fetchAllAddresses() async {
+
+  Future<void> getAddress() async {
     try {
-      // Start loading state
-      change([], status: RxStatus.loading());
-
-      // Get all addresses from the database
-      List<Map<String, dynamic>> data = await sqfliteService.query('regions');
-
-      // Map the data to a list of OrderAddressModel
-      List<OrderAddressModel> addresses = data
-          .map((e) => OrderAddressModel.fromJson(e))
-          .toList()
-          .cast<OrderAddressModel>();
-
-      // Find the default address
-
-      if (addresses.isEmpty) {
-        // If there are no addresses, update the state with an empty list
-        change([], status: RxStatus.empty());
+      final res = await addressProvider.getAddress();
+      print("response address: ${res.statusCode}");
+      if (res.statusCode == 200) {
+        final List<AddressModel> responseBody = res.body;
+        if (responseBody.isEmpty) {
+          change([], status: RxStatus.empty());
+        } else {
+          addresses.assignAll(responseBody);
+          final defaultAddress = addresses.firstWhere(
+            (address) => address.isDefault!.value == 1,
+            orElse: () => null!,
+          );
+          selectedAddress.value = defaultAddress;
+          change(addresses, status: RxStatus.success());
+        }
       } else {
-        // Update the state with the fetched addresses
-        OrderAddressModel? defaultAddress = addresses.firstWhere(
-          (address) => address.isDefault!.value == 1,
-          orElse: () => null!,
-        );
-
-        // Set the default address as the selected address
-        selectedAddress.value = defaultAddress;
-        listAddress.assignAll(addresses);
-        change(addresses, status: RxStatus.success());
+        change([], status: RxStatus.error("Failed to fetch addresses"));
       }
     } catch (e) {
-      // If there's an error, update the state with the error
-      change(null, status: RxStatus.error(e.toString()));
+      change([], status: RxStatus.error(e.toString()));
     }
   }
 
   @override
   void onInit() {
     super.onInit();
-    fetchAllAddresses();
+    getAddress();
   }
 
   void deleteAddress(int id) async {
@@ -58,17 +50,16 @@ class OrderAddressController extends GetxController
       change([], status: RxStatus.loading());
 
       // Delete the address from the database
-      await sqfliteService.delete('regions', id);
+      addressProvider.deleteAddress(id);
       Get.back();
       // Fetch all addresses again
-      fetchAllAddresses();
     } catch (e) {
       // If there's an error, update the state with the error
       change(null, status: RxStatus.error(e.toString()));
     }
   }
 
-  void selectAddress(OrderAddressModel address) {
+  void selectAddress(AddressModel address) {
     selectedAddress.value = address;
   }
 }

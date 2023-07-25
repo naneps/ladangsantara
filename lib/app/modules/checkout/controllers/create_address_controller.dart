@@ -1,14 +1,16 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/utils.dart';
-import 'package:ladangsantara/app/models/region_model.dart';
+import 'package:ladangsantara/app/models/address_model.dart';
 import 'package:ladangsantara/app/modules/checkout/controllers/order_address_controller.dart';
+import 'package:ladangsantara/app/providers/address_provider.dart';
 import 'package:ladangsantara/app/providers/region_provider.dart';
-import 'package:ladangsantara/app/services/sql_lite_service.dart';
 
 class CreateAddressController extends GetxController {
   final regionProvider = Get.find<RegionProvider>();
-  final SqlLiteService sqlLiteService = Get.find<SqlLiteService>();
+  final AddressProvider addressProvider = Get.find<AddressProvider>();
+  final OrderAddressController orderAddressController =
+      Get.find<OrderAddressController>();
   final formKey = GlobalKey<FormState>();
   RxList<Province> provinces = <Province>[].obs;
   RxList<Regency> regencies = <Regency>[].obs;
@@ -18,10 +20,10 @@ class CreateAddressController extends GetxController {
   Rx<Regency> regency = Regency().obs;
   Rx<District> district = District().obs;
   Rx<Village> village = Village().obs;
-  Rx<OrderAddressModel> address = OrderAddressModel(
+  Rx<AddressModel> address = AddressModel(
     isDefault: 0.obs,
   ).obs;
-  RxList<OrderAddressModel> listAddress = <OrderAddressModel>[].obs;
+  RxList<AddressModel> listAddress = <AddressModel>[].obs;
   Future<void> getProvinces() async {
     try {
       final res = await regionProvider.getProvince();
@@ -31,7 +33,7 @@ class CreateAddressController extends GetxController {
         throw Exception('Failed to fetch provinces');
       }
     } catch (e) {
-      throw Exception('Failed to fetch provinces');
+      throw Exception('Failed to fetch provinces from API ${e.toString()}}');
     }
   }
 
@@ -80,71 +82,36 @@ class CreateAddressController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    sqlLiteService.initDatabase();
     getProvinces();
-  }
-
-  void mappingAddress() {
-    address.update((val) {
-      val!.address = address.value.address;
-      val.phone = address.value.phone;
-      val.province = province.value.name;
-      val.regency = regency.value.name;
-      val.district = district.value.name;
-      val.village = village.value.name;
-      val.postalCode = address.value.postalCode;
-      val.isDefault = address.value.isDefault;
-    });
   }
 
   Future<void> saveAddress() async {
     mappingAddress();
-    print(address.value.toJson());
+    await addressProvider.addAddress(address: address.value).then((res) {
+      if (res.statusCode == 200) {
+        Get.back();
+        Utils.snackMessage(
+          title: "",
+          messages: "Berhasil menambahkan alamat",
+          type: "success",
+        );
+        orderAddressController.getAddress();
+      }
+    }).catchError((e) {
+      print("error: $e");
+    });
+  }
 
-    // Get the instance of the OrderAddressController
-    OrderAddressController orderAddressController =
-        Get.find<OrderAddressController>();
-
-    // Check if there is an existing default address
-    if (orderAddressController.listAddress.isNotEmpty) {
-      OrderAddressModel? existingDefaultAddress =
-          orderAddressController.listAddress.firstWhere(
-        (address) => address.isDefault!.value == 1,
-        orElse: () => null!,
-      );
-
-      // If there is an existing default address, set it as not default (isDefault = false)
-      existingDefaultAddress.isDefault!.value = 0;
-      await sqlLiteService.update(
-        'regions',
-        existingDefaultAddress.toJson(),
-      );
-    }
-    // Insert the new address with isDefault = true
-    try {
-      await sqlLiteService.insert(
-        'regions',
-        address.value
-            .copyWith(
-              id: null,
-              createdAt: DateTime.now().toString(),
-              updatedAt: DateTime.now().toString(),
-              isDefault: 1.obs,
-            )
-            .toJson(),
-      );
-
-      Get.back();
-      Utils.snackMessage(
-        title: "Berhasil",
-        messages: "Alamat berhasil disimpan",
-        type: "success",
-      );
-
-      // Fetch all addresses again in the OrderAddressController
-      orderAddressController.fetchAllAddresses();
-    } catch (e) {
-      throw Exception('Failed to save address');
-    }
+  void mappingAddress() {
+    address.update((val) {
+      val!.province = province.value;
+      val.regency = regency.value;
+      val.district = district.value;
+      val.village = village.value;
+      val.contactName = address.value.contactName;
+      val.contactPhone = address.value.contactPhone;
+      val.address = address.value.address;
+      val.isDefault = address.value.isDefault;
+    });
   }
 }

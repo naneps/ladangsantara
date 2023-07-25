@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/input/x_field.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
-import 'package:ladangsantara/app/models/region_model.dart';
+import 'package:ladangsantara/app/models/address_model.dart';
 import 'package:ladangsantara/app/modules/checkout/controllers/create_address_controller.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 
@@ -65,7 +65,7 @@ class CreateAddressView extends GetView<CreateAddressController> {
                     hintText: "Nama Penerima",
                     // controller: controller.nameController,
                     onSave: (val) {
-                      controller.address.value.name = val;
+                      controller.address.value.contactName = val;
                     },
                     validator: (val) {
                       return val!.isEmpty ? "Harap isi nama penerima" : null;
@@ -78,7 +78,7 @@ class CreateAddressView extends GetView<CreateAddressController> {
                     hintText: "Nomor Telepon",
                     // controller: controller.phoneController,
                     onSave: (val) {
-                      controller.address.value.phone = val;
+                      controller.address.value.contactPhone = val;
                     },
                     validator: (val) {
                       return val!.isEmpty ? "Harap isi nomor telepon" : null;
@@ -112,9 +112,9 @@ class CreateAddressView extends GetView<CreateAddressController> {
                       onChanged: (Province? newValue) {
                         controller.province = Province().obs;
                         if (newValue is Province) {
-                          controller.district.value = District();
-                          controller.village.value = Village();
-                          controller.regency.value = Regency();
+                          // controller.district.value = District();
+                          // controller.village.value = Village();
+                          // controller.regency.value = Regency();
                           controller.province.value = newValue;
                           controller.regencies.clear();
                           controller.getRegency(newValue.id!);
@@ -249,19 +249,19 @@ class CreateAddressView extends GetView<CreateAddressController> {
                       return val!.isEmpty ? "Harap isi alamat lengkap" : null;
                     },
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  XTextField(
-                    hintText: "Kode Pos",
-                    keyboardType: TextInputType.number,
-                    onSave: (val) {
-                      controller.address.value.postalCode = val;
-                    },
-                    validator: (val) {
-                      return val!.isEmpty ? "Harap isi kode pos" : null;
-                    },
-                  )
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // XTextField(
+                  //   hintText: "Kode Pos",
+                  //   keyboardType: TextInputType.number,
+                  //   onSave: (val) {
+                  //     controller.address.value.contactName = val!;
+                  //   },
+                  //   validator: (val) {
+                  //     return val!.isEmpty ? "Harap isi kode pos" : null;
+                  //   },
+                  // )
                 ],
               ),
             ),

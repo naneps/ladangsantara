@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
-import 'package:ladangsantara/app/models/region_model.dart';
+import 'package:ladangsantara/app/models/address_model.dart';
 import 'package:ladangsantara/app/modules/checkout/widgets/cart_summary_tile.dart';
+import 'package:ladangsantara/app/modules/checkout/widgets/payment_method_widget.dart';
 import 'package:ladangsantara/app/modules/checkout/widgets/tile_address.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 
@@ -68,8 +69,11 @@ class CheckoutView extends GetView<CheckoutController> {
         padding: const EdgeInsets.all(10),
         children: [
           Obx(() {
-            return TileAddress(
-              address: controller.currentAddress.value ?? OrderAddressModel(),
+            return Visibility(
+              visible: controller.currentAddress.value != null,
+              child: TileAddress(
+                address: controller.currentAddress.value ?? AddressModel(),
+              ),
             );
           }),
           const SizedBox(height: 10),
@@ -90,6 +94,23 @@ class CheckoutView extends GetView<CheckoutController> {
               },
             ),
           ),
+          RoundedContainer(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.all(10),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Metode Pembayaran",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                PaymentMethod()
+              ],
+            ),
+          )
         ],
       ),
     );

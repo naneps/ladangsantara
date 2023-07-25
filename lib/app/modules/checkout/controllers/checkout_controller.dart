@@ -1,20 +1,23 @@
 import 'package:get/get.dart';
+import 'package:ladangsantara/app/models/address_model.dart';
 import 'package:ladangsantara/app/models/order_modell.dart';
-import 'package:ladangsantara/app/models/region_model.dart';
 import 'package:ladangsantara/app/modules/checkout/controllers/order_address_controller.dart';
 
 class CheckoutController extends GetxController {
   //TODO: Implement CheckoutControlle
   final OrderAddressController orderAddressController =
       Get.find<OrderAddressController>();
-  Rx<OrderAddressModel?> currentAddress = Rx<OrderAddressModel?>(null);
+  Rx<AddressModel?> currentAddress = Rx<AddressModel?>(null);
   Rx<OrderModel> order = OrderModel().obs;
 
   @override
   void onInit() {
     super.onInit();
-    orderAddressController.fetchAllAddresses();
-    currentAddress.bindStream(orderAddressController.selectedAddress.stream);
+    orderAddressController.getAddress();
+    currentAddress.value = orderAddressController.selectedAddress.value;
+    ever(orderAddressController.selectedAddress, (callback) {
+      currentAddress.value = callback;
+    });
     order.value = Get.arguments;
   }
 }

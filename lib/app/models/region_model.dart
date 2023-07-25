@@ -40,7 +40,7 @@ class Regency extends Province {
 
   factory Regency.fromJson(Map<String, dynamic> json) {
     return Regency(
-      provinceId: json['provinsi_id'],
+      provinceId: json['id_provinsi'],
       id: json['id'],
       name: json['nama'],
     );

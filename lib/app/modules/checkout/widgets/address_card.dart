@@ -3,7 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/utils.dart';
-import 'package:ladangsantara/app/models/region_model.dart';
+import 'package:ladangsantara/app/models/address_model.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -16,10 +16,10 @@ class CardAddress extends StatelessWidget {
     this.isSelected,
   });
 
-  final OrderAddressModel address;
-  final Function(OrderAddressModel) onSelected;
-  // final Function(OrderAddressModel) onEdit;
-  final Function(OrderAddressModel)? onDelete;
+  final AddressModel address;
+  final Function(AddressModel) onSelected;
+  // final Function(AddressModel) onEdit;
+  final Function(AddressModel)? onDelete;
   RxBool? isSelected;
 
   @override
@@ -67,7 +67,7 @@ class CardAddress extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  address.name!,
+                  address.contactName!,
                   style: TextStyle(
                     fontSize: 14,
                     color: ThemeApp.darkColor,
@@ -97,7 +97,7 @@ class CardAddress extends StatelessWidget {
                   width: 5,
                 ),
                 Text(
-                  address.phone!,
+                  address.contactPhone!,
                   style: TextStyle(
                     fontSize: 12,
                     color: ThemeApp.darkColor,

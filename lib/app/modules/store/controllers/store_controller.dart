@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/models/menu_model.dart';
 import 'package:ladangsantara/app/models/store_model.dart';
+import 'package:ladangsantara/app/modules/order/bindings/order_binding.dart';
 import 'package:ladangsantara/app/modules/product/bindings/product_binding.dart';
 import 'package:ladangsantara/app/modules/product/views/product_store_view.dart';
+import 'package:ladangsantara/app/modules/store/views/manage_order_view.dart';
 import 'package:ladangsantara/app/providers/store_provider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -57,7 +59,9 @@ class StoreController extends GetxController with StateMixin {
       MenuModel(
         title: "Kelola Pesanan",
         icon: MdiIcons.cartArrowDown,
-        route: "/store/manage",
+        onTap: () {
+          Get.to(() => const ManageOrderView(), binding: OrderBinding());
+        },
         isActive: true,
       ),
       MenuModel(

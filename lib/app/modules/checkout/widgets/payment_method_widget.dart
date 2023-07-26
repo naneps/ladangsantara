@@ -6,7 +6,8 @@ import 'package:ladangsantara/app/modules/checkout/controllers/payment_method_co
 import 'package:ladangsantara/app/themes/theme.dart';
 
 class PaymentMethod extends GetView<PaymentMethodController> {
-  const PaymentMethod({Key? key}) : super(key: key);
+  const PaymentMethod({Key? key, required this.onChange}) : super(key: key);
+  final Function(PaymentModel) onChange;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,10 @@ class PaymentMethod extends GetView<PaymentMethodController> {
         itemBuilder: (context, index) {
           final payment = controller.paymentList[index];
           print(payment.children!.isEmpty);
-          return PaymentTile(payment: payment);
+          return PaymentTile(
+            payment: payment,
+            onChange: onChange,
+          );
         },
       ),
     );
@@ -30,7 +34,12 @@ class PaymentMethod extends GetView<PaymentMethodController> {
 
 class PaymentTile extends StatelessWidget {
   final PaymentModel payment;
-  PaymentTile({Key? key, required this.payment}) : super(key: key);
+  final Function(PaymentModel) onChange;
+  PaymentTile({
+    Key? key,
+    required this.payment,
+    required this.onChange,
+  }) : super(key: key);
   final PaymentMethodController controller =
       Get.find<PaymentMethodController>();
   @override
@@ -61,6 +70,7 @@ class PaymentTile extends StatelessWidget {
             value: payment.id,
             onChanged: (value) {
               controller.payment.value = payment;
+              onChange(payment);
             },
             groupValue: controller.payment.value.id,
           ),
@@ -98,7 +108,10 @@ class PaymentTile extends StatelessWidget {
           ),
         ),
         children: payment.children!.map((childPayment) {
-          return PaymentTile(payment: childPayment);
+          return PaymentTile(
+            payment: childPayment,
+            onChange: onChange,
+          );
         }).toList(),
       );
     }

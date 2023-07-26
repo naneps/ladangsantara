@@ -56,7 +56,7 @@ class FeatureShimmerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: Colors.grey,
-      highlightColor: Colors.black26,
+      highlightColor: const Color.fromARGB(127, 205, 205, 205),
       child: ListTile(
         tileColor: Colors.white,
         onTap: () {},

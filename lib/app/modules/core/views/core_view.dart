@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ladangsantara/app/modules/classify/views/classify.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -14,14 +15,16 @@ class CoreView extends GetView<CoreController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold (
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        
+        floatingActionButton: FloatingActionButton(onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Classify(),
+            ));
       },
-      backgroundColor: Colors.white,
-      child: Icon(MdiIcons.camera, color: Colors.black,),
+        backgroundColor: Colors.white,
+        child: Icon(MdiIcons.camera, color: Colors.black,),
      ), 
-
-   
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Obx(() {
         return CurvedNavigationBar(

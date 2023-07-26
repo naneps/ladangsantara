@@ -74,7 +74,7 @@ class ProductStoreView extends GetView<ProductStoreController> {
                   child: ListView.separated(
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
-                      final ProductModel product = products[index];
+                      final ProductModel product = products![index];
                       return SlidableAutoCloseBehavior(
                         closeWhenOpened: true,
                         child: ProductTile(

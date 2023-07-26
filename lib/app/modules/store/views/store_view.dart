@@ -68,14 +68,20 @@ class StoreView extends GetView<StoreIndexController> {
                       final store = controller.stores[index];
                       return CardStore(store: store).animate().scaleXY(
                             duration: Duration(
-                                milliseconds:
-                                    ((index + 1) * 300).clamp(100, 500)),
+                              milliseconds: ((index + 1) * 300).clamp(100, 500),
+                            ),
                           );
                     },
                   );
                 },
                 onEmpty: const Center(
-                  child: Text('Tidak ada toko'),
+                  child: Text(
+                    'Tidak ada toko yang ditemukan',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
                 onLoading: Center(
                   child: Utils.loadingWidget(size: 40),

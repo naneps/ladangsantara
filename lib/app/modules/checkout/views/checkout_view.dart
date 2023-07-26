@@ -59,6 +59,8 @@ class CheckoutView extends GetView<CheckoutController> {
                 text: "Buat Pesanan",
                 onPressed: () {
                   // controller.checkout();
+                  controller.createOrder();
+                  // Get.to(() => const PaymentCodeView());
                 },
               ),
             ],
@@ -97,17 +99,22 @@ class CheckoutView extends GetView<CheckoutController> {
           RoundedContainer(
             margin: const EdgeInsets.symmetric(vertical: 10),
             padding: const EdgeInsets.all(10),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Metode Pembayaran",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                PaymentMethod()
+                PaymentMethod(
+                  onChange: (val) {
+                    controller.order.value.paymentMethod = val.code!;
+                    print(controller.order.value.paymentMethod);
+                  },
+                )
               ],
             ),
           )

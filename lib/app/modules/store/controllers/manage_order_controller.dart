@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class OrderController extends GetxController with SingleGetTickerProviderMixin {
+class ManageOrderController extends GetxController
+    with SingleGetTickerProviderMixin {
   late TabController tabController;
 
   @override

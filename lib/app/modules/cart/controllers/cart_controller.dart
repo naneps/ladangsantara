@@ -174,10 +174,22 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
   }
 
   void mappingOrder() {
+    final cartItems = <CartModel>[];
+    //select only items in selectedCarts is selected
+    for (var cart in selectedCarts) {
+      final selectedItems = <CartItemModel>[];
+      for (var item in cart.cartItems) {
+        if (item.selected!.value) {
+          selectedItems.add(item);
+        }
+      }
+      cart.cartItems = selectedItems;
+      cartItems.add(cart);
+    }
+
     order = OrderModel(
       totalPrice: total.value,
-      carts: selectedCarts,
+      carts: cartItems,
     );
-    print("order: ${order.toJson()}");
   }
 }

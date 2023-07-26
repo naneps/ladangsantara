@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/xpicture.dart';
 import 'package:ladangsantara/app/models/order_modell.dart';
+import 'package:ladangsantara/app/modules/store/controllers/manage_order_controller.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../controllers/order_controller.dart';
-
-class OrderView extends GetView<OrderController> {
-  const OrderView({Key? key}) : super(key: key);
+class ManageOrderView extends GetView<ManageOrderController> {
+  const ManageOrderView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Pesanasn',
+          'Kelola Pesanan',
           style: TextStyle(
             fontSize: 16,
             color: Colors.black,
@@ -75,11 +73,11 @@ class OrderView extends GetView<OrderController> {
             child: TabBarView(
               controller: controller.tabController,
               children: const [
-                OrderStatusView(status: OrderStatus.all),
-                OrderStatusView(status: OrderStatus.pending),
-                OrderStatusView(status: OrderStatus.processing),
-                OrderStatusView(status: OrderStatus.shipping),
-                OrderStatusView(
+                ListOrder(status: OrderStatus.all),
+                ListOrder(status: OrderStatus.pending),
+                ListOrder(status: OrderStatus.processing),
+                ListOrder(status: OrderStatus.shipping),
+                ListOrder(
                   status: OrderStatus.completed,
                 ),
               ],
@@ -112,10 +110,10 @@ class TabWithIcon extends StatelessWidget {
   }
 }
 
-class OrderStatusView extends StatelessWidget {
+class ListOrder extends StatelessWidget {
   final OrderStatus status;
 
-  const OrderStatusView({Key? key, required this.status}) : super(key: key);
+  const ListOrder({Key? key, required this.status}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +154,7 @@ class OrderItemWidget extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               const Text(
-                "Nama Toko",
+                "Nama Pembeli",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
@@ -214,29 +212,17 @@ class OrderItemWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Text(
+                  Text(
                     "1 Item , Total : Rp. 100.000",
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Visibility(
-                    visible: status == OrderStatus.pending,
-                    child: XButton(
-                      height: 30,
-                      radius: 5,
-                      width: 110,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      onPressed: () {},
-                      text: "Bayar Sekarang",
-                      sizeText: 12,
                     ),
                   ),
                 ],

@@ -7,6 +7,7 @@ import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
 import '../modules/checkout/views/checkout_view.dart';
+import '../modules/classify/views/classify.dart';
 import '../modules/core/bindings/core_binding.dart';
 import '../modules/core/views/core_view.dart';
 import '../modules/home/bindings/home_binding.dart';

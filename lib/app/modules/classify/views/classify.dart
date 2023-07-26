@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'plant_recogniser.dart';
+import 'freshness_recognize.dart';
 
 class Classify extends StatelessWidget {
-  const Classify ({Key? key}) : super(key: key);
+  const Classify({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +15,9 @@ class Classify extends StatelessWidget {
       ],
     );
     return MaterialApp(
-      title: 'Plant Recognizer',
+      title: 'Freshness Detection',
       theme: ThemeData.light(),
-      home: const PlantRecogniser(),
+      home: const FrehsnessRecognize(),
       debugShowCheckedModeBanner: false,
     );
   }

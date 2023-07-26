@@ -56,7 +56,7 @@ class PaymentTile extends StatelessWidget {
           ),
         ),
         trailing: Obx(
-          () => Radio(
+          () => Radio<String?>(
             activeColor: Theme.of(context).primaryColor,
             value: payment.id,
             onChanged: (value) {

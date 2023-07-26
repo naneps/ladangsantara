@@ -16,7 +16,7 @@ class CheckoutController extends GetxController {
     orderAddressController.getAddress();
     currentAddress.value = orderAddressController.selectedAddress.value;
     ever(orderAddressController.selectedAddress, (callback) {
-      currentAddress.value = callback;
+      currentAddress.value = callback as AddressModel?;
     });
     order.value = Get.arguments;
   }

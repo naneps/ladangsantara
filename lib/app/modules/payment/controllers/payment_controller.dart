@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class OrderAddressController extends GetxController {
-  //TODO: Implement OrderAddressController
+class PaymentController extends GetxController {
+  //TODO: Implement PaymentController
 
   final count = 0.obs;
   @override

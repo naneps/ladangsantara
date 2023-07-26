@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/models/cart_item_model.dart';
 import 'package:ladangsantara/app/models/cart_model.dart';
+import 'package:ladangsantara/app/models/order_modell.dart';
+import 'package:ladangsantara/app/modules/checkout/controllers/order_address_controller.dart';
 import 'package:ladangsantara/app/providers/cart_provider.dart';
 
 class CartController extends GetxController with StateMixin<List<CartModel>> {
@@ -8,6 +10,9 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
   RxBool selectAll = false.obs;
   RxList<CartModel> carts = <CartModel>[].obs;
   RxList<CartModel> selectedCarts = <CartModel>[].obs;
+  OrderModel order = OrderModel();
+  final OrderAddressController orderAddressController =
+      Get.find<OrderAddressController>();
   RxInt total = 0.obs;
 
   Future<void> getCarts() async {
@@ -23,6 +28,7 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
         carts.assignAll(response.body['data']);
       }
     } catch (e) {
+      change(carts, status: RxStatus.error(e.toString()));
       print(e);
     }
   }
@@ -47,6 +53,7 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
         selectAll.value = false;
       }
     });
+    orderAddressController.getAddress();
   }
 
   void calculateTotal() {
@@ -164,5 +171,13 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
         calculateTotal();
       }
     });
+  }
+
+  void mappingOrder() {
+    order = OrderModel(
+      totalPrice: total.value,
+      carts: selectedCarts,
+    );
+    print("order: ${order.toJson()}");
   }
 }

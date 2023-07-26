@@ -6,8 +6,6 @@ import '../modules/auth/views/register_view.dart';
 import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
-import '../modules/checkout/order_address/bindings/order_address_binding.dart';
-import '../modules/checkout/order_address/views/order_address_view.dart';
 import '../modules/checkout/views/checkout_view.dart';
 import '../modules/classify/views/classify.dart';
 import '../modules/core/bindings/core_binding.dart';
@@ -18,6 +16,8 @@ import '../modules/notification/bindings/notification_binding.dart';
 import '../modules/notification/views/notification_view.dart';
 import '../modules/order/bindings/order_binding.dart';
 import '../modules/order/views/order_view.dart';
+import '../modules/payment/bindings/payment_binding.dart';
+import '../modules/payment/views/payment_view.dart';
 import '../modules/product/bindings/product_binding.dart';
 import '../modules/product/views/product_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
@@ -96,13 +96,7 @@ class AppPages {
       name: _Paths.CHECKOUT,
       page: () => const CheckoutView(),
       binding: CheckoutBinding(),
-      children: [
-        GetPage(
-          name: _Paths.ORDER_ADDRESS,
-          page: () => const OrderAddressView(),
-          binding: OrderAddressBinding(),
-        ),
-      ],
+      children: const [],
     ),
     GetPage(
       name: _Paths.ORDER,
@@ -110,8 +104,9 @@ class AppPages {
       binding: OrderBinding(),
     ),
     GetPage(
-      name: _Paths.CLASSIFY,
-      page: () => const Classify()
+      name: _Paths.PAYMENT,
+      page: () => const PaymentView(),
+      binding: PaymentBinding(),
     ),
   ];
 }

@@ -16,7 +16,7 @@ class ProfileController extends GetxController with StateMixin {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
-    await _isRegisterStore();
+    // await _isRegisterStore();
     menus.addAll([
       MenuModel(
         title: "Pengaturan Akun",
@@ -58,6 +58,7 @@ class ProfileController extends GetxController with StateMixin {
         isActive: true,
       ),
     ]);
+    change(menus, status: RxStatus.success());
   }
 
   Future<void> _isRegisterStore() async {

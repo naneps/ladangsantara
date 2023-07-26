@@ -3,12 +3,16 @@ import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/utils.dart';
+import 'package:ladangsantara/app/models/order_modell.dart';
 // ... (other imports)
 
 // Import the newly created widgets
 import 'package:ladangsantara/app/modules/cart/widgets/cart_list_widger.dart';
+import 'package:ladangsantara/app/modules/checkout/views/order_address_view.dart';
+import 'package:ladangsantara/app/modules/order/bindings/order_binding.dart';
 import 'package:ladangsantara/app/routes/app_pages.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../controllers/cart_controller.dart';
 
@@ -20,6 +24,8 @@ class CartView extends GetView<CartController> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'Keranjang Ira (20)',
@@ -29,15 +35,55 @@ class CartView extends GetView<CartController> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            // const SizedBox(height: 5),
-            // Text(
-            //   'Rp 1.000.000',
-            //   style: TextStyle(
-            //     fontSize: 12,
-            //     color: ThemeApp.darkColor,
-            //     fontWeight: FontWeight.w500,
-            //   ),
-            // ),
+            SizedBox(
+              width: 180,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    MdiIcons.mapMarkerOutline,
+                    size: 20,
+                    color: ThemeApp.darkColor.withOpacity(0.5),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Flexible(
+                    child: Obx(() {
+                      return Text(
+                        controller.orderAddressController.selectedAddress
+                                    .value !=
+                                null
+                            ? controller.orderAddressController.selectedAddress
+                                .value!.region
+                            : "Pilih Alamat Pengiriman",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: ThemeApp.darkColor.withOpacity(0.5),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
+                    }),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.to(() => const OrderAddressView(),
+                          fullscreenDialog: true, binding: OrderBinding());
+                    },
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 12,
+                      color: ThemeApp.darkColor.withOpacity(0.5),
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         ),
         centerTitle: true,
@@ -95,20 +141,26 @@ class CartView extends GetView<CartController> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  XButton(
-                    width: 90,
-                    height: 35,
-                    padding: const EdgeInsets.all(0),
-                    hasBorder: true,
-                    sizeText: 14,
-                    text: "Checkout",
-                    onPressed: () {
-                      Get.toNamed(
-                        Routes.CHECKOUT,
-                        arguments: controller.selectedCarts,
-                      );
-                    },
-                  ),
+                  Obx(() {
+                    return XButton(
+                      width: 90,
+                      height: 35,
+                      isDisabled: controller.selectedCarts.isEmpty,
+                      padding: const EdgeInsets.all(0),
+                      hasBorder: true,
+                      sizeText: 14,
+                      text: "Checkout",
+                      onPressed: () {
+                        Get.toNamed(
+                          Routes.CHECKOUT,
+                          arguments: OrderModel(
+                            carts: controller.selectedCarts,
+                            totalPrice: controller.total.value,
+                          ),
+                        );
+                      },
+                    );
+                  }),
                 ],
               );
             }),

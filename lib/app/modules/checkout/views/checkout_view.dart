@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
+import 'package:ladangsantara/app/common/ui/heading_text.dart';
 import 'package:ladangsantara/app/models/address_model.dart';
 import 'package:ladangsantara/app/modules/checkout/widgets/cart_summary_tile.dart';
 import 'package:ladangsantara/app/modules/checkout/widgets/payment_method_widget.dart';
@@ -102,17 +103,15 @@ class CheckoutView extends GetView<CheckoutController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Metode Pembayaran",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
+                HeadingText(
+                  leftText: "Metode Pembayaran",
+                  fontSize: 14,
+                  rightText: "Lihat Semua",
+                  onPressRightText: () {},
                 ),
                 PaymentMethod(
                   onChange: (val) {
                     controller.order.value.paymentMethod = val.code!;
-                    print(controller.order.value.paymentMethod);
                   },
                 )
               ],

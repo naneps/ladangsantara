@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/models/menu_model.dart';
+import 'package:ladangsantara/app/models/user.dart';
 import 'package:ladangsantara/app/modules/store/bindings/store_binding.dart';
 import 'package:ladangsantara/app/modules/store/views/manage_store_view.dart';
 import 'package:ladangsantara/app/providers/store_provider.dart';
@@ -11,6 +12,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class ProfileController extends GetxController with StateMixin {
   //TODO: Implement ProfileController
   RxList<MenuModel> menus = <MenuModel>[].obs;
+  final LocalStorage localStorage = LocalStorage();
+  UserModel? user;
   final storeService = Get.find<StoreProvider>();
   @override
   void onInit() async {

@@ -3,6 +3,7 @@ import 'package:ladangsantara/app/models/cart_model.dart';
 
 class OrderModel {
   List<CartModel>? carts = <CartModel>[];
+
   String? id;
   OrderStatus? status;
   String? orderDate;
@@ -48,4 +49,4 @@ class OrderModel {
   }
 }
 
-enum OrderStatus { all, pending, processing, shipping, completed, cancelled }
+enum OrderStatus { pending, packing, shipping, completed, cancelled, all }

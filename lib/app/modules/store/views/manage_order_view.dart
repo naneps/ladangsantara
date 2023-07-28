@@ -73,9 +73,9 @@ class ManageOrderView extends GetView<ManageOrderController> {
             child: TabBarView(
               controller: controller.tabController,
               children: const [
-                ListOrder(status: OrderStatus.all),
+                ListOrder(),
                 ListOrder(status: OrderStatus.pending),
-                ListOrder(status: OrderStatus.processing),
+                ListOrder(status: OrderStatus.packing),
                 ListOrder(status: OrderStatus.shipping),
                 ListOrder(
                   status: OrderStatus.completed,
@@ -111,9 +111,9 @@ class TabWithIcon extends StatelessWidget {
 }
 
 class ListOrder extends StatelessWidget {
-  final OrderStatus status;
+  final OrderStatus? status;
 
-  const ListOrder({Key? key, required this.status}) : super(key: key);
+  const ListOrder({Key? key, this.status}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

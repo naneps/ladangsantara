@@ -5,7 +5,7 @@ import 'package:ladangsantara/app/common/ui/heading_text.dart';
 import 'package:ladangsantara/app/modules/home/controllers/home_controller.dart';
 import 'package:ladangsantara/app/modules/home/widgets/appbar_home.dart';
 import 'package:ladangsantara/app/modules/home/widgets/carousel_conten.dart';
-import 'package:ladangsantara/app/modules/home/widgets/category_card_widget.dart';
+import 'package:ladangsantara/app/modules/home/widgets/list_categories.dart';
 import 'package:ladangsantara/app/modules/home/widgets/product_section_widget.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -38,15 +38,7 @@ class HomeView extends GetView<HomeController> {
                             onPressRightText: () {},
                           ),
                           const SizedBox(height: 10),
-                          Expanded(
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 10,
-                              itemBuilder: (context, index) {
-                                return const CategoryCardWidget();
-                              },
-                            ),
-                          ),
+                          ListCategory()
                         ],
                       ),
                     ),

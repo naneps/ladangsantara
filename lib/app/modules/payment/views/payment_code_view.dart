@@ -56,7 +56,7 @@ class PaymentCodeView extends GetView {
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 5),
                 Text(
                   'Total Pembayaran : Rp 100.000',
                   style: TextStyle(
@@ -64,7 +64,7 @@ class PaymentCodeView extends GetView {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 5),
                 //batas waktu countdown
                 Text(
                   'Batas Waktu Pembayaran : 00:00:00',
@@ -92,9 +92,10 @@ class PaymentCodeView extends GetView {
                 const SizedBox(height: 10),
                 RoundedContainer(
                   hasBorder: true,
+                  radius: 5,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  color: ThemeApp.primaryColor,
+                  color: ThemeApp.secondaryColor,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,7 +103,7 @@ class PaymentCodeView extends GetView {
                       const Text(
                         "1234567890",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 20,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
@@ -152,13 +153,129 @@ class PaymentCodeView extends GetView {
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
+                ),
+                const SizedBox(height: 10),
+                const Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text:
+                            "Ambil tangkapan layar halaman ini atau catat kode pembayaran Anda untuk catatan Anda, Anda dapat menemukan halaman ini di menu ",
+                      ),
+                      TextSpan(
+                        text:
+                            "Profile > Pesanan Saya > Kode Pembayaran > Salin",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+              ],
+            ),
+          ),
+          RoundedContainer(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Text(
+                  "Bank",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Image.asset(
+                      'assets/icon/bca.png',
+                      width: 35,
+                      height: 35,
+                    ),
+                    const SizedBox(width: 10),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Bank BCA",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "a/n PT. Ladang Santara",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 )
               ],
             ),
-          )
+          ),
+          RoundedContainer(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Cara Pembayaran",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                ExpansionTile(
+                  leading: Icon(
+                    MdiIcons.creditCardOutline,
+                  ),
+                  title: Text(
+                    "Melalui ATM",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ExpansionTile(
+                  leading: Icon(
+                    MdiIcons.bankTransfer,
+                  ),
+                  title: Text(
+                    "Melalui Internet Banking",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ExpansionTile(
+                  leading: Icon(
+                    MdiIcons.cellphone,
+                  ),
+                  title: Text(
+                    "Melalui Mobile Banking",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:ladangsantara/app/common/input/category_picker.dart';
 import 'package:ladangsantara/app/modules/cart/controllers/cart_controller.dart';
 import 'package:ladangsantara/app/modules/checkout/controllers/order_address_controller.dart';
 import 'package:ladangsantara/app/modules/home/controllers/home_controller.dart';
@@ -35,5 +36,6 @@ class CoreBinding extends Bindings {
     Get.lazyPut<OrderAddressController>(() => OrderAddressController());
     Get.lazyPut<SqlLiteService>(() => SqlLiteService());
     Get.lazyPut<AddressProvider>(() => AddressProvider());
+    Get.lazyPut<CategoryPickerController>(() => CategoryPickerController());
   }
 }

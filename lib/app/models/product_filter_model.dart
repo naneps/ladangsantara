@@ -6,7 +6,7 @@ class ProductFilter {
   RxString? search;
   bool? store;
   bool? user;
-  List<int>? prices;
+  List<int?>? prices;
   String? category;
   String? storeId;
 
@@ -28,7 +28,7 @@ class ProductFilter {
       'search': search,
       'store': store?.toString(),
       'user': user?.toString(),
-      // 'prices': prices?.toString(),
+      'prices': prices!.toString(),
       'category': category,
       'store_id': storeId.toString(),
     };

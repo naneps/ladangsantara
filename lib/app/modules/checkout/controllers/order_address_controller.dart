@@ -19,8 +19,10 @@ class OrderAddressController extends GetxController
       print("response address: ${res.statusCode}");
       if (res.statusCode == 200) {
         final List<AddressModel> responseBody = res.body;
+
         if (responseBody.isEmpty) {
           change([], status: RxStatus.empty());
+          return;
         } else {
           addresses.assignAll(responseBody);
           final defaultAddress = addresses.firstWhere(

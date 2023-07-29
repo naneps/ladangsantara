@@ -33,7 +33,7 @@ class AddressProvider extends GetConnect {
       decoder: (body) {
         print("default decoder address: $body");
         if (body is Map<String, dynamic>) {
-          if (body['data'].isEmpty) {
+          if (body['data'] == null) {
             return [];
           }
           return body['data']

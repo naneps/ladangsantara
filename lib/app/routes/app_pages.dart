@@ -22,6 +22,8 @@ import '../modules/product/bindings/product_binding.dart';
 import '../modules/product/views/product_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/recipe/bindings/recipe_binding.dart';
+import '../modules/recipe/views/recipe_view.dart';
 import '../modules/review/bindings/review_binding.dart';
 import '../modules/review/views/review_view.dart';
 import '../modules/store/bindings/store_binding.dart';
@@ -114,6 +116,11 @@ class AppPages {
       name: _Paths.REVIEW,
       page: () => const ReviewView(),
       binding: ReviewBinding(),
+    ),
+    GetPage(
+      name: _Paths.RECIPE,
+      page: () => const RecipeView(),
+      binding: RecipeBinding(),
     ),
   ];
 }

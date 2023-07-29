@@ -65,6 +65,11 @@ class OrderAddressView extends GetView<OrderAddressController> {
                     size: 20,
                   ),
                 ),
+                onError: (error) {
+                  return Center(
+                    child: Text(error!),
+                  );
+                },
               ),
             ),
             RoundedContainer(

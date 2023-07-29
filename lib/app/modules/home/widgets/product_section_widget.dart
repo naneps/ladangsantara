@@ -24,12 +24,13 @@ class ProductSectionWidget extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return RoundedContainer(
-      height: 240,
+      height: 220,
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
           HeadingText(
             leftText: title,
+            fontSize: 14,
             rightText: "Lihat Semua",
             onPressRightText: () {
               Get.to(
@@ -50,7 +51,7 @@ class ProductSectionWidget extends GetView<HomeController> {
                 scrollDirection: Axis.horizontal,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 1,
-                  childAspectRatio: 2 / 1.6,
+                  childAspectRatio: 1,
                 ),
                 itemBuilder: (context, index) {
                   final product = productList[index];

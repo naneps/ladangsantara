@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
+import 'package:ladangsantara/app/themes/theme.dart';
 
 class ListCategory extends StatelessWidget {
   ListCategory({super.key});
@@ -14,15 +15,23 @@ class ListCategory extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return RoundedContainer(
+            gradient: RadialGradient(
+              colors: [
+                ThemeApp.primaryColor.withOpacity(0.1),
+                ThemeApp.primaryColor.withOpacity(0.1),
+                ThemeApp.primaryColor.withOpacity(0.3),
+                ThemeApp.primaryColor.withOpacity(0.5),
+              ],
+            ),
             hasBorder: true,
             borderColor: Colors.grey[300],
-            width: 80,
-            height: 60,
+            width: 70,
+            height: 65,
             child: Center(
               child: Image.asset(
                 'assets/content/${categories[index]['image']}',
-                width: 40,
-                height: 40,
+                width: 30,
+                height: 30,
               ),
             ),
           );

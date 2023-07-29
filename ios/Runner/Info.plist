@@ -6,8 +6,13 @@
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
 		<string>Ladangsantara</string>
+
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Allow access to photo library</string>
+
+		<key>NSCameraUsageDescription</key>
+		<string>Needs camera access</string>
+
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>

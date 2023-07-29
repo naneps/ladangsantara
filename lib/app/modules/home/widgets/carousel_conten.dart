@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 
 class CarouselContent extends StatelessWidget {
-  const CarouselContent({
+  CarouselContent({
     super.key,
   });
 
@@ -16,16 +16,16 @@ class CarouselContent extends StatelessWidget {
       hasBorder: true,
       // padding: const EdgeInsets.all(10.0),
       child: CarouselSlider.builder(
-        itemCount: 2,
+        itemCount: images.length,
         itemBuilder: (context, index, realIndex) {
           return Container(
             width: Get.width,
             height: 200,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              image: const DecorationImage(
-                image: NetworkImage(
-                  "https://picsum.photos/200",
+              image: DecorationImage(
+                image: AssetImage(
+                  "assets/carousel/${images[index]}",
                 ),
                 fit: BoxFit.cover,
               ),
@@ -48,4 +48,10 @@ class CarouselContent extends StatelessWidget {
       ),
     );
   }
+
+  List<String> images = [
+    "banner_1.jpg",
+    "banner_2.jpg",
+    "banner_3.png",
+  ];
 }

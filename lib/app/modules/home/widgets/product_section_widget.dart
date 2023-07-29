@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
+import 'package:ladangsantara/app/common/ui/empty_state_view.dart';
 import 'package:ladangsantara/app/common/ui/heading_text.dart';
 import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/product_model.dart';
@@ -23,12 +24,13 @@ class ProductSectionWidget extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return RoundedContainer(
-      height: 240,
+      height: 220,
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
           HeadingText(
             leftText: title,
+            fontSize: 14,
             rightText: "Lihat Semua",
             onPressRightText: () {
               Get.to(
@@ -49,7 +51,7 @@ class ProductSectionWidget extends GetView<HomeController> {
                 scrollDirection: Axis.horizontal,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 1,
-                  childAspectRatio: 2 / 1.6,
+                  childAspectRatio: 1,
                 ),
                 itemBuilder: (context, index) {
                   final product = productList[index];
@@ -69,6 +71,12 @@ class ProductSectionWidget extends GetView<HomeController> {
               onLoading: Center(
                 child: Utils.loadingWidget(
                   size: 30,
+                ),
+              ),
+              onEmpty: Center(
+                child: EmptyStateView(
+                  icon: Icons.info_outline,
+                  label: "Belum ada produk",
                 ),
               ),
             ),

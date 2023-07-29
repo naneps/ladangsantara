@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/input/search_field.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
+import 'package:ladangsantara/app/common/ui/empty_state_view.dart';
 import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/modules/store/controllers/store_index_controller.dart';
 import 'package:ladangsantara/app/modules/store/widgets/card_store.dart';
@@ -57,32 +58,34 @@ class StoreView extends GetView<StoreIndexController> {
               color: Colors.transparent,
               child: controller.obx(
                 (stores) {
-                  return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.8,
-                    ),
-                    itemCount: controller.stores.length,
-                    itemBuilder: (context, index) {
-                      final store = controller.stores[index];
-                      return CardStore(store: store).animate().scaleXY(
-                            duration: Duration(
-                              milliseconds: ((index + 1) * 300).clamp(100, 500),
-                            ),
-                          );
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      controller.getStores();
                     },
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.75,
+                      ),
+                      itemCount: controller.stores.length,
+                      itemBuilder: (context, index) {
+                        final store = controller.stores[index];
+                        return CardStore(store: store).animate().scaleXY(
+                              duration: Duration(
+                                milliseconds:
+                                    ((index + 1) * 300).clamp(100, 500),
+                              ),
+                            );
+                      },
+                    ),
                   );
                 },
-                onEmpty: const Center(
-                  child: Text(
-                    'Tidak ada toko yang ditemukan',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
+                onEmpty: Center(
+                    child: EmptyStateView(
+                  icon: MdiIcons.storeOutline,
+                  label: 'Tidak ada toko',
+                )),
                 onLoading: Center(
                   child: Utils.loadingWidget(size: 40),
                 ),

@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
+import 'package:ladangsantara/app/common/ui/empty_state_view.dart';
 import 'package:ladangsantara/app/common/ui/xpicture.dart';
+import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/order_modell.dart';
+import 'package:ladangsantara/app/models/user_order_model.dart';
+import 'package:ladangsantara/app/modules/payment/views/payment_code_view.dart';
+import 'package:ladangsantara/app/modules/review/bindings/review_binding.dart';
+import 'package:ladangsantara/app/modules/review/views/create_review_view.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -67,6 +73,11 @@ class OrderView extends GetView<OrderController> {
                   icon: MdiIcons.check,
                   text: 'Selesai',
                 ),
+                TabWithIcon(
+                  icon: MdiIcons.cancel,
+                  text: 'dibatalkan',
+                ),
+                //cancel
               ],
               automaticIndicatorColorAdjustment: true,
             ),
@@ -74,14 +85,13 @@ class OrderView extends GetView<OrderController> {
           Expanded(
             child: TabBarView(
               controller: controller.tabController,
-              children: const [
-                OrderStatusView(status: OrderStatus.all),
-                OrderStatusView(status: OrderStatus.pending),
-                OrderStatusView(status: OrderStatus.processing),
-                OrderStatusView(status: OrderStatus.shipping),
-                OrderStatusView(
-                  status: OrderStatus.completed,
-                ),
+              children: [
+                MyOrderView(),
+                MyOrderView(status: OrderStatus.pending),
+                MyOrderView(status: OrderStatus.packing),
+                MyOrderView(status: OrderStatus.shipping),
+                MyOrderView(status: OrderStatus.completed),
+                MyOrderView(status: OrderStatus.cancelled),
               ],
             ),
           ),
@@ -112,32 +122,48 @@ class TabWithIcon extends StatelessWidget {
   }
 }
 
-class OrderStatusView extends StatelessWidget {
-  final OrderStatus status;
+class MyOrderView extends StatelessWidget {
+  final OrderStatus? status;
 
-  const OrderStatusView({Key? key, required this.status}) : super(key: key);
-
+  MyOrderView({Key? key, this.status}) : super(key: key);
+  final OrderController controller = Get.find<OrderController>();
   @override
   Widget build(BuildContext context) {
     return RoundedContainer(
       height: Get.height,
-      child: ListView.separated(
-        separatorBuilder: (context, index) => const SizedBox(height: 10),
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(10),
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return OrderItemWidget(
-            status: status,
+      child: controller.obx(
+        (orders) {
+          return ListView.separated(
+            separatorBuilder: (context, index) => const SizedBox(height: 10),
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(10),
+            itemCount: orders!.length,
+            itemBuilder: (context, index) {
+              return OrderItemWidget(
+                status: status,
+                order: orders[index],
+              );
+            },
           );
         },
+        onLoading: Center(
+          child: Utils.loadingWidget(
+            size: 30,
+          ),
+        ),
+        onEmpty: Center(
+          child: EmptyStateView(
+            icon: MdiIcons.orderNumericAscending,
+            label: "Kamu belum memiliki pesanan",
+          ),
+        ),
       ),
     );
   }
 }
 
 class OrderItemWidget extends StatelessWidget {
-  OrderModel? order;
+  UserOrderModel? order;
   OrderStatus? status;
   OrderItemWidget({Key? key, this.order, this.status}) : super(key: key);
 
@@ -150,14 +176,14 @@ class OrderItemWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              const XPicture(
-                imageUrl: "",
+              XPicture(
+                imageUrl: order!.store!.logo!,
                 size: 30,
               ),
               const SizedBox(width: 10),
-              const Text(
-                "Nama Toko",
-                style: TextStyle(
+              Text(
+                order!.store!.name!,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                 ),
@@ -186,25 +212,29 @@ class OrderItemWidget extends StatelessWidget {
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(0),
-              itemCount: 3,
+              itemCount: order!.orderItems!.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return const ListTile(
+                final item = order!.orderItems![index];
+                return ListTile(
                   leading: XPicture(
-                    imageUrl: "",
+                    imageUrl: item.product!.image!,
                     size: 40,
                   ),
                   title: Text(
-                    "Nama Produk",
-                    style: TextStyle(
+                    item.product!.name!,
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  subtitle: Text("Jumlah", style: TextStyle(fontSize: 12)),
+                  subtitle: Text(
+                    "${item.qty!}x",
+                    style: const TextStyle(fontSize: 12),
+                  ),
                   trailing: Text(
-                    "Harga",
-                    style: TextStyle(
+                    item.product!.priceFormatted,
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
@@ -220,22 +250,47 @@ class OrderItemWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Text(
-                    "1 Item , Total : Rp. 100.000",
-                    style: TextStyle(
+                  Text(
+                    "${order!.totalQty} Item , Total : ${order!.totalPriceFormatted}",
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Visibility(
-                    visible: status == OrderStatus.pending,
+                    visible: order!.orderItems!.first.status == 0,
                     child: XButton(
                       height: 30,
                       radius: 5,
                       width: 110,
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(() => const PaymentCodeView(), arguments: order);
+                      },
                       text: "Bayar Sekarang",
+                      sizeText: 12,
+                    ),
+                  ),
+                  Visibility(
+                    visible: order!.orderItems!.first.status == 3,
+                    child: XButton(
+                      height: 30,
+                      radius: 5,
+                      color: ThemeApp.lightColor,
+                      borderColor: ThemeApp.primaryColor,
+                      textColor: ThemeApp.primaryColor,
+                      width: 110,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      onPressed: () {
+                        Get.to(
+                          () => const CreateReviewView(),
+                          arguments: order,
+                          binding: ReviewBinding(),
+                        );
+                      },
+                      hasBorder: true,
+                      borderWidth: 2,
+                      text: "Beri ulasan",
                       sizeText: 12,
                     ),
                   ),

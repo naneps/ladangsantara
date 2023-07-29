@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/buttons/x_icon_button.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
+import 'package:ladangsantara/app/common/ui/heading_text.dart';
 import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/modules/product/controllers/product_detail_controller.dart';
 import 'package:ladangsantara/app/modules/product/widgets/product_info_widget.dart';
 import 'package:ladangsantara/app/modules/product/widgets/store_info_widget.dart';
+import 'package:ladangsantara/app/modules/review/views/review_view.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -88,27 +90,74 @@ class ProductDetailView extends GetView<ProductDetailController> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: controller.obx(
-          (product) {
-            return ListView(
-              children: [
-                ProductInfoWidget(product: product!.value),
-                RoundedContainer(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      StoreInfoWidget(store: product.value.store!),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
-                ),
-              ],
-            );
+        child: RefreshIndicator(
+          onRefresh: () async {
+            controller.getProduct();
           },
-          onLoading: Center(
-            child: Utils.loadingWidget(
-              size: 80,
+          child: controller.obx(
+            (product) {
+              return ListView(
+                children: [
+                  ProductInfoWidget(product: product!.value),
+                  // RoundedContainer(
+                  //   padding: const EdgeInsets.all(10),
+                  //   margin: const EdgeInsets.symmetric(vertical: 10),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       const SizedBox(height: 10),
+                  //       const Text(
+                  //         "Deskripsi Produk",
+                  //         style: TextStyle(
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.w600,
+                  //         ),
+                  //       ),
+                  //       const SizedBox(height: 10),
+                  //       Text(
+                  //         product.value.description!,
+                  //         style: const TextStyle(
+                  //           fontSize: 14,
+                  //           fontWeight: FontWeight.w400,
+                  //         ),
+                  //       ),
+                  //       const SizedBox(height: 10),
+                  //     ],
+                  //   ),
+                  // ),
+                  RoundedContainer(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        StoreInfoWidget(store: product.value.store!),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                  RoundedContainer(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        HeadingText(
+                          leftText: "Ulasan",
+                          rightText: "Lihat Semua",
+                          fontSize: 14,
+                        ),
+                        const SizedBox(height: 10),
+                        const ReviewView()
+                      ],
+                    ),
+                  )
+                ],
+              );
+            },
+            onLoading: Center(
+              child: Utils.loadingWidget(
+                size: 80,
+              ),
             ),
           ),
         ),

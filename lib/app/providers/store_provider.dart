@@ -71,7 +71,7 @@ class StoreProvider extends GetConnect {
         'address': store.address,
         'lat': store.lat ?? '-',
         'long': store.long ?? '-',
-        'image': MultipartFile(image, filename: image.path.split('/').last),
+        'logo': MultipartFile(image, filename: image.path.split('/').last),
       });
       return await post(
         'store',

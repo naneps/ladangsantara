@@ -5,6 +5,7 @@ import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/xpicture.dart';
 import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/modules/profile/widgets/menu_widget.dart';
+import 'package:ladangsantara/app/services/local_storage_service.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 
 import '../controllers/profile_controller.dart';
@@ -20,25 +21,27 @@ class ProfileView extends GetView<ProfileController> {
           child: Column(
             children: [
               RoundedContainer(
-                // height: 50,
+                height: 200,
+                width: Get.width,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 hasBorder: true,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const XPicture(
+                      imageUrl: "",
+                      size: 80,
+                      radiusType: RadiusType.circle,
+                    ),
+                    const SizedBox(height: 10),
                     Text(
-                      "Ahmad",
+                      "${LocalStorage.getUser()!['name']}",
                       style: TextStyle(
                         fontSize: 18,
                         color: ThemeApp.darkColor,
                         fontWeight: FontWeight.w700,
                       ),
-                    ),
-                    const XPicture(
-                      imageUrl: "",
-                      size: 50,
-                      radiusType: RadiusType.circle,
                     ),
                   ],
                 ),

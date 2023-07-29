@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/models/order_modell.dart';
+import 'package:ladangsantara/app/models/user_order_model.dart';
 import 'package:ladangsantara/app/services/api_service.dart';
 import 'package:ladangsantara/app/services/local_storage_service.dart';
 
@@ -7,7 +8,6 @@ class OrderProvider extends GetConnect {
   final ApiService apiService = Get.find<ApiService>();
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     httpClient.baseUrl = apiService.baseUrl;
     httpClient.addRequestModifier<dynamic>((request) {
@@ -16,7 +16,6 @@ class OrderProvider extends GetConnect {
       return request;
     });
     httpClient.addResponseModifier((request, response) {
-      // Handle authorization errors or other common response modifications if needed
       return response;
     });
   }
@@ -26,6 +25,30 @@ class OrderProvider extends GetConnect {
     return await post(
       'order',
       order!.forCreate(),
+    );
+  }
+
+  Future<Response> myOrder({
+    OrderStatus? status,
+  }) {
+    Map<String, dynamic> query = {};
+    if (status!.index == 5) {
+      query = {};
+    } else {
+      query['status'] = status.index.toString();
+    }
+    return get(
+      'order',
+      query: query,
+      decoder: (body) {
+        if (body['status'] == "SUCCESS") {
+          return body['data'].map<UserOrderModel>((item) {
+            return UserOrderModel.fromJson(item);
+          }).toList();
+        } else {
+          return <UserOrderModel>[];
+        }
+      },
     );
   }
 

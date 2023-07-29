@@ -15,9 +15,10 @@ class ProductController extends GetxController
   final RxList<ProductModel> products = <ProductModel>[].obs;
   Rx<ProductFilter> filter = ProductFilter(
     perPage: "1000",
-    // category: "Sayur",
+    category: "",
     search: "".obs,
     // storeId: null,
+    prices: [0, 0],
     store: true,
   ).obs;
   void getProducts() async {
@@ -71,5 +72,19 @@ class ProductController extends GetxController
         );
       }
     });
+  }
+
+  //clear filter
+  void clearFilter() {
+    filter.value = ProductFilter(
+      perPage: "1000",
+      category: "",
+      prices: [0, 0],
+
+      search: "".obs,
+      // storeId: null,
+      store: true,
+    );
+    getProducts();
   }
 }

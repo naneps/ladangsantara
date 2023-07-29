@@ -1,4 +1,4 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/modules/classify/views/classify.dart';
@@ -14,56 +14,40 @@ class CoreView extends GetView<CoreController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold (
-        floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Classify(),
-            ));
-      },
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Classify(),
+              ));
+        },
         backgroundColor: Colors.white,
-        child: Icon(MdiIcons.camera, color: Colors.black,),
-     ), 
+        child: const Icon(
+          MdiIcons.camera,
+          color: Colors.black,
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Obx(() {
-        return CurvedNavigationBar(
-          key: const ValueKey("bottom_navigation_bar"),
-          items: controller.bottomNavItems.map((item) {
-            return AnimatedSwitcher(
-              reverseDuration: const Duration(milliseconds: 400),
-              duration: const Duration(milliseconds: 400),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return ScaleTransition(
-                  scale: animation,
-                  child: child,
-                );
-              },
-              child: Icon(
-                item.isActive.value ? item.icon : item.activeIcon,
-                key: ValueKey<bool>(item.isActive.value),
-                color: item.isActive.value
-                    ? ThemeApp.lightColor
-                    : ThemeApp.darkColor,
-                size: 30,
-              ),
-            );
-          }).toList(),
-          backgroundColor: ThemeApp.primaryColor.withOpacity(0.2),
-
-          color: Colors.white,
-          buttonBackgroundColor: ThemeApp.primaryColor,
-          height: 50,
-
-          animationCurve: Curves.easeInOutBack,
-          onTap: (value) {
-            controller.currentIndex = value;
-            controller.setActiveBottomNavItem(controller.bottomNavItems[value]);
+        return AnimatedBottomNavigationBar(
+          icons: controller.bottomNavItems.map((e) => e.icon).toList(),
+          activeIndex: controller.currentIndex,
+          activeColor: controller.currentIndex % 2 == 0
+              ? ThemeApp.primaryColor
+              : ThemeApp.secondaryColor,
+          gapLocation: GapLocation.center,
+          notchSmoothness: NotchSmoothness.verySmoothEdge,
+          leftCornerRadius: 35,
+          rightCornerRadius: 35,
+          notchMargin: 10,
+          inactiveColor: ThemeApp.neutralColor.withOpacity(0.5),
+          backgroundColor: Colors.white,
+          onTap: (index) {
+            controller.currentIndex = index;
           },
-          // letIndexChange: (value) {
-          //   controller.currentIndex = value;
-          //   return true;
-          // },
+          //other params
         );
       }),
       body: SafeArea(

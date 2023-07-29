@@ -22,7 +22,6 @@ class CardProduct extends GetView {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print("tapped");
         // Get.toNamed("/product/detail", arguments: product);
         Get.to(
           () => const ProductDetailView(),

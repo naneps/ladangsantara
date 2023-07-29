@@ -12,6 +12,7 @@ class ProductStoreController extends GetxController
     perPage: "1000",
     storeId: Get.arguments.toString(),
     search: "".obs,
+    prices: [],
   ).obs;
 
   RxList<ProductModel> products = <ProductModel>[].obs;

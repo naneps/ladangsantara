@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/utils.dart';
-import 'package:ladangsantara/app/models/order_modell.dart';
 // ... (other imports)
 
 // Import the newly created widgets
@@ -151,13 +150,9 @@ class CartView extends GetView<CartController> {
                       sizeText: 14,
                       text: "Checkout",
                       onPressed: () {
-                        Get.toNamed(
-                          Routes.CHECKOUT,
-                          arguments: OrderModel(
-                            carts: controller.selectedCarts,
-                            totalPrice: controller.total.value,
-                          ),
-                        );
+                        controller.mappingOrder();
+                        Get.toNamed(Routes.CHECKOUT,
+                            arguments: controller.order);
                       },
                     );
                   }),

@@ -6,6 +6,7 @@ import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:sp_util/sp_util.dart';
 
 import 'app/routes/app_pages.dart';
+
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);

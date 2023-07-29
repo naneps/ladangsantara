@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:ladangsantara/app/common/buttons/x_button.dart';
+import 'package:ladangsantara/app/common/input/category_picker.dart';
+import 'package:ladangsantara/app/common/input/input_currency.dart';
 import 'package:ladangsantara/app/common/input/search_field.dart';
+import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/empty_state_view.dart';
 import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/modules/product/widgets/product_card.dart';
@@ -69,7 +73,7 @@ class ProductView extends GetView<ProductController> {
                   itemCount: controller.products.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 0.7,
+                    childAspectRatio: 0.8,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                   ),
@@ -87,8 +91,9 @@ class ProductView extends GetView<ProductController> {
                     ).scaleXY(
                       curve: Curves.easeInOutBack,
                       duration: const Duration(milliseconds: 500),
-                      delay:
-                          Duration(milliseconds: (100 * index).clamp(100, 500)),
+                      delay: Duration(
+                        milliseconds: (100 * index).clamp(100, 500),
+                      ),
                     );
                   },
                 );
@@ -108,14 +113,114 @@ class ProductView extends GetView<ProductController> {
 
   void showFilter() {
     Get.bottomSheet(
-      Container(
+      RoundedContainer(
         height: 300,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            const Text(
+              "Filter",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            RoundedContainer(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Harga",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CurrencyInput(
+                          label: "Dari",
+                          initialValue: "0",
+                          onSaved: (val) {},
+                          onChanged: (val) {
+                            controller.filter.value.prices![0] = int.parse(val);
+                            // controller.filter.value.prices![0] = int.parse(val);
+                            // print(controller.filter.value.prices![0]);
+                            // print(controller.filter.value.prices![0]);
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: CurrencyInput(
+                          label: "Sampai",
+                          onChanged: (val) {
+                            controller.filter.value.prices![1] = int.parse(val);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RoundedContainer(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Kategori",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  CategoryPicker(
+                    onSelected: (val) {
+                      controller.filter.value.category = val;
+                    },
+                  )
+                ],
+              ),
+            ),
+            const Spacer(),
+            Row(
+              children: [
+                Expanded(
+                    child: XButton(
+                  height: 40,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  text: "Terapkan",
+                  onPressed: () {
+                    print(controller.filter.value.toJson());
+                    controller.getProducts();
+                    Get.back();
+                  },
+                )),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: XButton(
+                    height: 40,
+                    hasIcon: true,
+                    color: ThemeApp.lightColor,
+                    textColor: ThemeApp.darkColor,
+                    icon: MdiIcons.refresh,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    text: "Reset",
+                    onPressed: () {
+                      controller.clearFilter();
+                      Get.back();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
       isScrollControlled: true,

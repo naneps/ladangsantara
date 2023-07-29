@@ -17,11 +17,12 @@ class ListCategory extends StatelessWidget {
             hasBorder: true,
             borderColor: Colors.grey[300],
             width: 80,
+            height: 60,
             child: Center(
               child: Image.asset(
                 'assets/content/${categories[index]['image']}',
-                width: 50,
-                height: 50,
+                width: 40,
+                height: 40,
               ),
             ),
           );

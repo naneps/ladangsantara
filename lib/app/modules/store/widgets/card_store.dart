@@ -151,24 +151,12 @@ class CardStore extends StatelessWidget {
                     ),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              MdiIcons.mapMarkerDistance,
-                              size: 15,
-                              color: ThemeApp.primaryColor,
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              "${controller.locationService.formatDistance(snapshot.data as double)} darimu",
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
+                        return Text(
+                          "${controller.locationService.formatDistance(snapshot.data as double)} darimu",
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
                         );
                       } else {
                         return const SizedBox();

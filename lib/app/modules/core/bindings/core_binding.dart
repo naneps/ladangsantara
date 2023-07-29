@@ -20,16 +20,16 @@ import '../controllers/core_controller.dart';
 class CoreBinding extends Bindings {
   @override
   void dependencies() {
+    Get.lazyPut<ApiService>(() => ApiService());
     Get.lazyPut<CoreController>(() => CoreController());
     Get.lazyPut<HomeController>(() => HomeController());
-    // Get.lazyPut<ProfileBinding>(() => ProfileBinding());
+    Get.lazyPut<CartController>(() => CartController());
     Get.lazyPut<ProfileController>(() => ProfileController());
+    // Get.lazyPut<ProfileBinding>(() => ProfileBinding());
     Get.lazyPut<LocationService>(() => LocationService());
     Get.lazyPut<StoreProvider>(() => StoreProvider());
-    Get.lazyPut<ApiService>(() => ApiService());
     Get.lazyPut<ProductProvider>(() => ProductProvider());
     Get.lazyPut<CartProvider>(() => CartProvider());
-    Get.lazyPut<CartController>(() => CartController());
     Get.lazyPut<RegionProvider>(() => RegionProvider());
     Get.lazyPut<GoogleMapsProvider>(() => GoogleMapsProvider());
     Get.lazyPut<StoreIndexController>(() => StoreIndexController());

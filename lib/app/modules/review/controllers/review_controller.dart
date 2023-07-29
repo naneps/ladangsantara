@@ -1,23 +1,30 @@
 import 'package:get/get.dart';
+import 'package:ladangsantara/app/models/review_model.dart';
+import 'package:ladangsantara/app/providers/review_provider.dart';
 
-class ReviewController extends GetxController {
+class ReviewController extends GetxController
+    with StateMixin<List<ReviewModel>> {
   //TODO: Implement ReviewController
+  final reviewProvider = Get.find<ReviewProvider>();
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    getReviews();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void getReviews() async {
+    change([], status: RxStatus.loading());
+    final response =
+        await reviewProvider.getReviews(Get.arguments.id.toString());
+    if (response.statusCode == 200) {
+      if (response.body.isEmpty) {
+        change([], status: RxStatus.empty());
+        return;
+      }
+      change(response.body, status: RxStatus.success());
+    } else {
+      change([], status: RxStatus.error(response.statusText!));
+    }
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

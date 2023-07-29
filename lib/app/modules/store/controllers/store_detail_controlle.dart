@@ -8,7 +8,7 @@ import 'package:ladangsantara/app/services/location_service.dart';
 
 class StoreDetailController extends GetxController with StateMixin<StoreModel> {
   //TODO: Implement StoreDetailrController
-  
+
   final storeProvider = Get.find<StoreProvider>();
   final productProvider = Get.find<ProductProvider>();
   final locationService = Get.find<LocationService>();
@@ -44,6 +44,7 @@ class StoreDetailController extends GetxController with StateMixin<StoreModel> {
           storeId: store.value.id.toString(),
           perPage: "1000",
           search: "".obs,
+          prices: [],
         ),
       );
       if (response.body['status'] == "SUCCESS") {

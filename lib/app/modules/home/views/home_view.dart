@@ -22,37 +22,43 @@ class HomeView extends GetView<HomeController> {
               const AppbarHome(),
               const SizedBox(height: 10),
               Expanded(
-                child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    const CarouselContent(),
-                    const SizedBox(height: 10),
-                    RoundedContainer(
-                      height: 120,
-                      child: Column(
-                        children: [
-                          HeadingText(
-                            leftText: "kategori",
-                            rightText: "Lihat Semua",
-                            fontSize: 14,
-                            onPressRightText: () {},
-                          ),
-                          const SizedBox(height: 10),
-                          ListCategory()
-                        ],
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    controller.getFruits();
+                    controller.getVegetables();
+                  },
+                  child: ListView(
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      CarouselContent(),
+                      const SizedBox(height: 10),
+                      RoundedContainer(
+                        height: 110,
+                        child: Column(
+                          children: [
+                            HeadingText(
+                              leftText: "kategori",
+                              rightText: "Lihat Semua",
+                              fontSize: 14,
+                              onPressRightText: () {},
+                            ),
+                            const SizedBox(height: 10),
+                            ListCategory()
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    ProductSectionWidget(
-                      title: "Buah Buahan",
-                      productList: controller.fruits,
-                    ),
-                    const SizedBox(height: 10),
-                    ProductSectionWidget(
-                      title: "Sayur Sayuran",
-                      productList: controller.vegetables,
-                    ),
-                  ],
+                      const SizedBox(height: 10),
+                      ProductSectionWidget(
+                        title: "Buah Buahan",
+                        productList: controller.fruits,
+                      ),
+                      const SizedBox(height: 10),
+                      ProductSectionWidget(
+                        title: "Sayur Sayuran",
+                        productList: controller.vegetables,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

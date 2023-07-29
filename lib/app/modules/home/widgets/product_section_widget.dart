@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
+import 'package:ladangsantara/app/common/ui/empty_state_view.dart';
 import 'package:ladangsantara/app/common/ui/heading_text.dart';
 import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/product_model.dart';
@@ -69,6 +70,12 @@ class ProductSectionWidget extends GetView<HomeController> {
               onLoading: Center(
                 child: Utils.loadingWidget(
                   size: 30,
+                ),
+              ),
+              onEmpty: Center(
+                child: EmptyStateView(
+                  icon: Icons.info_outline,
+                  label: "Belum ada produk",
                 ),
               ),
             ),

@@ -7,6 +7,7 @@ import 'package:ladangsantara/app/common/input/x_field.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/xpicture.dart';
 import 'package:ladangsantara/app/models/product_model.dart';
+import 'package:ladangsantara/app/models/review_model.dart';
 import 'package:ladangsantara/app/modules/review/controllers/create_review_controller.dart';
 import 'package:ladangsantara/app/modules/review/controllers/form_review_controller.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -33,7 +34,7 @@ class CreateReviewView extends GetView<CreateReviewController> {
           XButton(
             text: "Kirim",
             onPressed: () {
-              Get.back();
+              controller.createReview();
             },
           )
         ],
@@ -49,6 +50,9 @@ class CreateReviewView extends GetView<CreateReviewController> {
               return FormReview(
                 product: product,
                 key: ValueKey(product.id),
+                onChange: (val) {
+                  controller.reviews[index] = val;
+                },
               );
             },
           ),
@@ -58,9 +62,11 @@ class CreateReviewView extends GetView<CreateReviewController> {
 
 class FormReview extends GetView<FormReviewController> {
   final ProductModel product;
+  final Function(ReviewModel) onChange;
   const FormReview({
     super.key,
     required this.product,
+    required this.onChange,
   });
   @override
   // TODO: implement tag
@@ -68,7 +74,7 @@ class FormReview extends GetView<FormReviewController> {
   @override
   // TODO: implement controller
   FormReviewController get controller =>
-      Get.find<FormReviewController>(tag: tag!);
+      Get.put<FormReviewController>(FormReviewController(), tag: tag!);
   @override
   Widget build(BuildContext context) {
     return RoundedContainer(
@@ -77,15 +83,15 @@ class FormReview extends GetView<FormReviewController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const ListTile(
+          ListTile(
             contentPadding: EdgeInsets.zero,
             leading: XPicture(
-              imageUrl: "",
+              imageUrl: product.image!,
               size: 40,
             ),
             title: Text(
-              "Produk 1",
-              style: TextStyle(
+              product.name!,
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
               ),
@@ -106,10 +112,14 @@ class FormReview extends GetView<FormReviewController> {
           ),
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: XTextField(
                   hintText: "Tulis ulasanmu disini",
                   maxLines: 5,
+                  onChanged: (val) {
+                    controller.review.value.message = val;
+                    onChange(controller.review.value);
+                  },
                 ),
               ),
               const SizedBox(
@@ -139,14 +149,18 @@ class FormReview extends GetView<FormReviewController> {
           RatingBar.builder(
             allowHalfRating: true,
             itemCount: 5,
-            initialRating: 4,
+            initialRating: controller.review.value.point!.toDouble(),
             // glow: false,
             glowColor: Colors.amber,
             itemBuilder: (context, index) => const Icon(
               MdiIcons.starBox,
               color: Colors.amber,
             ),
-            onRatingUpdate: (val) {},
+
+            onRatingUpdate: (val) {
+              controller.review.value.point = int.parse(val.toStringAsFixed(0));
+              onChange(controller.review.value);
+            },
           )
         ],
       ),

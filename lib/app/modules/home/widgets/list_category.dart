@@ -51,6 +51,7 @@ class ListRecipe extends StatelessWidget {
                         XPicture(
                           imageUrl: "",
                           sizeHeight: 80,
+                          assetImage: "assets/images/sample-recipe.jpeg",
                           sizeWidth: Get.width,
                           radius: 0,
                         ),

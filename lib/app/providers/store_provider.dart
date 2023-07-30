@@ -72,7 +72,8 @@ class StoreProvider extends GetConnect {
         'address': store.address,
         'lat': store.lat ?? '-',
         'long': store.long ?? '-',
-        'logo': MultipartFile(image, filename: image.path.split('/').last),
+        'document_logo':
+            MultipartFile(image, filename: image.path.split('/').last),
       });
       return await post(
         'store',
@@ -101,7 +102,8 @@ class StoreProvider extends GetConnect {
         'address': store.address,
         'lat': store.lat ?? '-',
         'long': store.long ?? '-',
-        'image': MultipartFile(image, filename: image.path.split('/').last),
+        'document_logo':
+            MultipartFile(image, filename: image.path.split('/').last),
       });
       return await put(
         'store/${store.id}',

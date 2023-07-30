@@ -191,8 +191,8 @@ class _FreshnessRecognizeState extends State<FreshnessRecognize> {
               'assets/images/vegetarians.jpg',
               fit: BoxFit.cover,
             )
-          : Image.asset(
-              _selectedImageFile!.path,
+          : Image.file(
+              _selectedImageFile!,
               fit: BoxFit.contain,
             ).animate().flipH(),
     );

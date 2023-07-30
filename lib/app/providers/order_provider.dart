@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/models/order_modell.dart';
+import 'package:ladangsantara/app/models/store_order_model.dart';
 import 'package:ladangsantara/app/models/user_order_model.dart';
 import 'package:ladangsantara/app/services/api_service.dart';
 import 'package:ladangsantara/app/services/local_storage_service.dart';
@@ -59,5 +60,30 @@ class OrderProvider extends GetConnect {
   //get order
   Future<Response> getOrder(String id) async {
     return await get('/orders/$id');
+  }
+
+  Future<Response> orderInStore({
+    OrderStatus? status,
+  }) async {
+    Map<String, dynamic> query = {};
+    if (status!.index == 5) {
+      query = {};
+    } else {
+      query['status'] = status.index.toString();
+    }
+    return await get(
+      'order-store',
+      query: query,
+      decoder: (body) {
+        print("body order store: $body");
+        if (body['status'] == "SUCCESS") {
+          return body['data'].map<StoreOrderModel>((item) {
+            return StoreOrderModel.fromJson(item);
+          }).toList();
+        } else {
+          return <StoreOrderModel>[];
+        }
+      },
+    );
   }
 }

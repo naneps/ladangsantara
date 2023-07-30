@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
+import 'package:ladangsantara/app/common/ui/empty_state_view.dart';
 import 'package:ladangsantara/app/common/ui/xpicture.dart';
 import 'package:ladangsantara/app/models/order_modell.dart';
+import 'package:ladangsantara/app/models/store_order_model.dart';
 import 'package:ladangsantara/app/modules/store/controllers/manage_order_controller.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -65,6 +67,10 @@ class ManageOrderView extends GetView<ManageOrderController> {
                   icon: MdiIcons.check,
                   text: 'Selesai',
                 ),
+                TabWithIcon(
+                  icon: MdiIcons.cancel,
+                  text: 'Dibatalkan',
+                ),
               ],
               automaticIndicatorColorAdjustment: true,
             ),
@@ -72,7 +78,7 @@ class ManageOrderView extends GetView<ManageOrderController> {
           Expanded(
             child: TabBarView(
               controller: controller.tabController,
-              children: const [
+              children: [
                 ListOrder(),
                 ListOrder(status: OrderStatus.pending),
                 ListOrder(status: OrderStatus.packing),
@@ -80,6 +86,7 @@ class ManageOrderView extends GetView<ManageOrderController> {
                 ListOrder(
                   status: OrderStatus.completed,
                 ),
+                ListOrder(status: OrderStatus.cancelled),
               ],
             ),
           ),
@@ -113,29 +120,39 @@ class TabWithIcon extends StatelessWidget {
 class ListOrder extends StatelessWidget {
   final OrderStatus? status;
 
-  const ListOrder({Key? key, this.status}) : super(key: key);
-
+  ListOrder({Key? key, this.status}) : super(key: key);
+  final controller = Get.find<ManageOrderController>();
   @override
   Widget build(BuildContext context) {
     return RoundedContainer(
       height: Get.height,
-      child: ListView.separated(
-        separatorBuilder: (context, index) => const SizedBox(height: 10),
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(10),
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return OrderItemWidget(
-            status: status,
+      child: controller.obx(
+        (orders) {
+          return ListView.separated(
+            separatorBuilder: (context, index) => const SizedBox(height: 10),
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(10),
+            itemCount: orders!.length,
+            itemBuilder: (context, index) {
+              return OrderItemWidget(
+                status: status,
+                order: orders[index],
+              );
+            },
           );
         },
+        onEmpty: Center(
+          child: EmptyStateView(
+            label: "Tidak ada pesanan",
+          ),
+        ),
       ),
     );
   }
 }
 
 class OrderItemWidget extends StatelessWidget {
-  OrderModel? order;
+  StoreOrderModel? order;
   OrderStatus? status;
   OrderItemWidget({Key? key, this.order, this.status}) : super(key: key);
 
@@ -151,11 +168,12 @@ class OrderItemWidget extends StatelessWidget {
               const XPicture(
                 imageUrl: "",
                 size: 30,
+                assetImage: "assets/images/avatar.png",
               ),
               const SizedBox(width: 10),
-              const Text(
-                "Nama Pembeli",
-                style: TextStyle(
+              Text(
+                order!.user!.name!,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                 ),
@@ -184,25 +202,29 @@ class OrderItemWidget extends StatelessWidget {
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(0),
-              itemCount: 3,
+              itemCount: order!.orderItems!.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return const ListTile(
+                final item = order!.orderItems![index];
+                return ListTile(
                   leading: XPicture(
-                    imageUrl: "",
+                    imageUrl: item.product!.image!,
                     size: 40,
                   ),
                   title: Text(
-                    "Nama Produk",
-                    style: TextStyle(
+                    item.product!.name!,
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  subtitle: Text("Jumlah", style: TextStyle(fontSize: 12)),
+                  subtitle: Text(
+                    "${item.qty!}x",
+                    style: const TextStyle(fontSize: 12),
+                  ),
                   trailing: Text(
-                    "Harga",
-                    style: TextStyle(
+                    item.product!.priceFormatted,
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
@@ -212,15 +234,15 @@ class OrderItemWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "1 Item , Total : Rp. 100.000",
-                    style: TextStyle(
+                    "${order!.totalQty} Item , Total : ${order!.totalPriceFormatted}",
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),

@@ -192,4 +192,10 @@ class CartController extends GetxController with StateMixin<List<CartModel>> {
       carts: cartItems,
     );
   }
+
+  void clearCart() {
+    carts.clear();
+    selectedCarts.clear();
+    total.value = 0;
+  }
 }

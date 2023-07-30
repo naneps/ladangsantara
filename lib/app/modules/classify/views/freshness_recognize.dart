@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,8 @@ import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/x_appbar.dart';
 import 'package:ladangsantara/app/common/utils.dart';
+import 'package:ladangsantara/app/models/recipe_model.dart';
+import 'package:ladangsantara/app/providers/recipe_provider.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -35,17 +38,27 @@ class _FreshnessRecognizeState extends State<FreshnessRecognize> {
   bool _isAnalyzing = false;
   final picker = ImagePicker();
   File? _selectedImageFile;
-
+  final recipeProvider = Get.put<RecipeProvider>(RecipeProvider());
   // Result
   _ResultStatus _resultStatus = _ResultStatus.notStarted;
   String _plantLabel = ''; // Name of Error Message
-
+  List<RecipeModel> recipes = <RecipeModel>[];
   late Classifier _classifier;
 
   @override
   void initState() {
     super.initState();
     _loadClassifier();
+  }
+
+  void getRecipes(String label) async {
+    await recipeProvider.getRecipes(search: label).then((res) {
+      if (res.statusCode == 200) {
+        setState(() {
+          recipes = res.body['data'];
+        });
+      }
+    });
   }
 
   Future<void> _loadClassifier() async {
@@ -108,7 +121,7 @@ class _FreshnessRecognizeState extends State<FreshnessRecognize> {
             // });
           },
           child: RoundedContainer(
-            child: Column(
+            child: ListView(
               children: [
                 XAppBar(
                   title: "Deteksi Kesegaran",
@@ -152,7 +165,7 @@ class _FreshnessRecognizeState extends State<FreshnessRecognize> {
                         padding: const EdgeInsets.all(10),
                         width: Get.width,
                         margin: const EdgeInsets.all(10),
-                        color: ThemeApp.accentColor,
+                        color: ThemeApp.infoColor,
                         child: Text(
                           _plantLabel,
                           style: TextStyle(
@@ -171,6 +184,7 @@ class _FreshnessRecognizeState extends State<FreshnessRecognize> {
                     size: 50,
                   ),
                 ),
+                _buildRecipeList()
               ],
             ),
           ),
@@ -191,10 +205,14 @@ class _FreshnessRecognizeState extends State<FreshnessRecognize> {
               'assets/images/vegetarians.jpg',
               fit: BoxFit.cover,
             )
-          : Image.file(
-              _selectedImageFile!,
-              fit: BoxFit.contain,
-            ).animate().flipH(),
+          : RoundedContainer(
+              width: 100,
+              height: 100,
+              child: Image.file(
+                _selectedImageFile!,
+                fit: BoxFit.contain,
+              ).animate().flipH(),
+            ),
     );
   }
 
@@ -240,5 +258,138 @@ class _FreshnessRecognizeState extends State<FreshnessRecognize> {
       _resultStatus = result;
       _plantLabel = plantLabel;
     });
+    if (_resultStatus == _ResultStatus.found) {
+      getRecipes(_plantLabel);
+    }
+  }
+
+  Widget _buildRecipeList() {
+    return RoundedContainer(
+      hasBorder: true,
+      width: Get.width,
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          RoundedContainer(
+            width: Get.width,
+            padding: const EdgeInsets.all(10),
+            color: ThemeApp.infoColor,
+            radius: 5,
+            child: const Center(
+              child: Text(
+                "Rekomendasi Resep Dari Hasil Analisis ",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          RoundedContainer(
+            constraints: const BoxConstraints(maxHeight: 300),
+            child: ListView.separated(
+              separatorBuilder: (context, index) => const SizedBox(
+                height: 5,
+              ),
+              padding: const EdgeInsets.all(10),
+              shrinkWrap: true,
+              itemCount: recipes.length,
+              itemBuilder: (context, index) {
+                final recipe = recipes[index];
+                return ExpansionTile(
+                  title: Text(
+                    recipe.name!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  children: [
+                    RoundedContainer(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Deskripsi",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          ExpandableText(
+                            recipe.description!,
+                            expandText: "Selengkapnya",
+                            collapseText: "Sembunyikan",
+                            linkColor: ThemeApp.darkColor,
+                          )
+                        ],
+                      ),
+                    ),
+                    RoundedContainer(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Bahan-Bahan",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          ExpandableText(
+                            recipe.ingredient!,
+                            expandText: "Selengkapnya",
+                            collapseText: "Sembunyikan",
+                            linkColor: ThemeApp.darkColor,
+                          )
+                        ],
+                      ),
+                    ),
+                    RoundedContainer(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Cara Memasak",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          ExpandableText(
+                            recipe.steps!,
+                            expandText: "Selengkapnya",
+                            collapseText: "Sembunyikan",
+                            linkColor: ThemeApp.darkColor,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

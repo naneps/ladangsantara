@@ -69,6 +69,7 @@ class StoreHeader extends StatelessWidget {
                     Expanded(
                       child: Text(
                         store.address!,
+                        maxLines: 2,
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
@@ -78,6 +79,34 @@ class StoreHeader extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  XPicture(
+                    imageUrl: store.user!.avatar ?? "",
+                    size: 20,
+                    assetImage: "assets/images/avatar.png",
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    store.user!.name!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const Spacer(),
+
+                  ///phone number
+                  Text(
+                    store.user!.phone ?? "",
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),

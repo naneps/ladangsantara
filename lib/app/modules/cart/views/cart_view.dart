@@ -27,7 +27,7 @@ class CartView extends GetView<CartController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Keranjang Ira (20)',
+              'Keranjang Mu',
               style: TextStyle(
                 fontSize: 16,
                 color: ThemeApp.darkColor,

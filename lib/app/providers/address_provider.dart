@@ -34,7 +34,7 @@ class AddressProvider extends GetConnect {
         print("default decoder address: $body");
         if (body is Map<String, dynamic>) {
           if (body['data'] == null) {
-            return [];
+            return <AddressModel>[];
           }
           return body['data']
               .map<AddressModel>((e) => AddressModel.fromJson(e))

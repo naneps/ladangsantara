@@ -13,7 +13,7 @@ class StoreCreateController extends GetxController {
   //TODO: Implement StoreCreateController
   final formKey = GlobalKey<FormState>();
   final Rx<StoreModel> store = StoreModel().obs;
-  final Rx<XFile> image = XFile("").obs;
+  final Rx<XFile> image = XFile("null").obs;
   final addressController = TextEditingController();
   @override
   void onInit() {
@@ -25,7 +25,7 @@ class StoreCreateController extends GetxController {
     await Get.find<StoreProvider>()
         .createStore(
       store: store.value,
-      image: image.value.path != "" ? File(image.value.path) : null,
+      image: image.value.path != "null" ? File(image.value.path) : null,
     )
         .then((res) {
       if (res.body['status'] == "SUCCESS") {

@@ -22,6 +22,14 @@ class ProfileView extends GetView<ProfileController> {
             children: [
               RoundedContainer(
                 height: 200,
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    ThemeApp.primaryColor,
+                    ThemeApp.primaryColor.withOpacity(0.5),
+                  ],
+                ),
                 width: Get.width,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -32,15 +40,29 @@ class ProfileView extends GetView<ProfileController> {
                     const XPicture(
                       imageUrl: "",
                       size: 80,
+                      assetImage: "assets/images/avatar.png",
                       radiusType: RadiusType.circle,
                     ),
                     const SizedBox(height: 10),
-                    Text(
-                      "${LocalStorage.getUser()!['name']}",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: ThemeApp.darkColor,
-                        fontWeight: FontWeight.w700,
+                    RoundedContainer(
+                      padding: const EdgeInsets.all(5),
+                      radius: 10,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          ThemeApp.primaryColor.withOpacity(0.5),
+                          ThemeApp.primaryColor,
+                        ],
+                      ),
+                      hasBorder: true,
+                      child: Text(
+                        "${LocalStorage.getUser()!['name']}",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: ThemeApp.lightColor,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ],

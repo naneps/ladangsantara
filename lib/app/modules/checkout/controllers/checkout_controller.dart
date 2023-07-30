@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/models/address_model.dart';
 import 'package:ladangsantara/app/models/order_modell.dart';
+import 'package:ladangsantara/app/modules/cart/controllers/cart_controller.dart';
 import 'package:ladangsantara/app/modules/checkout/controllers/order_address_controller.dart';
 import 'package:ladangsantara/app/modules/payment/views/payment_code_view.dart';
 import 'package:ladangsantara/app/providers/order_provider.dart';
@@ -32,6 +33,7 @@ class CheckoutController extends GetxController {
       print("response create order: ${response.body}");
       if (response.body['status'] == 'SUCCESS') {
         // Get.offAllNamed('/order');
+        Get.find<CartController>().clearCart();
         Get.to(
           () => const PaymentCodeView(),
           arguments: [

@@ -4,6 +4,7 @@ import 'package:ladangsantara/app/common/buttons/x_Icon_button.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/heading_text.dart';
+import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/address_model.dart';
 import 'package:ladangsantara/app/modules/checkout/views/order_address_view.dart';
 import 'package:ladangsantara/app/modules/checkout/widgets/cart_summary_tile.dart';
@@ -53,19 +54,33 @@ class CheckoutView extends GetView<CheckoutController> {
                 ),
               ),
               const Spacer(),
-              XButton(
-                width: 120,
-                height: 40,
-                radius: 6,
-                sizeText: 14,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                text: "Buat Pesanan",
-                onPressed: () {
-                  // controller.checkout();
-                  controller.createOrder();
-                  // Get.to(() => const PaymentCodeView());
-                },
-              ),
+              Obx(() {
+                return Visibility(
+                  visible: controller.isLoading.value,
+                  child: Utils.loadingWidget(
+                    size: 25,
+                  ),
+                );
+              }),
+              Obx(() {
+                return Visibility(
+                  visible: !controller.isLoading.value,
+                  child: XButton(
+                    width: 120,
+                    height: 40,
+                    disabledColor: ThemeApp.lightColor,
+                    radius: 6,
+                    sizeText: 14,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    text: "Buat Pesanan",
+                    onPressed: () {
+                      // controller.checkout();
+                      controller.createOrder();
+                      // Get.to(() => const PaymentCodeView());
+                    },
+                  ),
+                );
+              }),
             ],
           ),
         ),

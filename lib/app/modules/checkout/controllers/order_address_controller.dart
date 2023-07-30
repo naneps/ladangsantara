@@ -21,7 +21,7 @@ class OrderAddressController extends GetxController
         final List<AddressModel> responseBody = res.body;
 
         if (responseBody.isEmpty) {
-          change([], status: RxStatus.empty());
+          change(<AddressModel>[], status: RxStatus.empty());
           return;
         } else {
           addresses.assignAll(responseBody);

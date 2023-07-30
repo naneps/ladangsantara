@@ -72,29 +72,34 @@ class ProfileView extends GetView<ProfileController> {
               Expanded(
                 child: controller.obx(
                   (state) {
-                    return ListView.separated(
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 10,
-                      ),
-                      itemBuilder: (context, index) {
-                        return FeatureWidget(
-                          menu: controller.menus[index],
-                        )
-                            .animate()
-                            .slideX(
-                              duration: const Duration(milliseconds: 300),
-                              begin: -1.0,
-                              end: 0.0,
-                              curve: Curves.easeInOutBack,
-                              delay: Duration(milliseconds: 100 * index),
-                            )
-                            .effect(
-                              duration: const Duration(milliseconds: 300),
-                              delay: Duration(milliseconds: 100 * index),
-                            )
-                            .animate();
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        controller.refresh();
                       },
-                      itemCount: controller.menus.length,
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => const SizedBox(
+                          height: 10,
+                        ),
+                        itemBuilder: (context, index) {
+                          return FeatureWidget(
+                            menu: controller.menus[index],
+                          )
+                              .animate()
+                              .slideX(
+                                duration: const Duration(milliseconds: 300),
+                                begin: -1.0,
+                                end: 0.0,
+                                curve: Curves.easeInOutBack,
+                                delay: Duration(milliseconds: 100 * index),
+                              )
+                              .effect(
+                                duration: const Duration(milliseconds: 300),
+                                delay: Duration(milliseconds: 100 * index),
+                              )
+                              .animate();
+                        },
+                        itemCount: controller.menus.length,
+                      ),
                     );
                   },
                   onLoading: ListView.separated(

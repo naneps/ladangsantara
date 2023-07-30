@@ -86,13 +86,14 @@ class LocationService extends GetxService {
   Future<String?> getAddressFromCoordinates(
       {required double latitude, required double longitude}) async {
     try {
-      final List<Placemark> placemarks =
-          await placemarkFromCoordinates(latitude, longitude);
+      final List<Placemark> placemarks = await placemarkFromCoordinates(
+          latitude, longitude,
+          localeIdentifier: 'id_ID');
       if (placemarks.isNotEmpty) {
         final Placemark placemark = placemarks.first;
         print(placemark.toJson());
         final String address =
-            "${placemark.thoroughfare}, ${placemark.locality}, ${placemark.administrativeArea} ${placemark.postalCode}";
+            "${placemark.subLocality}, ${placemark.locality}, ${placemark.subAdministrativeArea}, ${placemark.administrativeArea} ${placemark.postalCode}";
         return address;
       }
     } catch (e) {

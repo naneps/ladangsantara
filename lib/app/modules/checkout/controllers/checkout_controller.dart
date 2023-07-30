@@ -12,7 +12,7 @@ class CheckoutController extends GetxController {
   Rx<AddressModel?> currentAddress = Rx<AddressModel?>(null);
   Rx<OrderModel> order = OrderModel().obs;
   final orderProvider = Get.find<OrderProvider>();
-
+  RxBool isLoading = false.obs;
   @override
   void onInit() {
     super.onInit();
@@ -27,14 +27,23 @@ class CheckoutController extends GetxController {
   Future<void> createOrder() async {
     print(order.value.forCreate());
     try {
+      isLoading.value = true;
       final response = await orderProvider.createOrder(order: order.value);
       print("response create order: ${response.body}");
       if (response.body['status'] == 'SUCCESS') {
         // Get.offAllNamed('/order');
-        Get.to(() => const PaymentCodeView());
+        Get.to(
+          () => const PaymentCodeView(),
+          arguments: [
+            response.body['data']['order_id'],
+            response.body['data']['total'],
+          ],
+        );
       }
+      isLoading.value = false;
     } catch (e) {
       print(e);
+      isLoading.value = false;
     }
   }
 }

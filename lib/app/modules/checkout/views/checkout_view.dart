@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ladangsantara/app/common/buttons/x_Icon_button.dart';
 import 'package:ladangsantara/app/common/buttons/x_button.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/heading_text.dart';
 import 'package:ladangsantara/app/models/address_model.dart';
+import 'package:ladangsantara/app/modules/checkout/views/order_address_view.dart';
 import 'package:ladangsantara/app/modules/checkout/widgets/cart_summary_tile.dart';
 import 'package:ladangsantara/app/modules/checkout/widgets/payment_method_widget.dart';
 import 'package:ladangsantara/app/modules/checkout/widgets/tile_address.dart';
@@ -72,11 +74,41 @@ class CheckoutView extends GetView<CheckoutController> {
         padding: const EdgeInsets.all(10),
         children: [
           Obx(() {
-            return Visibility(
-              visible: controller.currentAddress.value != null,
-              child: TileAddress(
-                address: controller.currentAddress.value ?? AddressModel(),
-              ),
+            return Column(
+              children: [
+                Visibility(
+                  visible: controller.currentAddress.value != null,
+                  child: TileAddress(
+                    address: controller.currentAddress.value ?? AddressModel(),
+                  ),
+                ),
+                Visibility(
+                  visible: controller.currentAddress.value == null,
+                  child: RoundedContainer(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        const Text(
+                          "Pilih Alamat Pengiriman",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const Spacer(),
+                        XIconButton(
+                            icon: Icons.chevron_right,
+                            onTap: () {
+                              Get.to(
+                                () => const OrderAddressView(),
+                                fullscreenDialog: true,
+                              );
+                            })
+                      ],
+                    ),
+                  ),
+                )
+              ],
             );
           }),
           const SizedBox(height: 10),

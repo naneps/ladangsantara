@@ -17,7 +17,7 @@ class Classify extends StatelessWidget {
     return MaterialApp(
       title: 'Freshness Detection',
       theme: ThemeData.light(),
-      home: const FrehsnessRecognize(),
+      home: const FreshnessRecognize(),
       debugShowCheckedModeBanner: false,
     );
   }

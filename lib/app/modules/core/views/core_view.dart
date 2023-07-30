@@ -1,7 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ladangsantara/app/modules/classify/views/classify.dart';
+import 'package:ladangsantara/app/modules/classify/views/freshness_recognize.dart';
 import 'package:ladangsantara/app/themes/theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -17,11 +17,9 @@ class CoreView extends GetView<CoreController> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const Classify(),
-              ));
+          Get.to(
+            () => const FreshnessRecognize(),
+          );
         },
         backgroundColor: Colors.white,
         child: const Icon(

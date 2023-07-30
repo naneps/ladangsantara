@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'styles.dart';
@@ -12,10 +13,12 @@ class FreshnessView extends StatelessWidget {
     return Container(
       width: 250,
       height: 250,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10),),
-          color: Colors.blueGrey,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
         ),
+        color: Colors.blueGrey,
+      ),
       child: (file == null)
           ? _buildEmptyView()
           : Image.file(file!, fit: BoxFit.cover),

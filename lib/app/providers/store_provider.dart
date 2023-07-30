@@ -63,6 +63,7 @@ class StoreProvider extends GetConnect {
     required StoreModel store,
     File? image,
   }) async {
+    print(image?.path.split('/').last);
     if (image != null) {
       //form data
       final formData = FormData({

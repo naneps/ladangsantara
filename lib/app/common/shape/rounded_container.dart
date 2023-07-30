@@ -44,7 +44,6 @@ class RoundedContainer extends StatelessWidget {
       width: width,
       height: height,
       constraints: constraints,
-      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
           color: color ?? Colors.white,
           borderRadius: Utils.handleRequestRadius(

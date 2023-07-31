@@ -85,8 +85,9 @@ class _AppbarHomeState extends State<AppbarHome> {
           ),
           RoundedContainer(
             child: const XPicture(
-              imageUrl: "https://picsum.photos/200",
+              imageUrl: "",
               size: 40,
+              assetImage: "assets/images/avatar.png",
               radiusType: RadiusType.circle,
             ),
           )

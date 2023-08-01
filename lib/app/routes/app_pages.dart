@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
 import '../modules/auth/views/register_view.dart';
+import '../modules/banner/bindings/banner_binding.dart';
+import '../modules/banner/views/banner_view.dart';
 import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
@@ -121,6 +123,11 @@ class AppPages {
       name: _Paths.RECIPE,
       page: () => const RecipeView(),
       binding: RecipeBinding(),
+    ),
+    GetPage(
+      name: _Paths.BANNER,
+      page: () => const BannerView(),
+      binding: BannerBinding(),
     ),
   ];
 }

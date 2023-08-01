@@ -2,8 +2,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
+import 'package:ladangsantara/app/common/utils.dart';
+import 'package:ladangsantara/app/modules/home/controllers/carousel_controller_controller.dart';
 
-class CarouselContent extends StatelessWidget {
+class CarouselContent extends GetView<CarouselControllerController> {
   CarouselContent({
     super.key,
   });
@@ -15,37 +17,40 @@ class CarouselContent extends StatelessWidget {
       height: 150,
       hasBorder: true,
       // padding: const EdgeInsets.all(10.0),
-      child: CarouselSlider.builder(
-        itemCount: images.length,
-        itemBuilder: (context, index, realIndex) {
-          return Container(
-            width: Get.width,
-            height: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                image: AssetImage(
-                  "assets/carousel/${images[index]}",
+      child: controller.obx((banners) {
+        return CarouselSlider.builder(
+          itemCount: images.length,
+          itemBuilder: (context, index, realIndex) {
+            return Container(
+              width: Get.width,
+              height: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                  image: NetworkImage(banners![index].imagePath!),
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
               ),
-            ),
-          );
-        },
-        options: CarouselOptions(
-          autoPlay: true,
-          autoPlayInterval: const Duration(seconds: 3),
-          padEnds: true,
-          autoPlayAnimationDuration: const Duration(milliseconds: 2000),
-          autoPlayCurve: Curves.fastOutSlowIn,
-          enlargeCenterPage: true,
-          // viewportFraction: 1.0,
-          aspectRatio: 1.0,
-          onPageChanged: (index, reason) {
-            // controller.current = index;
+            );
           },
-        ),
-      ),
+          options: CarouselOptions(
+            autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 3),
+            padEnds: true,
+            autoPlayAnimationDuration: const Duration(milliseconds: 2000),
+            autoPlayCurve: Curves.fastOutSlowIn,
+            enlargeCenterPage: true,
+            // viewportFraction: 1.0,
+            aspectRatio: 1.0,
+            onPageChanged: (index, reason) {
+              // controller.current = index;
+            },
+          ),
+        );
+      },
+          onLoading: Center(
+            child: Utils.loadingWidget(size: 30),
+          )),
     );
   }
 

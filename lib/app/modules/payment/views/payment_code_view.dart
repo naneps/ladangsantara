@@ -57,13 +57,13 @@ class PaymentCodeView extends GetView {
                   ),
                 ),
                 SizedBox(height: 5),
-                Text(
-                  'Total Pembayaran : Rp 100.000',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                // Text(
+                //   'Total Pembayaran : Rp 10.000',
+                //   style: TextStyle(
+                //     fontSize: 12,
+                //     fontWeight: FontWeight.w500,
+                //   ),
+                // ),
                 SizedBox(height: 5),
                 //batas waktu countdown
                 Text(
@@ -101,7 +101,7 @@ class PaymentCodeView extends GetView {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Text(
-                        "1234567890",
+                        "va-3xwe23232342",
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.white,

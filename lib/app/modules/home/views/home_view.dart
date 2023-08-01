@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/shape/rounded_container.dart';
 import 'package:ladangsantara/app/common/ui/heading_text.dart';
+import 'package:ladangsantara/app/modules/home/controllers/carousel_controller_controller.dart';
 import 'package:ladangsantara/app/modules/home/controllers/home_controller.dart';
 import 'package:ladangsantara/app/modules/home/widgets/appbar_home.dart';
 import 'package:ladangsantara/app/modules/home/widgets/carousel_conten.dart';
@@ -27,6 +28,7 @@ class HomeView extends GetView<HomeController> {
                   onRefresh: () async {
                     controller.getFruits();
                     controller.getVegetables();
+                    Get.find<CarouselControllerController>().getBanners();
                   },
                   child: ListView(
                     physics: const BouncingScrollPhysics(),

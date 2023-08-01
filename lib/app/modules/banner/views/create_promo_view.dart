@@ -114,10 +114,25 @@ class CreatePromoView extends GetView<CreatePromoController> {
               ],
             ),
           ),
-          PaymentMethod(
-            onChange: (val) {
-              controller.banner.bankCode = val.code;
-            },
+          RoundedContainer(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Metode Pembayaran",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                PaymentMethod(
+                  onChange: (val) {
+                    controller.banner.bankCode = val.code;
+                  },
+                ),
+              ],
+            ),
           )
         ],
       ),

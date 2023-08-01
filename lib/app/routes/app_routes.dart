@@ -20,6 +20,7 @@ abstract class Routes {
   static const PAYMENT = _Paths.PAYMENT;
   static const REVIEW = _Paths.REVIEW;
   static const RECIPE = _Paths.RECIPE;
+  static const BANNER = _Paths.BANNER;
 }
 
 abstract class _Paths {
@@ -41,4 +42,5 @@ abstract class _Paths {
   static const PAYMENT = '/payment';
   static const REVIEW = '/review';
   static const RECIPE = '/recipe';
+  static const BANNER = '/banner';
 }

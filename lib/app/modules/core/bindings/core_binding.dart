@@ -2,10 +2,12 @@ import 'package:get/get.dart';
 import 'package:ladangsantara/app/common/input/category_picker.dart';
 import 'package:ladangsantara/app/modules/cart/controllers/cart_controller.dart';
 import 'package:ladangsantara/app/modules/checkout/controllers/order_address_controller.dart';
+import 'package:ladangsantara/app/modules/home/controllers/carousel_controller_controller.dart';
 import 'package:ladangsantara/app/modules/home/controllers/home_controller.dart';
 import 'package:ladangsantara/app/modules/profile/controllers/profile_controller.dart';
 import 'package:ladangsantara/app/modules/store/controllers/store_index_controller.dart';
 import 'package:ladangsantara/app/providers/address_provider.dart';
+import 'package:ladangsantara/app/providers/banner_provider.dart';
 import 'package:ladangsantara/app/providers/cart_provider.dart';
 import 'package:ladangsantara/app/providers/google_maps_provider.dart';
 import 'package:ladangsantara/app/providers/product_provider.dart';
@@ -37,5 +39,8 @@ class CoreBinding extends Bindings {
     Get.lazyPut<SqlLiteService>(() => SqlLiteService());
     Get.lazyPut<AddressProvider>(() => AddressProvider());
     Get.lazyPut<CategoryPickerController>(() => CategoryPickerController());
+    Get.lazyPut<BannerProvider>(() => BannerProvider());
+    Get.lazyPut<CarouselControllerController>(
+        () => CarouselControllerController());
   }
 }

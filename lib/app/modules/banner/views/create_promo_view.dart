@@ -42,13 +42,11 @@ class CreatePromoView extends GetView<CreatePromoController> {
                   return Visibility(
                     visible: !controller.isLoading.value,
                     child: XButton(
-                      text: "Buat Promo",
-                      onPressed: () {
-                        controller.createBanner();
-                      },
-                      isDisabled: controller.image.value!.path == "" ||
-                          controller.banner.bankCode == null,
-                    ),
+                        text: "Buat Promo",
+                        onPressed: () {
+                          controller.createBanner();
+                        },
+                        isDisabled: controller.image.value!.path == ""),
                   );
                 }),
               ],
@@ -109,7 +107,7 @@ class CreatePromoView extends GetView<CreatePromoController> {
                   color: ThemeApp.infoColor,
                   radius: 5,
                   padding: const EdgeInsets.all(10),
-                  child: const Text("Hargea Promosi 5.000 / Minggu"),
+                  child: const Text("Harga Promosi 5.0000 / Minggu"),
                 )
               ],
             ),

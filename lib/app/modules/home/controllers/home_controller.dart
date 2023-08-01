@@ -3,6 +3,7 @@ import 'package:ladangsantara/app/common/utils.dart';
 import 'package:ladangsantara/app/models/product_filter_model.dart';
 import 'package:ladangsantara/app/models/product_model.dart';
 import 'package:ladangsantara/app/modules/cart/controllers/cart_controller.dart';
+import 'package:ladangsantara/app/modules/home/controllers/carousel_controller_controller.dart';
 import 'package:ladangsantara/app/providers/cart_provider.dart';
 import 'package:ladangsantara/app/providers/product_provider.dart';
 
@@ -104,5 +105,6 @@ class HomeController extends GetxController with StateMixin {
     super.onInit();
     await getVegetables();
     getFruits();
+    Get.find<CarouselControllerController>().getBanners();
   }
 }

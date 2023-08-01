@@ -1,4 +1,5 @@
 import 'package:ladangsantara/app/common/utils.dart';
+import 'package:ladangsantara/app/models/store_model.dart';
 
 class BannerModel {
   int? id;
@@ -10,13 +11,14 @@ class BannerModel {
   int? status;
   String? createdAt;
   String? updatedAt;
-
+  User? user;
   BannerModel(
       {this.id,
       this.userId,
       this.externalId,
       this.imagePath,
       this.experationAt,
+      this.user,
       this.bankCode,
       this.status,
       this.createdAt,
@@ -25,6 +27,7 @@ class BannerModel {
   BannerModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     externalId = json['external_id'];
     imagePath = json['image_path'];
     experationAt = json['experation_at'];
@@ -74,5 +77,50 @@ class BannerModel {
 
   String get experationAtFormatted {
     return Utils.dayMonthFormatter(experationAt!);
+  }
+}
+
+class User {
+  int? id;
+  String? name;
+  String? email;
+  void emailVerifiedAt;
+  int? roleId;
+  String? createdAt;
+  String? updatedAt;
+  StoreModel? store;
+
+  User(
+      {this.id,
+      this.name,
+      this.email,
+      this.emailVerifiedAt,
+      this.roleId,
+      this.createdAt,
+      this.updatedAt,
+      this.store});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+    emailVerifiedAt = json['email_verified_at'];
+    roleId = json['role_id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    store = json['store'] != null ? StoreModel.fromJson(json['store']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (store != null) {
+      data['store'] = store!.toJson();
+    }
+    return data;
   }
 }

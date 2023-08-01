@@ -21,6 +21,7 @@ class PaymentCodeView extends GetView {
           ),
         ),
         backgroundColor: Colors.white,
+        actionsIconTheme: const IconThemeData(color: Colors.black),
         iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: true,
       ),

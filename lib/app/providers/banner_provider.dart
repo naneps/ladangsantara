@@ -50,14 +50,16 @@ class BannerProvider extends GetConnect {
     BannerModel? banner,
     XFile? image,
   }) async {
+    print("banner: ${banner!.toCreate()}");
+    print("Image: ${image!.path}");
     //multipart request
     final formdata = FormData({
       'document_banner': MultipartFile(
-        image!.path,
+        image.path,
         filename: image.name.split('/').last,
       ),
-      'bank_code': banner!.bankCode,
-      "amount": 10000,
+      'bank_code': banner.bankCode,
+      "amount": "10000",
     });
     return await post(
       'banner',
